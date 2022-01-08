@@ -1,76 +1,76 @@
 .App {
-    text-align: center;
+  text-align: center;
 }
 .fl {
-    display: flex;
+  display: flex;
 }
 .f-a-c {
-    align-items: center;
+  align-items: center;
 }
 .f-j-c {
-    justify-content: center;
+  justify-content: center;
 }
 .f-d-c {
-    flex-direction: column;
+  flex-direction: column;
 }
 .f-d-r {
-    flex-direction: row;
+  flex-direction: row;
 }
 .f-1 {
-    flex: 1;
+  flex: 1;
 }
 .b-1-gray {
-    border: 1px solid gray;
+  border: 1px solid gray;
 }
 .h-30 {
-    height: 30px;
+  height: 30px;
 }
 .w-100 {
-    width: 100px;
+  width: 100px;
 }
 .w-m-60 {
-    min-width: 60px;
+  min-width: 60px;
 }
 .w-m-q {
-    width: 25%;
+  width: 25%;
 }
 .control-table {
-    width: 50%;
-    background-color: rgb(255, 255, 204);
+  width: 50%;
+  background-color: rgb(255, 255, 204);
 }
-.bg-y{
-    /* background-color: rgb(255, 255, 204); */
+.bg-y {
+  /* background-color: rgb(255, 255, 204); */
 }
 .progress-container {
-    height: 150px;
-    position: relative;
-    border-left: 1px solid lightblue;
-    border-right: 1px solid lightblue;
-    border-bottom: 1px solid lightblue;
+  height: 150px;
+  position: relative;
+  border-left: 1px solid lightblue;
+  border-right: 1px solid lightblue;
+  border-bottom: 1px solid lightblue;
 }
 .progress-container,
 .progress-container .progress {
-    width: 60px;
-    border-radius: 15px;
+  width: 60px;
+  border-radius: 15px;
 
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .progress-container {
-    background-color: rgba(0, 0, 0, 0.1)
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .progress-container .progress {
-    /* width: 100%; */
-    height: auto;
-    background-color: red;
-    position: absolute;
-    bottom: 0;
+  /* width: 100%; */
+  height: auto;
+  background-color: red;
+  position: absolute;
+  bottom: 0;
 }
 .line {
-    margin-bottom: 30px;
-    border-bottom: 1px solid grey;
+  margin-bottom: 30px;
+  border-bottom: 1px solid grey;
 }
-.charts{
+.charts {
   margin-left: 50px;
 }
