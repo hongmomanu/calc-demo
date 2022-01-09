@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, Suspense} from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -8,7 +8,10 @@ import Tab from "@mui/material/Tab";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
 import FireExtinguisherIcon from "@mui/icons-material/FireExtinguisher";
-import { Liq } from "./views/valves/Liq";
+import CircularIndeterminate from "../components/Loading";
+const Liq = React.lazy(() => import("./views/valves/Liq"));
+const Vap = React.lazy(() => import("./views/valves/Vap"));
+
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -18,7 +21,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function ValvesSheet() {
-  const [tabValue, setTabValue] = React.useState(0);
+  const [tabValue, setTabValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -33,7 +36,10 @@ function ValvesSheet() {
         </Grid>
         <Grid item xs={24}>
           <Item>
-            <TabContent tabValue={tabValue} />
+          <Suspense fallback={<CircularIndeterminate />}>
+             <TabContent tabValue={tabValue} />
+         </Suspense>  
+            
           </Item>
         </Grid>
       </Grid>
@@ -60,6 +66,8 @@ function TabContent({ tabValue }) {
   switch (tabValue) {
     case 0:
       return <Liq />;
+    case 1:
+      return <Vap />  
     default:
       return "未完待续";
   }

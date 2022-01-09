@@ -40,7 +40,7 @@ function showAlert(msg) {
   };
   setTimeout(() => {
     close();
-  }, 30000);
+  }, 5000);
   render(<Alert severity="error">{msg}</Alert>, Dom);
 }
 

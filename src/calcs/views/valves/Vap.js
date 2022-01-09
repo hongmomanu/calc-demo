@@ -33,10 +33,10 @@ const Valve_Flow_Coeff_Unit = {
     4: "l/min - 1 bar",
   };
 
-export default function Liq() {
-  const [valveType, setValveType] = React.useState(2);
+export default function Vap() {
+  const [valveType, setValveType] = React.useState(1);
   const [calcOptionVal, setCalcOptionVal] = React.useState(2);
-  const [valveFlowUnit, setValveFlowUnit] = React.useState(3);
+  const [valveFlowUnit, setValveFlowUnit] = React.useState(1);
   const [isCalcing, setIsCalcing] = React.useState(false);
 
   const [calcFormData, setCalcFormData] = React.useState({
@@ -44,33 +44,46 @@ export default function Liq() {
     pres_unit: "bar",
     presa_unit: "bara",
     dpres_unit: "bar",
+    temp_unit:'C',
 
     massfl_unit: "kg/h",
-    volfl_unit: "m3/h",
+    volfl_unit: "m3/s",
     rho_unit: "kg/m3",
     visc_unit: "mN.s/m2",
+    stdfl_unit: "Nm3/h",
+    xt:.6,
+    z:0.956,
+    t:175,
+    stdvolfl:1215.24820149006,
+    cpcv:1.405,
     pres_in: 6.8,
-    dp: 4.6,
+    mw:18,
+    dp: .35,
     rho: 965.4,
-    mu: 1,
-    massfl: 347544,
+    mu: 0.001,
+    massfl: 975.9456705214,
     volfl: 360,
-    kv: 1030.75927059282,
-    fc: 0.16,
+    kv: 52.9937274530049,
+    fc: 0.974740357657159,
     fl: 0.9,
     pv: 0.701,
     ff: 0.944,
     geom_corr: false,
-    diam: 100,
-    din: 150,
-    dout: 150,
+    diam: 50,
+    din: 80,
+    dout: 100,
+  });
+  const [calcResult, setCalcResult] = React.useState({
+    volfl: 0,
+    kv: 0,
+    massfl: 0,
     dpmax: 0,
     pres_out: 0,
     fp: 0,
     flp: 0,
+    xtp:0
   });
-  
-  const [operPos, setOperPos] = React.useState(0.4);
+  const [operPos, setOperPos] = React.useState(0.1);
   const [fccalc, setFccalc] = React.useState(0.4);
   React.useEffect(() => {
     calcFunc({
@@ -78,8 +91,8 @@ export default function Liq() {
       valveType,
       calcOptionVal,
       valveFlowUnit,
+      setCalcResult,
       setIsCalcing,
-      setCalcFormData,
     });
   }, []);
   React.useEffect(() => {
@@ -105,6 +118,7 @@ export default function Liq() {
               setCalcOptionVal,
               valveFlowUnit,
               setValveFlowUnit,
+              calcResult,
               operPos,
               setOperPos,
             }}
@@ -125,8 +139,8 @@ export default function Liq() {
                   valveType,
                   calcOptionVal,
                   valveFlowUnit,
+                  setCalcResult,
                   setIsCalcing,
-                  setCalcFormData
                 })
               }
               variant="contained"
@@ -142,14 +156,15 @@ export default function Liq() {
 // 点击计算按钮
 const calcFunc = ({
   calcFormData,
+  valveType,
   calcOptionVal,
   valveFlowUnit,
+  setCalcResult,
   setIsCalcing,
-  setCalcFormData,
 }) => {
   setIsCalcing(true);
   httpPost({
-    url: "/api/liq/valvel_calc",
+    url: "/api/vap/valvev_calc",
     params: {
       calculationType: calcOptionVal,
       valveFlowCoeffUnit: valveFlowUnit,
@@ -157,7 +172,7 @@ const calcFunc = ({
     },
   })
     .then((rep) => {
-      if (rep) setCalcFormData({...calcFormData,...rep});
+      if (rep) setCalcResult(rep);
     })
     .finally(() => {
       setIsCalcing(false);
@@ -172,7 +187,7 @@ function calcSingleLine({
   setCalcFormData,
 }) {
   httpPost({
-    url: "/api/liq/valvel_setting_change",
+    url: "/api/vap/valvev_setting_change",
     params: { valvetype, xset },
   }).then((rep) => {
     setFccalc(rep.fccalc);
@@ -189,20 +204,21 @@ function ControlTable({
   setCalcOptionVal,
   valveFlowUnit,
   setValveFlowUnit,
+  calcResult,
   operPos,
   setOperPos,
 }) {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <div className="fl b-1-gray bg-y f-a-c h-30">Control valve incompressible fluid (turbulent flow)</div>    
+        <div className="fl b-1-gray bg-y f-a-c h-30">Control valve compressible fluid (turbulent flow)</div>    
       </Grid>  
-      {/* <Grid item xs={4.5}>
+      <Grid item xs={4.5}>
         <div className="fl b-1-gray bg-y f-a-c h-30">Case study:</div>
       </Grid>
       <Grid item xs={7.5}>
-        <div className="fl f-a-c h-30 b-1-gray"></div>
-      </Grid> */}
+        <div className="fl f-a-c h-30 b-1-gray">PCV521101</div>
+      </Grid>
 
       <Grid item xs={4}>
         <FormControl component="fieldset">
@@ -227,6 +243,11 @@ function ControlTable({
               value={3}
               control={<Radio />}
               label="Volume flow fixed"
+            />
+            <FormControlLabel
+              value={4}
+              control={<Radio />}
+              label="Normal Volume flow"
             />
           </RadioGroup>
         </FormControl>
@@ -277,29 +298,7 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">
-        <TextField
-            onChange={(e) => {
-              setCalcFormData({...calcFormData,kv:e.target.value});
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-              max: 1,
-              min: 0,
-              step: 0.1,
-            }}
-            value={calcFormData.kv}
-          />
-            
-            
-        </div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcResult.kv}</div>
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
@@ -411,187 +410,11 @@ function ControlTable({
         <div className="fl f-a-c f-j-c h-30 b-1-gray">-</div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcFormData.fp}</div>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcResult.fp}</div>
       </Grid>
 
       <Grid item xs={12}>
         <div className="fl f-a-c h-30">Operating conditions</div>
-      </Grid>
-      <Grid item xs={6}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">Density</div>
-      </Grid>
-      <Grid item xs={3}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <FormControl
-            variant="standard"
-            sx={{ m: 1, width: "100%", margin: "0px" }}
-          >
-            <Select
-              value={calcFormData.rho_unit}
-              onChange={(e) =>
-                setCalcFormData({ ...calcFormData, rho_unit: e.target.value })
-              }
-            >
-              <MenuItem value={"kg/m3"}>kg/m3</MenuItem>
-              <MenuItem value={"kg/l"}>kg/l</MenuItem>
-              <MenuItem value={"lb/gal"}>lb/gal</MenuItem>
-              <MenuItem value={"lb/ft3"}>lb/ft3</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-      </Grid>
-      <Grid item xs={3}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, rho: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-            }}
-            value={calcFormData.rho}
-          />
-        </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">Viscosity</div>
-      </Grid>
-
-      <Grid item xs={3}>
-        <div className="fl b-1-gray f-j-c bg-y f-a-c h-30">
-          <FormControl
-            variant="standard"
-            sx={{ m: 1, width: "100%", margin: "0px" }}
-          >
-            <Select
-              value={calcFormData.visc_unit}
-              onChange={(e) =>
-                setCalcFormData({ ...calcFormData, visc_unit: e.target.value })
-              }
-            >
-              <MenuItem value={"mN.s/m2"}>mN.s/m2</MenuItem>
-              <MenuItem value={"mPa.s"}>mPa.s</MenuItem>
-              <MenuItem value={"cP"}>cP</MenuItem>
-              <MenuItem value={"N.s/m2"}>N.s/m2</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-      </Grid>
-      <Grid item xs={3}>
-        <div className="fl b-1-gray f-a-c h-30 f-j-c">
-          <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, mu: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-            }}
-            value={calcFormData.mu}
-          />
-        </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">Mass flow (W)</div>
-      </Grid>
-      <Grid item xs={3}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <FormControl
-            variant="standard"
-            sx={{ m: 1, width: "100%", margin: "0px" }}
-          >
-            <Select
-              value={calcFormData.massfl_unit}
-              onChange={(e) =>
-                setCalcFormData({
-                  ...calcFormData,
-                  massfl_unit: e.target.value,
-                })
-              }
-            >
-              <MenuItem value={"kg/h"}>kg/h</MenuItem>
-              <MenuItem value={"kg/s"}>kg/s</MenuItem>
-              <MenuItem value={"lb/h"}>lb/h</MenuItem>
-              <MenuItem value={"t/h"}>t/h</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-      </Grid>
-      <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, massfl: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-            }}
-            value={calcFormData.massfl}
-          />
-        </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">Volume flow (Q)</div>
-      </Grid>
-      <Grid item xs={3}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <FormControl
-            variant="standard"
-            sx={{ m: 1, width: "100%", margin: "0px" }}
-          >
-            <Select
-              value={calcFormData.volfl_unit}
-              onChange={(e) =>
-                setCalcFormData({ ...calcFormData, volfl_unit: e.target.value })
-              }
-            >
-              <MenuItem value={"m3/h"}>m3/h</MenuItem>
-              <MenuItem value={"m3/s"}>m3/s</MenuItem>
-              <MenuItem value={"gal/h"}>gal/h</MenuItem>
-              <MenuItem value={"gpm"}>gpm</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-      </Grid>
-      <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">
-        <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, volfl: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-            }}
-            value={calcFormData.volfl}
-          />
-            </div>
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">Inlet pressure</div>
@@ -640,6 +463,323 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={6}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">Inlet temperature</div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <FormControl
+            variant="standard"
+            sx={{ m: 1, width: "100%", margin: "0px" }}
+          >
+            <Select
+              value={calcFormData.temp_unit}
+              onChange={(e) =>
+                setCalcFormData({ ...calcFormData, temp_unit: e.target.value })
+              }
+            >
+              <MenuItem value={"C"}>C</MenuItem>
+              <MenuItem value={"K"}>K</MenuItem>
+              <MenuItem value={"F"}>F</MenuItem>
+              <MenuItem value={"R"}>R</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <TextField
+            onChange={(e) => {
+              setCalcFormData({ ...calcFormData, t: e.target.value });
+            }}
+            type="number"
+            variant="filled"
+            size="small"
+            style={{ width: "100%" }}
+            inputProps={{
+              style: {
+                paddingTop: "0px",
+                textAlign: "center",
+              },
+            }}
+            value={calcFormData.t}
+          />
+        </div>
+      </Grid>
+
+      <Grid item xs={6}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">Compressibility factor</div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          -
+        </div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <TextField
+            onChange={(e) => {
+              setCalcFormData({ ...calcFormData, z: e.target.value });
+            }}
+            type="number"
+            variant="filled"
+            size="small"
+            style={{ width: "100%" }}
+            inputProps={{
+              style: {
+                paddingTop: "0px",
+                textAlign: "center",
+              },
+            }}
+            value={calcFormData.z}
+          />
+        </div>
+      </Grid>
+
+
+      <Grid item xs={6}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">Molecular weight</div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+        mw_units
+        </div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <TextField
+            onChange={(e) => {
+              setCalcFormData({ ...calcFormData, mw: e.target.value });
+            }}
+            type="number"
+            variant="filled"
+            size="small"
+            style={{ width: "100%" }}
+            inputProps={{
+              style: {
+                paddingTop: "0px",
+                textAlign: "center",
+              },
+            }}
+            value={calcFormData.mw}
+          />
+        </div>
+      </Grid>
+
+      <Grid item xs={6}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">Inlet density</div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <FormControl
+            variant="standard"
+            sx={{ m: 1, width: "100%", margin: "0px" }}
+          >
+            <Select
+              value={calcFormData.rho_unit}
+              onChange={(e) =>
+                setCalcFormData({ ...calcFormData, rho_unit: e.target.value })
+              }
+            >
+              <MenuItem value={"kg/m3"}>kg/m3</MenuItem>
+              <MenuItem value={"kg/l"}>kg/l</MenuItem>
+              <MenuItem value={"lb/gal"}>lb/gal</MenuItem>
+              <MenuItem value={"lb/ft3"}>lb/ft3</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      </Grid>
+
+      <Grid item xs={6}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">Cp/Cv (g)</div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          -
+        </div>
+      </Grid>
+
+      <Grid item xs={3}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <TextField
+            onChange={(e) => {
+              setCalcFormData({ ...calcFormData, cpcv: e.target.value });
+            }}
+            type="number"
+            variant="filled"
+            size="small"
+            style={{ width: "100%" }}
+            inputProps={{
+              style: {
+                paddingTop: "0px",
+                textAlign: "center",
+              },
+            }}
+            value={calcFormData.cpcv}
+          />
+        </div>
+      </Grid>
+      <Grid item xs={6}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">Viscosity</div>
+      </Grid>
+
+      <Grid item xs={3}>
+        <div className="fl b-1-gray f-j-c bg-y f-a-c h-30">
+          <FormControl
+            variant="standard"
+            sx={{ m: 1, width: "100%", margin: "0px" }}
+          >
+            <Select
+              value={calcFormData.visc_unit}
+              onChange={(e) =>
+                setCalcFormData({ ...calcFormData, visc_unit: e.target.value })
+              }
+            >
+              <MenuItem value={"mN.s/m2"}>mN.s/m2</MenuItem>
+              <MenuItem value={"mPa.s"}>mPa.s</MenuItem>
+              <MenuItem value={"cP"}>cP</MenuItem>
+              <MenuItem value={"N.s/m2"}>N.s/m2</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl b-1-gray f-a-c h-30 f-j-c">
+          <TextField
+            onChange={(e) => {
+              setCalcFormData({ ...calcFormData, mu: e.target.value });
+            }}
+            type="number"
+            variant="filled"
+            size="small"
+            style={{ width: "100%" }}
+            inputProps={{
+              style: {
+                paddingTop: "0px",
+                textAlign: "center",
+              },
+            }}
+            value={calcFormData.mu}
+          />
+        </div>
+      </Grid>
+
+
+      <Grid item xs={6}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">Expansion factor (Y)</div>
+      </Grid>
+
+      <Grid item xs={3}>
+        <div className="fl b-1-gray f-j-c bg-y f-a-c h-30">
+          
+        </div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl b-1-gray f-a-c h-30 f-j-c">
+          
+        </div>
+      </Grid>
+
+
+      <Grid item xs={6}>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">Mass flow (W)</div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <FormControl
+            variant="standard"
+            sx={{ m: 1, width: "100%", margin: "0px" }}
+          >
+            <Select
+              value={calcFormData.massfl_unit}
+              onChange={(e) =>
+                setCalcFormData({
+                  ...calcFormData,
+                  massfl_unit: e.target.value,
+                })
+              }
+            >
+              <MenuItem value={"kg/h"}>kg/h</MenuItem>
+              <MenuItem value={"kg/s"}>kg/s</MenuItem>
+              <MenuItem value={"lb/h"}>lb/h</MenuItem>
+              <MenuItem value={"t/h"}>t/h</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">
+          <TextField
+            onChange={(e) => {
+              setCalcFormData({ ...calcFormData, massfl: e.target.value });
+            }}
+            type="number"
+            variant="filled"
+            size="small"
+            style={{ width: "100%" }}
+            inputProps={{
+              style: {
+                paddingTop: "0px",
+                textAlign: "center",
+              },
+            }}
+            value={calcFormData.massfl}
+          />
+        </div>
+      </Grid>
+      <Grid item xs={6}>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">Volume flow</div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <FormControl
+            variant="standard"
+            sx={{ m: 1, width: "100%", margin: "0px" }}
+          >
+            <Select
+              value={calcFormData.volfl_unit}
+              onChange={(e) =>
+                setCalcFormData({ ...calcFormData, volfl_unit: e.target.value })
+              }
+            >
+              <MenuItem value={"m3/h"}>m3/h</MenuItem>
+              <MenuItem value={"m3/s"}>m3/s</MenuItem>
+              <MenuItem value={"gal/h"}>gal/h</MenuItem>
+              <MenuItem value={"gpm"}>gpm</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcResult.volfl}</div>
+      </Grid>
+
+      <Grid item xs={6}>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">Normal volume flow</div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <FormControl
+            variant="standard"
+            sx={{ m: 1, width: "100%", margin: "0px" }}
+          >
+            <Select
+              value={calcFormData.stdfl_unit}
+              onChange={(e) =>
+                setCalcFormData({ ...calcFormData, stdfl_unit: e.target.value })
+              }
+            >
+              <MenuItem value={"Nm3/h"}>Nm3/h</MenuItem>
+              <MenuItem value={"SCFM"}>SCFM</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcResult.stdvolfl}</div>
+      </Grid>
+      
+      
+      <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">Pressure drop</div>
       </Grid>
       <Grid item xs={3}>
@@ -683,7 +823,7 @@ function ControlTable({
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          Critical (max) pressure drop
+          Critical pressure drop
         </div>
       </Grid>
       <Grid item xs={3}>
@@ -692,7 +832,7 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{calcFormData.dpmax}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">{calcResult.dpmax}</div>
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">Outlet pressure</div>
@@ -702,7 +842,7 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {calcFormData.pres_out}
+          {calcResult.pres_out}
         </div>
       </Grid>
 
@@ -713,7 +853,7 @@ function ControlTable({
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          Liquid pressure recovery factor (FL)
+        Terminal differential pressure ratio (XT)
         </div>
       </Grid>
       <Grid item xs={3}>
@@ -743,7 +883,7 @@ function ControlTable({
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          Estim. piping geom. factor (FLP)
+        Terminal differential pressure ratio (XTp)
         </div>
       </Grid>
 
@@ -751,99 +891,9 @@ function ControlTable({
         <div className="fl b-1-gray f-j-c bg-y f-a-c h-30">-</div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl b-1-gray f-a-c h-30 f-j-c">{calcFormData.flp}</div>
+        <div className="fl b-1-gray f-a-c h-30 f-j-c">{calcResult.xtp}</div>
       </Grid>
-      <Grid item xs={6}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          Liquid vapour pressure (Pv)
-        </div>
-      </Grid>
-      <Grid item xs={3}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <FormControl
-            variant="standard"
-            sx={{ m: 1, width: "100%", margin: "0px" }}
-          >
-            <Select
-              value={calcFormData.presa_unit}
-              onChange={(e) =>
-                setCalcFormData({ ...calcFormData, presa_unit: e.target.value })
-              }
-            >
-              <MenuItem value={"bar"}>bar</MenuItem>
-              <MenuItem value={"psi"}>psi</MenuItem>
-              <MenuItem value={"Pa"}>Pa</MenuItem>
-              <MenuItem value={"bara"}>bara</MenuItem>
-              <MenuItem value={"psia"}>psia</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-      </Grid>
-      <Grid item xs={3}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, pv: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-              step: 0.1,
-              //   max: 1,
-            }}
-            value={calcFormData.pv}
-          />
-        </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          Thermod. crit. pressure (Pc)
-        </div>
-      </Grid>
-      <Grid item xs={3}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {calcFormData.presa_unit}
-        </div>
-      </Grid>
-      <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray"></div>
-      </Grid>
-      <Grid item xs={6}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          Liquid critical pressure factor (FF)
-        </div>
-      </Grid>
-      <Grid item xs={3}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">-</div>
-      </Grid>
-      <Grid item xs={3}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, ff: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-              step: 0.1,
-              //   max: 1,
-            }}
-            value={calcFormData.ff}
-          />
-        </div>
-      </Grid>
+      
     </Grid>
   );
 }
@@ -857,7 +907,7 @@ function Charts({ valveType, fccalc, operPos }) {
   React.useEffect(() => {
     let chartDataProm = Charts.data
       ? new Promise((r) => r(Charts.data))
-      : httpPost({ url: "/api/liq/valvel_fixed_flow" });
+      : httpPost({ url: "/api/vap/valvev_fixed_flow" });
     chartDataProm.then((rep) => {
       Charts.data = rep;
       const data = [];
