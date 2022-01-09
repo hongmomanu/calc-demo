@@ -73,6 +73,15 @@ export default function Liq() {
   const [operPos, setOperPos] = React.useState(0.4);
   const [fccalc, setFccalc] = React.useState(0.4);
   React.useEffect(() => {
+    calcSingleLine({
+      valvetype: valveType,
+      xset: operPos,
+      setFccalc,
+      calcFormData,
+      setCalcFormData,
+    });
+  }, [valveType, operPos]);
+  React.useEffect(() => {
     calcFunc({
       calcFormData,
       valveType,
@@ -82,15 +91,7 @@ export default function Liq() {
       setCalcFormData,
     });
   }, []);
-  React.useEffect(() => {
-    calcSingleLine({
-      valvetype: valveType,
-      xset: operPos,
-      setFccalc,
-      calcFormData,
-      setCalcFormData,
-    });
-  }, [valveType, operPos]);
+  
   return (
     <div className="app">
       <Grid item xs={12} container direction="row">

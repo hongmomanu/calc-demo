@@ -35,8 +35,8 @@ const Valve_Flow_Coeff_Unit = {
 
 export default function Vap() {
   const [valveType, setValveType] = React.useState(1);
-  const [calcOptionVal, setCalcOptionVal] = React.useState(2);
-  const [valveFlowUnit, setValveFlowUnit] = React.useState(1);
+  const [calcOptionVal, setCalcOptionVal] = React.useState(1);
+  const [valveFlowUnit, setValveFlowUnit] = React.useState(3);
   const [isCalcing, setIsCalcing] = React.useState(false);
 
   const [calcFormData, setCalcFormData] = React.useState({
@@ -47,7 +47,7 @@ export default function Vap() {
     temp_unit:'C',
 
     massfl_unit: "kg/h",
-    volfl_unit: "m3/s",
+    volfl_unit: "m3/h",
     rho_unit: "kg/m3",
     visc_unit: "mN.s/m2",
     stdfl_unit: "Nm3/h",
@@ -56,45 +56,32 @@ export default function Vap() {
     t:175,
     stdvolfl:1215.24820149006,
     cpcv:1.405,
-    pres_in: 6.8,
+    pres_in: 9,
     mw:18,
     dp: .35,
-    rho: 965.4,
+    rho: 4.548,
     mu: 0.001,
     massfl: 975.9456705214,
     volfl: 360,
-    kv: 52.9937274530049,
-    fc: 0.974740357657159,
-    fl: 0.9,
+    kv: 25.00,
+    fc: 1,
+    fl: 0.6,
     pv: 0.701,
     ff: 0.944,
     geom_corr: false,
     diam: 50,
     din: 80,
     dout: 100,
-  });
-  const [calcResult, setCalcResult] = React.useState({
-    volfl: 0,
-    kv: 0,
-    massfl: 0,
     dpmax: 0,
     pres_out: 0,
     fp: 0,
     flp: 0,
-    xtp:0
+    xtp:0.6,
+    y:.978,
   });
-  const [operPos, setOperPos] = React.useState(0.1);
+
+  const [operPos, setOperPos] = React.useState(1);
   const [fccalc, setFccalc] = React.useState(0.4);
-  React.useEffect(() => {
-    calcFunc({
-      calcFormData,
-      valveType,
-      calcOptionVal,
-      valveFlowUnit,
-      setCalcResult,
-      setIsCalcing,
-    });
-  }, []);
   React.useEffect(() => {
     calcSingleLine({
       valvetype: valveType,
@@ -104,6 +91,18 @@ export default function Vap() {
       setCalcFormData,
     });
   }, [valveType, operPos]);
+  
+  React.useEffect(() => {
+    calcFunc({
+      calcFormData,
+      valveType,
+      calcOptionVal,
+      valveFlowUnit,
+      setIsCalcing,
+      setCalcFormData,
+    });
+  }, []);
+  
   return (
     <div className="app">
       <Grid item xs={12} container direction="row">
@@ -118,7 +117,6 @@ export default function Vap() {
               setCalcOptionVal,
               valveFlowUnit,
               setValveFlowUnit,
-              calcResult,
               operPos,
               setOperPos,
             }}
@@ -139,8 +137,8 @@ export default function Vap() {
                   valveType,
                   calcOptionVal,
                   valveFlowUnit,
-                  setCalcResult,
                   setIsCalcing,
+                  setCalcFormData
                 })
               }
               variant="contained"
@@ -159,8 +157,8 @@ const calcFunc = ({
   valveType,
   calcOptionVal,
   valveFlowUnit,
-  setCalcResult,
   setIsCalcing,
+  setCalcFormData
 }) => {
   setIsCalcing(true);
   httpPost({
@@ -172,7 +170,7 @@ const calcFunc = ({
     },
   })
     .then((rep) => {
-      if (rep) setCalcResult(rep);
+      if (rep) setCalcFormData({...calcFormData,...rep});
     })
     .finally(() => {
       setIsCalcing(false);
@@ -204,7 +202,6 @@ function ControlTable({
   setCalcOptionVal,
   valveFlowUnit,
   setValveFlowUnit,
-  calcResult,
   operPos,
   setOperPos,
 }) {
@@ -298,7 +295,7 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcResult.kv}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.kv}</div>
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
@@ -410,7 +407,7 @@ function ControlTable({
         <div className="fl f-a-c f-j-c h-30 b-1-gray">-</div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcResult.fp}</div>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcFormData.fp}</div>
       </Grid>
 
       <Grid item xs={12}>
@@ -588,6 +585,11 @@ function ControlTable({
           </FormControl>
         </div>
       </Grid>
+      <Grid item xs={3}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {calcFormData.rho}
+        </div>
+      </Grid>
 
       <Grid item xs={6}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">Cp/Cv (g)</div>
@@ -675,7 +677,7 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl b-1-gray f-a-c h-30 f-j-c">
-          
+          {calcFormData.y}
         </div>
       </Grid>
 
@@ -750,7 +752,7 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcResult.volfl}</div>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcFormData.volfl}</div>
       </Grid>
 
       <Grid item xs={6}>
@@ -775,7 +777,7 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcResult.stdvolfl}</div>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcFormData.stdvolfl}</div>
       </Grid>
       
       
@@ -832,7 +834,7 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{calcResult.dpmax}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">{calcFormData.dpmax}</div>
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">Outlet pressure</div>
@@ -842,7 +844,7 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {calcResult.pres_out}
+          {calcFormData.pres_out}
         </div>
       </Grid>
 
@@ -891,7 +893,7 @@ function ControlTable({
         <div className="fl b-1-gray f-j-c bg-y f-a-c h-30">-</div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl b-1-gray f-a-c h-30 f-j-c">{calcResult.xtp}</div>
+        <div className="fl b-1-gray f-a-c h-30 f-j-c">{calcFormData.xtp}</div>
       </Grid>
       
     </Grid>
