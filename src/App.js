@@ -81,7 +81,7 @@ function App() {
               <List component="div" disablePadding>
                 <ListItemButton
                   onClick={() => navClick(0)}
-                  selected
+                  selected = {0===navIndex}
                   sx={{ pl: 4 }}
                 >
                   <ListItemIcon>
@@ -89,6 +89,18 @@ function App() {
                   </ListItemIcon>
                   <ListItemText primary="Valves" />
                 </ListItemButton>
+
+                <ListItemButton
+                  onClick={() => navClick(1)}
+                  selected = {1===navIndex}
+                  sx={{ pl: 4 }}
+                >
+                  <ListItemIcon>
+                    <StarBorder />
+                  </ListItemIcon>
+                  <ListItemText primary="Pdrop_pipe" />
+                </ListItemButton>
+
               </List>
             </Collapse>
           </List>

@@ -66,7 +66,6 @@ function TabContent({tabValue}){
 
 function Gas() {
     const [tableVals, setTableVals] = React.useState({ a: 1, b: 2, c: 1,x:2 })
-    const [areaPercent,setAreaPercent] = React.useState(30)
     return <div className="app">
         <Grid item xs={24}>
             <ControlTable {...tableVals} setTableVals={setTableVals} />
@@ -82,19 +81,7 @@ function Gas() {
     </div>
   }
   
-  //面积控制区域
-  function AreaChange({areaPercent=0}) {
-    return <div className="progress-container">
-            <div className="progress" style={{height:`${areaPercent}%`}}></div>
-        </div>
-  }
   
-  //改变table输入值
-  function changeTableVal(val, setTableVals) {
-    setTableVals((vals) => {
-        return { ...vals, ...val }
-    })
-  }
   //表格控制
   function ControlTable({ a, b, c, setTableVals,x }) {
       return(<Grid container>
