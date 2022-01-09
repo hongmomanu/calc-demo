@@ -38,6 +38,7 @@ export default function Vap() {
   const [calcOptionVal, setCalcOptionVal] = React.useState(1);
   const [valveFlowUnit, setValveFlowUnit] = React.useState(3);
   const [isCalcing, setIsCalcing] = React.useState(false);
+  
 
   const [calcFormData, setCalcFormData] = React.useState({
     length_unit: "mm",
@@ -93,14 +94,17 @@ export default function Vap() {
   }, [valveType, operPos]);
   
   React.useEffect(() => {
-    calcFunc({
-      calcFormData,
-      valveType,
-      calcOptionVal,
-      valveFlowUnit,
-      setIsCalcing,
-      setCalcFormData,
-    });
+      setTimeout(()=>{
+        calcFunc({
+            calcFormData,
+            valveType,
+            calcOptionVal,
+            valveFlowUnit,
+            setIsCalcing,
+            setCalcFormData,
+          });
+      },200)
+    
   }, []);
   
   return (

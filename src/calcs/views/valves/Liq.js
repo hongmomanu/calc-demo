@@ -82,14 +82,17 @@ export default function Liq() {
     });
   }, [valveType, operPos]);
   React.useEffect(() => {
-    calcFunc({
-      calcFormData,
-      valveType,
-      calcOptionVal,
-      valveFlowUnit,
-      setIsCalcing,
-      setCalcFormData,
-    });
+    setTimeout(()=>{
+        calcFunc({
+            calcFormData,
+            valveType,
+            calcOptionVal,
+            valveFlowUnit,
+            setIsCalcing,
+            setCalcFormData,
+          });
+    },200)  
+    
   }, []);
   
   return (
