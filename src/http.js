@@ -23,10 +23,14 @@ export function httpPost({ url, params }) {
     })
     .catch((e) => {
       showAlert(e);
+      return Promise.reject()
     });
 }
 
 function showAlert(msg) {
+  if(typeof msg !== 'string'){
+    msg = msg.toString()
+  }  
   const Dom = document.createElement("div");
   Dom.style.position = "fixed";
   Dom.style.top = "50%";

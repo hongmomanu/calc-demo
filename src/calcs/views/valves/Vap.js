@@ -299,7 +299,29 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.kv}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+        <TextField
+            onChange={(e) => {
+              //setOperPos(e.target.value);
+              setCalcFormData({
+                ...calcFormData,
+                kv: e.target.value,
+              })
+            }}
+            type="number"
+            variant="filled"
+            size="small"
+            style={{ width: "100%" }}
+            inputProps={{
+              style: {
+                paddingTop: "0px",
+                textAlign: "center",
+              },
+              step: 1,
+            }}
+            value={calcFormData.kv}
+          />
+        </div>
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
