@@ -11,6 +11,9 @@ import FireExtinguisherIcon from "@mui/icons-material/FireExtinguisher";
 import CircularIndeterminate from "../components/Loading";
 const Vapour = React.lazy(() => import("./views/Pdrop_pipe/Vapour"));
 const Ideal = React.lazy(() => import("./views/Pdrop_pipe/Ideal"));
+const Fittins = React.lazy(() => import("./views/Pdrop_pipe/Fittings"))
+const SteelPipes = React.lazy(() => import("./views/Pdrop_pipe/SteelPipes"))
+const ConeCoils = React.lazy(() => import("./views/Pdrop_pipe/ConeCoils"))
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -58,6 +61,8 @@ function IconLabelTabs({ tabValue, handleChange }) {
       <Tab icon={<CalculateIcon />} label="Vapour pipe" />
       <Tab icon={<LocalGasStationIcon />} label="Ideal gas" />
       <Tab icon={<FireExtinguisherIcon />} label="Fitting and values" />
+      <Tab icon={<FireExtinguisherIcon />} label="Steel Pipes" />
+      <Tab icon={<FireExtinguisherIcon />} label="Cone-elbow-diaphr-coils" />
     </Tabs>
   );
 }
@@ -67,18 +72,24 @@ function TabContent({ tabValue }) {
     case 0:
       return <Vapour />;
     case 1:
-      return <Ideal />  
+      return <Ideal />;
+    case 2:
+      return <Fittins />;    
+    case 3:
+      return <SteelPipes />;
+    case 4:
+      return <ConeCoils />;         
     default:
       return "未完待续";
   }
 }
 
 //公式
-function Formula() {
-  return "";
+// function Formula() {
+//   return "";
   // return <div className="formula fl f-1 f-d-c">
   //   <div className="fl f-1 f-a-c f-j-c">{" \\(y = ax^2 + bx + c\\)  。当 \\(a \\ne 0\\) 时"}</div>
   //   <div className="fl f-1 f-a-c f-j-c" style={{marginTop:'50px'}}>{"\\[x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.\\]"}</div>
 
   // </div>
-}
+// }

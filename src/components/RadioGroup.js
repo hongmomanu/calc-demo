@@ -4,10 +4,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 
-export function RadioGroups({label='',name,data,setFunc,options}){
+export function RadioGroups({label='',name,data,setFunc,options,row=false}){
     return <FormControl component="fieldset">
     <FormLabel component="legend">{label}</FormLabel>
     <RadioGroup
+      row = {row}
       aria-label="gender"
       value={data[name]}
       onChange={(event) => {
