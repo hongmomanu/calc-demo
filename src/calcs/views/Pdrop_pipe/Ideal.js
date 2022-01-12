@@ -64,7 +64,7 @@ export default function Ideal() {
         calcFormData.pressure_new_unit,calcFormData.temperature,calcFormData.molecular_weight,
         calcFormData.compressibility_factor,calcFormData.k1,calcFormData.k2,
         calcFormData.k3,calcFormData.k4,calcFormData.k5,calcFormData.k6,
-        calcFormData.density_new_unit
+        calcFormData.density_new_unit,calcFormData.pressure
     ])
   return (
     <Grid container>
@@ -273,27 +273,27 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {calcFormData.k1s[1]}
+              {calcFormData.k2s[0]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {calcFormData.k1s[2]}
+              {calcFormData.k3s[0]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-                {calcFormData.k1s[3]}
+                {calcFormData.k4s[0]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k1s[4]}
+            {calcFormData.k5s[0]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k1s[5]}
+            {calcFormData.k6s[0]}
             </div>
           </Grid>
       </Grid>
@@ -305,7 +305,7 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k2s[0]}
+            {calcFormData.k1s[1]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
@@ -319,22 +319,22 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k2s[2]}
+            {calcFormData.k3s[1]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k2s[3]}
+            {calcFormData.k4s[1]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k2s[4]}
+            {calcFormData.k5s[1]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k2s[5]}
+            {calcFormData.k6s[1]}
             </div>
           </Grid>
       </Grid>
@@ -346,12 +346,12 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k3s[0]}
+            {calcFormData.k1s[2]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k3s[1]}
+            {calcFormData.k2s[2]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
@@ -365,17 +365,17 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k3s[3]}
+            {calcFormData.k4s[2]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k3s[4]}
+            {calcFormData.k5s[2]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k3s[5]}
+            {calcFormData.k6s[2]}
             </div>
           </Grid>
       </Grid>
@@ -387,17 +387,17 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k4s[0]}
+            {calcFormData.k1s[3]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k4s[1]}
+            {calcFormData.k2s[3]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k4s[2]}
+            {calcFormData.k3s[3]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
@@ -411,12 +411,12 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k4s[4]}
+            {calcFormData.k5s[3]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k4s[5]}
+            {calcFormData.k6s[3]}
             </div>
           </Grid>
       </Grid>
@@ -429,22 +429,22 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k5s[0]}
+            {calcFormData.k1s[4]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k5s[1]}
+            {calcFormData.k2s[4]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k5s[2]}
+            {calcFormData.k3s[4]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k5s[3]}
+            {calcFormData.k4s[4]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
@@ -458,7 +458,7 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k5s[5]}
+            {calcFormData.k6s[4]}
             </div>
           </Grid>
       </Grid>
@@ -470,27 +470,27 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k6s[0]}
+            {calcFormData.k1s[5]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k6s[1]}
+            {calcFormData.k2s[5]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k6s[2]}
+            {calcFormData.k3s[5]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k6s[3]}
+            {calcFormData.k4s[5]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k6s[4]}
+            {calcFormData.k5s[5]}
             </div>
           </Grid>
           <Grid item xs={1.5}>
