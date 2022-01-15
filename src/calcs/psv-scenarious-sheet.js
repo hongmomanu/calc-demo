@@ -6,9 +6,11 @@ import Grid from "@mui/material/Grid";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import FireExtinguisherIcon from "@mui/icons-material/FireExtinguisher";
+import AdbIcon from "@mui/icons-material/Adb";
 import CircularIndeterminate from "../components/Loading";
 
 const S9 = React.lazy(() => import("./views/Psv_Scenarious/S9"))
+const S10 = React.lazy(() => import("./views/Psv_Scenarious/S10"))
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -52,6 +54,7 @@ function IconLabelTabs({ tabValue, handleChange }) {
       onChange={handleChange}
     >
       <Tab icon={<FireExtinguisherIcon />} label="S9" />
+      <Tab icon={<AdbIcon />} label="S10" />
     </Tabs>
   );
 }
@@ -59,7 +62,11 @@ function IconLabelTabs({ tabValue, handleChange }) {
 function TabContent({ tabValue }) {
   switch (tabValue) {
     case 0:
-      return <S9 />;      
+      return <S9 />;  
+          
+    case 1:
+      return <S10 />;  
+
     default:
       return "未完待续";
   }
