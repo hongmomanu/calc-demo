@@ -4,9 +4,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 
-export function RadioGroups({label='',name,data,setFunc,options,row=false}){
+export function RadioGroups({label='',labelStyle=undefined, name,data,setFunc,options,row=false}){
     return <FormControl component="fieldset">
-    <FormLabel component="legend">{label}</FormLabel>
+    <FormLabel style={labelStyle} component="legend">{label}</FormLabel>
     <RadioGroup
       row = {row}
       aria-label="gender"

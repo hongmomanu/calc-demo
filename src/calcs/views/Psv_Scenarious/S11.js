@@ -8,55 +8,68 @@ import { LoadingButton } from "@mui/lab";
 import usePrevious from "../../../hooks/use-previous";
 import { debounce, toFixed } from "../../../utils";
 import { TextField } from "@mui/material";
-function calcApi({ setCalcFormData, calcFormData, t_old_unit, pup_old_unit }) {
-  if (t_old_unit) calcFormData.t_old_unit = t_old_unit;
+function calcApi({ setCalcFormData, calcFormData, d_old_unit, pup_old_unit,pv_old_unit }) {
+  if (d_old_unit) calcFormData.d_old_unit = d_old_unit;
   if (pup_old_unit) calcFormData.pup_old_unit = pup_old_unit;
-  httpPost({ url: "/api/sten/valveflow", params: calcFormData }).then((rep) => {
+  if (pv_old_unit) calcFormData.pv_old_unit = pv_old_unit;
+  httpPost({ url: "/api/seleven/valveflow", params: calcFormData }).then((rep) => {
     setCalcFormData({ ...calcFormData, ...rep });
   });
 }
 const debCalcApi = debounce(calcApi);
 
-export default function S10() {
+export default function S11() {
   const [calcFormData, setCalcFormData] = useState({
-    pup: 7,
-    pouv: 3,
+    pup: 25,
+    pouv: 0,
     pup_new_unit: "bara",
     pup_old_unit: "bara",
-    cv: 13,
-    cf: 0.9,
-    mm: 18,
-    t: 165.0,
     t_unit:"C",
+    t1:250,
+    cv: 2,
+    cf: 0.9,
     mv_unit:"kg/h",
-    sc_unit:"kJ/kg",
-    pv:2200,
-    ps:0,
-    mv:963,
-    sc:2065,
-    pe:904,
-    dflow: 904,
+    mv:484,
+    d:125,
+    d_new_unit:'mm',
+    d_old_unit:'mm',
+    cpcv:1.52,
+    n:1,
+    mo:150409,
+    dsf:484,
+    pv:2100,
+    pt:154,
+    pv_new_unit:"kJ/kg",
+    pv_old_unit:"kJ/kg",
+    sc:2230,
+    dvf:514
   });
-  const t_old_unit = usePrevious(calcFormData.t_new_unit);
+  const d_old_unit = usePrevious(calcFormData.d_new_unit);
   const pup_old_unit = usePrevious(calcFormData.pup_new_unit);
+  const pv_old_unit = usePrevious(calcFormData.pv_new_unit);
   useEffect(() => {
-    debCalcApi({ setCalcFormData, calcFormData, t_old_unit, pup_old_unit });
+    debCalcApi({ setCalcFormData, calcFormData, d_old_unit, pup_old_unit,pv_old_unit});
   }, [
     calcFormData.pup,
     calcFormData.pouv,
     calcFormData.pup_new_unit,
+    calcFormData.t_unit,
+    calcFormData.t1,
     calcFormData.cv,
     calcFormData.cf,
     calcFormData.pv,
     calcFormData.ps,
-    calcFormData.t_new_unit,
+    calcFormData.pv_new_unit,
+    calcFormData.d_new_unit,
     calcFormData.mv_unit,
-    calcFormData.sc_unit,
+    calcFormData.d,
+    calcFormData.n,
+    calcFormData.pt,
   ]);
   return (
     <Grid container>
       <Grid item xs={12}>
-        <div className="fl f-a-c h-30">Abnormal heat or vapour input</div>
+        <div className="fl f-a-c h-30">Exchanger tube rupture</div>
       </Grid>
 
       <Grid container>
@@ -72,14 +85,14 @@ export default function S10() {
 
       <Grid container>
         <Grid item xs={12}>
-          <div className="fl f-a-c h-30">Full opening of a steam valve:</div>
+          <div className="fl f-a-c h-30">Calculation of maximum valve steam flow</div>
         </Grid>
       </Grid>
 
       <Grid container>
         <Grid item xs={6}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            Upstream pressure (P1)
+          Upstream steam pressure (P1)
           </div>
         </Grid>
         <Grid item xs={2}>
@@ -107,6 +120,48 @@ export default function S10() {
               name: "pup",
               setFunc: setCalcFormData,
             })}
+          </div>
+        </Grid>
+      </Grid>
+
+      <Grid container>
+        <Grid item xs={6}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">Saturated steam temperature</div>
+        </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {Combox({
+              options: [
+                { name: "C", value: "C" },
+                { name: "K", value: "K" },
+                { name: "F", value: "F" },
+                { name: "R", value: "R" },
+              ],
+              data: calcFormData,
+              name: "t_unit",
+              setFunc: setCalcFormData,
+            })}
+          </div>
+        </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.t)}
+          </div>
+        </Grid>
+      </Grid>
+
+      <Grid container>
+        <Grid item xs={6}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">Steam temperature (T1)</div>
+        </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {calcFormData.t_unit}
+          </div>
+        </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.t1)}
           </div>
         </Grid>
       </Grid>
@@ -171,31 +226,7 @@ export default function S10() {
         </Grid>
       </Grid>
 
-      <Grid container>
-        <Grid item xs={6}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">Saturated steam temperature</div>
-        </Grid>
-        <Grid item xs={2}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {Combox({
-              options: [
-                { name: "C", value: "C" },
-                { name: "K", value: "K" },
-                { name: "F", value: "F" },
-                { name: "R", value: "R" },
-              ],
-              data: calcFormData,
-              name: "t_unit",
-              setFunc: setCalcFormData,
-            })}
-          </div>
-        </Grid>
-        <Grid item xs={2}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {toFixed(calcFormData.t)}
-          </div>
-        </Grid>
-      </Grid>
+      
 
       <Grid container>
         <Grid item xs={6}>
@@ -225,38 +256,150 @@ export default function S10() {
         </Grid>
       </Grid>
 
+
+
+      
+
+      <Grid container>
+        <Grid item xs={12}>
+          <div className="fl f-a-c h-30">Calculation of maximum orifice steam flow</div>
+        </Grid>  
+      </Grid>   
+
+
       <Grid container>
         <Grid item xs={6}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">Steam heat of condensation</div>
-        </Grid>
-        <Grid item xs={2}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {Combox({
-              options: [
-                { name: "kg/kmol", value: "kg/kmol" },
-                { name: "lb/lbmol", value: "lb/lbmol" },
-              ],
-              data: calcFormData,
-              name: "sc_unit",
-              setFunc: setCalcFormData,
-            })}
+          Tube diameter (d)
           </div>
         </Grid>
         <Grid item xs={2}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {toFixed(calcFormData.sc)}
+          {Combox({
+                    options: [
+                      { name: "m", value: "m" },
+                      { name: "mm", value: "mm" },
+                      { name: "inch", value: "inch" },
+                      { name: "ft", value: "ft" },
+                    ],
+                    data: calcFormData,
+                    name: "d_new_unit",
+                    setFunc: setCalcFormData,
+                  })}
           </div>
         </Grid>
-      </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.d)}
+          </div>
+        </Grid>
+      </Grid>   
 
 
+      <Grid container>
+        <Grid item xs={6}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          Cp/Cv steam (g)
+          </div>
+        </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          -
+          </div>
+        </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.cpcv)}
+          </div>
+        </Grid>
+      </Grid>  
+
+      <Grid container>
+        <Grid item xs={6}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          'n=1 side for coil, =2 sides for tube bundle
+          </div>
+        </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          
+          </div>
+        </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.n)}
+          </div>
+        </Grid>
+      </Grid>  
+
+
+      <Grid container>
+        <Grid item xs={6}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          Mass flow from orifice
+          </div>
+        </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {calcFormData.mv_unit}
+          </div>
+        </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.mo)}
+          </div>
+        </Grid>
+      </Grid>  
+
+      <Grid container>
+        <Grid item xs={12}>
+          <div className="fl f-a-c h-30">If the process fluid temperature is greater than saturated steam temperature</div>
+        </Grid>  
+      </Grid>   
+
+      <Grid container>
+        <Grid item xs={6}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          Discharge steam mass flow
+          </div>
+        </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {calcFormData.mv_unit}
+          </div>
+        </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.dsf)}
+          </div>
+        </Grid>
+      </Grid>  
+
+
+      <Grid container>
+        <Grid item xs={12}>
+          <div className="fl f-a-c h-30">If the process fluid temperature is greater than saturated steam temperature</div>
+        </Grid>  
+      </Grid>  
+      
       <Grid container>
         <Grid item xs={6}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">Process fluid heat of vaporization</div>
         </Grid>
         <Grid item xs={2}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.sc_unit}
+          {Combox({
+              options: [
+                { name: "J/kg", value: "J/kg" },
+                { name: "kJ/kg", value: "kJ/kg" },
+                { name: "Btu/lb", value: "Btu/lb" },
+                { name: "kcal/kg", value: "kcal/kg" },
+              ],
+              data: calcFormData,
+              name: "pv_new_unit",
+              setFunc: setCalcFormData,
+            })}
+            
           </div>
         </Grid>
         <Grid item xs={2}>
@@ -272,36 +415,37 @@ export default function S10() {
 
       <Grid container>
         <Grid item xs={6}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">Process fluid flow evaporated</div>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">Process fluid temperature</div>
         </Grid>
         <Grid item xs={2}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.mv_unit}
-          </div>
-        </Grid>
-        <Grid item xs={2}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {toFixed(calcFormData.pe)}
-          </div>
-        </Grid>
-      </Grid>
-
-      <Grid container>
-        <Grid item xs={6}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">Process fluid flow to substract</div>
-        </Grid>
-        <Grid item xs={2}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.mv_unit}
+            {calcFormData.t_unit}
           </div>
         </Grid>
         <Grid item xs={2}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             {NumberInput({
               data: calcFormData,
-              name: "ps",
+              name: "pt",
               setFunc: setCalcFormData,
             })}
+          </div>
+        </Grid>
+      </Grid>
+
+
+      <Grid container>
+        <Grid item xs={6}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">Steam heat of condensation</div>
+        </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {calcFormData.pv_new_unit}
+          </div>
+        </Grid>
+        <Grid item xs={2}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.sc)}
           </div>
         </Grid>
       </Grid>
@@ -321,7 +465,7 @@ export default function S10() {
         </Grid>
         <Grid item xs={2}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {toFixed(calcFormData.dflow)}
+            {toFixed(calcFormData.dvf)}
           </div>
         </Grid>
       </Grid>

@@ -11,7 +11,7 @@ import { TextField } from "@mui/material";
 function calcApi({ setCalcFormData, calcFormData, t_old_unit, pup_old_unit }) {
   if (t_old_unit) calcFormData.t_old_unit = t_old_unit;
   if (pup_old_unit) calcFormData.pup_old_unit = pup_old_unit;
-  httpPost({ url: "api/snine/valveflow", params: calcFormData }).then((rep) => {
+  httpPost({ url: "/api/snine/valveflow", params: calcFormData }).then((rep) => {
     setCalcFormData({ ...calcFormData, ...rep });
   });
 }
@@ -60,7 +60,7 @@ export default function S9() {
       </Grid>
 
       <Grid container>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">Case study</div>
         </Grid>
         <Grid item xs={4}>
@@ -77,7 +77,7 @@ export default function S9() {
       </Grid>
 
       <Grid container>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             Upstream pressure (P1)
           </div>
@@ -112,7 +112,7 @@ export default function S9() {
       </Grid>
 
       <Grid container>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             Relieving pressure (P0)
           </div>
@@ -134,7 +134,7 @@ export default function S9() {
       </Grid>
 
       <Grid container>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             Valve coefficient Cv
           </div>
@@ -154,7 +154,7 @@ export default function S9() {
       </Grid>
 
       <Grid container>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">Valve Cf</div>
         </Grid>
         <Grid item xs={2}>
@@ -172,7 +172,7 @@ export default function S9() {
       </Grid>
 
       <Grid container>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">Molecular weight</div>
         </Grid>
         <Grid item xs={2}>
@@ -200,7 +200,7 @@ export default function S9() {
       </Grid>
 
       <Grid container>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">Vapor temperature</div>
         </Grid>
         <Grid item xs={2}>
@@ -230,7 +230,7 @@ export default function S9() {
       </Grid>
 
       <Grid container>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             Discharge mass flow
           </div>
