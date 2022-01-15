@@ -6,12 +6,14 @@ import { Combox } from "../../../components/Combox";
 import { NumberInput } from "../../../components/NumberInput";
 import { LoadingButton } from "@mui/lab";
 import usePrevious from "../../../hooks/use-previous";
+import { debounce, toFixed } from "../../../utils";
 
 function calcApi({setCalcFormData,calcFormData}){
     httpPost({url:'api/pipe/ideal/idealGas',params:calcFormData}).then((rep)=>{
         setCalcFormData({...calcFormData,...rep})
     })
 }
+const calcApiDeb = debounce(calcApi)
 export default function Ideal() {
 
     const [calcFormData, setCalcFormData] = useState({
@@ -58,7 +60,7 @@ export default function Ideal() {
         if(pressure_old_unit){
             newData.pressure_old_unit = pressure_old_unit
         }
-        calcApi({calcFormData:newData,setCalcFormData})
+        calcApiDeb({calcFormData:newData,setCalcFormData})
         
       },[calcFormData.temperature_new_unit,calcFormData.temperature,
         calcFormData.pressure_new_unit,calcFormData.temperature,calcFormData.molecular_weight,
@@ -235,7 +237,7 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {calcFormData.dc}
+              {toFixed(calcFormData.dc)}
             </div>
           </Grid>
       </Grid>
@@ -251,7 +253,7 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {calcFormData.df}
+              {toFixed(calcFormData.df)}
             </div>
           </Grid>
       </Grid>
@@ -273,27 +275,27 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {calcFormData.k2s[0]}
+              {toFixed(calcFormData.k2s[0])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {calcFormData.k3s[0]}
+              {toFixed(calcFormData.k3s[0])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-                {calcFormData.k4s[0]}
+                {toFixed(calcFormData.k4s[0])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k5s[0]}
+            {toFixed(calcFormData.k5s[0])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k6s[0]}
+            {toFixed(calcFormData.k6s[0])}
             </div>
           </Grid>
       </Grid>
@@ -305,7 +307,7 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k1s[1]}
+            {toFixed(calcFormData.k1s[1])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
@@ -319,22 +321,22 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k3s[1]}
+            {toFixed(calcFormData.k3s[1]) }
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k4s[1]}
+            {toFixed(calcFormData.k4s[1]) }
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k5s[1]}
+            {toFixed(calcFormData.k5s[1]) }
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k6s[1]}
+            {toFixed(calcFormData.k6s[1]) }
             </div>
           </Grid>
       </Grid>
@@ -346,58 +348,12 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k1s[2]}
+            {toFixed(calcFormData.k1s[2])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k2s[2]}
-            </div>
-          </Grid>
-          <Grid item xs={1.5}>
-            <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {NumberInput({
-                data: calcFormData,
-                name: "k2",
-                setFunc: setCalcFormData,
-              })}
-            </div>
-          </Grid>
-          <Grid item xs={1.5}>
-            <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k4s[2]}
-            </div>
-          </Grid>
-          <Grid item xs={1.5}>
-            <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k5s[2]}
-            </div>
-          </Grid>
-          <Grid item xs={1.5}>
-            <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k6s[2]}
-            </div>
-          </Grid>
-      </Grid>
-
-
-      <Grid container>
-          <Grid item xs={3}>
-            <div className="fl f-a-c f-j-c h-30 b-1-gray">ft3/h</div>
-          </Grid>
-          <Grid item xs={1.5}>
-            <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k1s[3]}
-            </div>
-          </Grid>
-          <Grid item xs={1.5}>
-            <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k2s[3]}
-            </div>
-          </Grid>
-          <Grid item xs={1.5}>
-            <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k3s[3]}
+            {toFixed(calcFormData.k2s[2])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
@@ -411,40 +367,39 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k5s[3]}
+            {toFixed(calcFormData.k4s[2])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k6s[3]}
+            {toFixed(calcFormData.k5s[2])}
+            </div>
+          </Grid>
+          <Grid item xs={1.5}>
+            <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.k6s[2])}
             </div>
           </Grid>
       </Grid>
 
 
-
       <Grid container>
           <Grid item xs={3}>
-            <div className="fl f-a-c f-j-c h-30 b-1-gray">Nm3/h</div>
+            <div className="fl f-a-c f-j-c h-30 b-1-gray">ft3/h</div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k1s[4]}
+            {toFixed(calcFormData.k1s[3])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k2s[4]}
+            {toFixed(calcFormData.k2s[3])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k3s[4]}
-            </div>
-          </Grid>
-          <Grid item xs={1.5}>
-            <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k4s[4]}
+            {toFixed(calcFormData.k3s[3])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
@@ -458,7 +413,54 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k6s[4]}
+            {toFixed(calcFormData.k5s[3])}
+            </div>
+          </Grid>
+          <Grid item xs={1.5}>
+            <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.k6s[3])}
+            </div>
+          </Grid>
+      </Grid>
+
+
+
+      <Grid container>
+          <Grid item xs={3}>
+            <div className="fl f-a-c f-j-c h-30 b-1-gray">Nm3/h</div>
+          </Grid>
+          <Grid item xs={1.5}>
+            <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.k1s[4])}
+            </div>
+          </Grid>
+          <Grid item xs={1.5}>
+            <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.k2s[4])}
+            </div>
+          </Grid>
+          <Grid item xs={1.5}>
+            <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.k3s[4])}
+            </div>
+          </Grid>
+          <Grid item xs={1.5}>
+            <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.k4s[4])}
+            </div>
+          </Grid>
+          <Grid item xs={1.5}>
+            <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {NumberInput({
+                data: calcFormData,
+                name: "k5",
+                setFunc: setCalcFormData,
+              })}
+            </div>
+          </Grid>
+          <Grid item xs={1.5}>
+            <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            {toFixed(calcFormData.k6s[4])}
             </div>
           </Grid>
       </Grid>
@@ -470,34 +472,34 @@ export default function Ideal() {
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k1s[5]}
+            {toFixed(calcFormData.k1s[5])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k2s[5]}
+            {toFixed(calcFormData.k2s[5])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k3s[5]}
+            {toFixed(calcFormData.k3s[5])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k4s[5]}
+            {toFixed(calcFormData.k4s[5])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.k5s[5]}
+            {toFixed(calcFormData.k5s[5])}
             </div>
           </Grid>
           <Grid item xs={1.5}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
             {NumberInput({
                 data: calcFormData,
-                name: "k5",
+                name: "k6",
                 setFunc: setCalcFormData,
               })}
             </div>

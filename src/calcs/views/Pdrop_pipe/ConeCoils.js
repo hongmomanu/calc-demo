@@ -4,6 +4,7 @@ import { Combox } from "../../../components/Combox";
 import { NumberInput } from "../../../components/NumberInput";
 import usePrevious from "../../../hooks/use-previous";
 import { httpPost } from "../../../http";
+import { debounce } from "../../../utils";
 
 export default function ConeCoils() {
   return (
@@ -14,7 +15,6 @@ export default function ConeCoils() {
       <BlendTable />
       <CoilsTable />
       <MultipleApi />
-      <div>未完待续</div>  
     </Grid>
   );
 }
@@ -28,6 +28,7 @@ function TableApi({setCalcFormData,calcFormData,old_unit,url}){
         setCalcFormData({...calcFormData,...rep})
     })
 }
+const TableApiDeb= debounce (TableApi)
 function MultipleApi(){
     const [calcFormData,setCalcFormData] = useState({
         d:300,
@@ -38,7 +39,7 @@ function MultipleApi(){
       })
       const old_unit = usePrevious(calcFormData.new_unit)
       useEffect(()=>{
-        TableApi({setCalcFormData,calcFormData,old_unit,url:'/api/pipe/special/k_Segments'})
+        TableApiDeb({setCalcFormData,calcFormData,old_unit,url:'/api/pipe/special/k_Segments'})
       },[calcFormData.d,calcFormData.r,calcFormData.re,calcFormData.new_unit])
       return (
         <>
@@ -159,7 +160,7 @@ function CoilsTable() {
       })
       const old_unit = usePrevious(calcFormData.new_unit)
       useEffect(()=>{
-        TableApi({setCalcFormData,calcFormData,old_unit,url:'api//pipe/special/ld_bend'})
+        TableApiDeb({setCalcFormData,calcFormData,old_unit,url:'api//pipe/special/ld_bend'})
       },[calcFormData.d,calcFormData.r,calcFormData.equivalent_unit,calcFormData.new_unit,calcFormData.e])  
       return (
         <>
@@ -290,7 +291,7 @@ function BlendTable() {
       })
       const old_unit = usePrevious(calcFormData.new_unit)
       useEffect(()=>{
-        TableApi({setCalcFormData,calcFormData,old_unit,url:'api//pipe/special/ld_bend'})
+        TableApiDeb({setCalcFormData,calcFormData,old_unit,url:'api//pipe/special/ld_bend'})
       },[calcFormData.d,calcFormData.r,calcFormData.equivalent_unit,calcFormData.new_unit])  
       return (
         <>
@@ -403,7 +404,7 @@ function DiaphragmTable(){
       })
       const old_unit = usePrevious(calcFormData.new_unit)
       useEffect(()=>{
-        TableApi({setCalcFormData,calcFormData,old_unit,url:'/api/pipe/special/k_diaphragm'})
+        TableApiDeb({setCalcFormData,calcFormData,old_unit,url:'/api/pipe/special/k_diaphragm'})
       },[calcFormData.d0,calcFormData.d,calcFormData.e,calcFormData.new_unit])  
       return (
         <>
@@ -561,7 +562,7 @@ function ElbowTable() {
       })
       const old_unit = usePrevious(calcFormData.new_unit)
       useEffect(()=>{
-        TableApi({setCalcFormData,calcFormData,old_unit,url:'api/pipe/special/k_elbow'})
+        TableApiDeb({setCalcFormData,calcFormData,old_unit,url:'api/pipe/special/k_elbow'})
       },[calcFormData.alpha,calcFormData.d,calcFormData.r,calcFormData.rug,calcFormData.re,calcFormData.new_unit])  
       return (
         <>
@@ -706,7 +707,7 @@ function ConeTable() {
   })
   const old_unit = usePrevious(calcFormData.new_unit)
   useEffect(()=>{
-    TableApi({setCalcFormData,calcFormData,old_unit,url:'api/pipe/special/k_cone'})
+    TableApiDeb({setCalcFormData,calcFormData,old_unit,url:'api/pipe/special/k_cone'})
   },[calcFormData.beat,calcFormData.d1,calcFormData.d2,calcFormData.new_unit])  
   return (
     <>

@@ -26,6 +26,8 @@ import {
   ComposedChart,
   ResponsiveContainer,
 } from "recharts";
+import { toFixed } from "../../../utils";
+import { NumberInput } from "../../../components/NumberInput";
 const Valve_Flow_Coeff_Unit = {
     1: "gpm - 1 psi",
     2: "m3/h - 1 mH20",
@@ -300,27 +302,11 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-        <TextField
-            onChange={(e) => {
-              //setOperPos(e.target.value);
-              setCalcFormData({
-                ...calcFormData,
-                kv: e.target.value,
-              })
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-              step: 1,
-            }}
-            value={calcFormData.kv}
-          />
+        {NumberInput({
+            data: calcFormData,
+            name: "kv",
+            setFunc: setCalcFormData,
+          })}
         </div>
       </Grid>
       <Grid item xs={6}>
@@ -467,22 +453,11 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, pres_in: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-            }}
-            value={calcFormData.pres_in}
-          />
+        {NumberInput({
+            data: calcFormData,
+            name: "pres_in",
+            setFunc: setCalcFormData,
+          })}
         </div>
       </Grid>
       <Grid item xs={6}>
@@ -510,22 +485,11 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, t: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-            }}
-            value={calcFormData.t}
-          />
+        {NumberInput({
+            data: calcFormData,
+            name: "t",
+            setFunc: setCalcFormData,
+          })}
         </div>
       </Grid>
 
@@ -539,22 +503,11 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, z: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-            }}
-            value={calcFormData.z}
-          />
+        {NumberInput({
+            data: calcFormData,
+            name: "z",
+            setFunc: setCalcFormData,
+          })}
         </div>
       </Grid>
 
@@ -569,22 +522,11 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, mw: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-            }}
-            value={calcFormData.mw}
-          />
+        {NumberInput({
+            data: calcFormData,
+            name: "mw",
+            setFunc: setCalcFormData,
+          })}
         </div>
       </Grid>
 
@@ -613,7 +555,7 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.rho}
+            {toFixed(calcFormData.rho)}
         </div>
       </Grid>
 
@@ -628,22 +570,14 @@ function ControlTable({
 
       <Grid item xs={3}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, cpcv: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-            }}
-            value={calcFormData.cpcv}
-          />
+        {NumberInput({
+            data: calcFormData,
+            name: "cpcv",
+            max:2,
+            min:1,
+            step:.1,
+            setFunc: setCalcFormData,
+          })}
         </div>
       </Grid>
       <Grid item xs={6}>
@@ -672,22 +606,11 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl b-1-gray f-a-c h-30 f-j-c">
-          <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, mu: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-            }}
-            value={calcFormData.mu}
-          />
+        {NumberInput({
+            data: calcFormData,
+            name: "mu",
+            setFunc: setCalcFormData,
+          })}
         </div>
       </Grid>
 
@@ -703,7 +626,7 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl b-1-gray f-a-c h-30 f-j-c">
-          {calcFormData.y}
+          {toFixed(calcFormData.y)}
         </div>
       </Grid>
 
@@ -736,22 +659,11 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, massfl: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-            }}
-            value={calcFormData.massfl}
-          />
+        {NumberInput({
+            data: calcFormData,
+            name: "massfl",
+            setFunc: setCalcFormData,
+          })}
         </div>
       </Grid>
       <Grid item xs={6}>
@@ -778,7 +690,7 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcFormData.volfl}</div>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">{toFixed(calcFormData.volfl)}</div>
       </Grid>
 
       <Grid item xs={6}>
@@ -803,7 +715,7 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcFormData.stdvolfl}</div>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">{toFixed(calcFormData.stdvolfl)}</div>
       </Grid>
       
       
@@ -831,22 +743,11 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, dp: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-            }}
-            value={calcFormData.dp}
-          />
+        {NumberInput({
+            data: calcFormData,
+            name: "dp",
+            setFunc: setCalcFormData,
+          })}
         </div>
       </Grid>
       <Grid item xs={6}>
@@ -860,7 +761,7 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{calcFormData.dpmax}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">{toFixed(calcFormData.dpmax)}</div>
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">Outlet pressure</div>
@@ -870,7 +771,7 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {calcFormData.pres_out}
+          {toFixed(calcFormData.pres_out)}
         </div>
       </Grid>
 
@@ -889,24 +790,13 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <TextField
-            onChange={(e) => {
-              setCalcFormData({ ...calcFormData, fl: e.target.value });
-            }}
-            type="number"
-            variant="filled"
-            size="small"
-            style={{ width: "100%" }}
-            inputProps={{
-              style: {
-                paddingTop: "0px",
-                textAlign: "center",
-              },
-              step: 0.1,
-              max: 1,
-            }}
-            value={calcFormData.fl}
-          />
+        {NumberInput({
+            data: calcFormData,
+            name: "fl",
+            setFunc: setCalcFormData,
+            step: 0.1,
+            max: 1,
+          })}
         </div>
       </Grid>
       <Grid item xs={6}>
@@ -919,7 +809,7 @@ function ControlTable({
         <div className="fl b-1-gray f-j-c bg-y f-a-c h-30">-</div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl b-1-gray f-a-c h-30 f-j-c">{calcFormData.xtp}</div>
+        <div className="fl b-1-gray f-a-c h-30 f-j-c">{toFixed(calcFormData.xtp)}</div>
       </Grid>
       
     </Grid>

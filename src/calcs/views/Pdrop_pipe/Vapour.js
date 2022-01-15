@@ -8,6 +8,7 @@ import { LoadingButton } from "@mui/lab";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import { RadioGroups } from "../../../components/RadioGroup";
 import { Charts } from "../../../components/Charts";
+import { toFixed } from "../../../utils";
 export default function Vapour() {
   const [calcFormData, setCalcFormData] = useState({
     temp_unit: "C",
@@ -122,9 +123,11 @@ export default function Vapour() {
       <Charts xData={calcFormData.lsoths[0]} yDatas={[
           calcFormData.lsothApps[3],
           calcFormData.lsothApps[1],
-          calcFormData.adiabs[3],
+          calcFormData.adiabs[1],
           calcFormData.lsoths[3],
-      ]} columns={['unconstr','lsoth.app','adiabatic','unconstr-']} />
+          calcFormData.adiabs[3],
+          calcFormData.lsoths[1],
+      ]} columns={['unconstr','lsoth.app','adiabatic','unconstr-','unconstr','lsothermal']} />
       </Grid>
       <Grid item xs={6}>
       <Charts xData={calcFormData.lsoths[0]} yDatas={[
@@ -133,7 +136,8 @@ export default function Vapour() {
           calcFormData.adiabs[4],
           calcFormData.adiabs[2],
           calcFormData.lsothApps[2],
-      ]} columns={['unconstr','unconstr','unconstr','adiabatic','lsoth.app']} />
+          calcFormData.lsoths[2],
+      ]} columns={['unconstr','unconstr','unconstr','adiabatic','lsoth.app','lsothermal']} />
 
       </Grid>
         
@@ -497,13 +501,13 @@ function TableTwo({ calcFormData, setCalcFormData, isCalcing, setIsCalcing }) {
         </div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothTable.vp_uin}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothTable.vp_uin)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothAppTable.vp_uin}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothAppTable.vp_uin)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.adiabTable.vp_uin}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.adiabTable.vp_uin)}</div>
       </Grid>
 
       <Grid item xs={4}>
@@ -515,13 +519,13 @@ function TableTwo({ calcFormData, setCalcFormData, isCalcing, setIsCalcing }) {
         </div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothTable.vp_uout}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothTable.vp_uout)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothAppTable.vp_uout}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothAppTable.vp_uout)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.adiabTable.vp_uout}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.adiabTable.vp_uout)}</div>
       </Grid>
 
       <Grid item xs={4}>
@@ -533,13 +537,13 @@ function TableTwo({ calcFormData, setCalcFormData, isCalcing, setIsCalcing }) {
         </div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothTable.vp_tout}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothTable.vp_tout)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothAppTable.vp_tout}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothAppTable.vp_tout)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.adiabTable.vp_tout}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.adiabTable.vp_tout)}</div>
       </Grid>
 
       <Grid item xs={4}>
@@ -551,13 +555,13 @@ function TableTwo({ calcFormData, setCalcFormData, isCalcing, setIsCalcing }) {
         </div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothTable.vp_usonic_out}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothTable.vp_usonic_out)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothAppTable.vp_usonic_out}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothAppTable.vp_usonic_out)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.adiabTable.vp_usonic_out}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.adiabTable.vp_usonic_out)}</div>
       </Grid>
 
       <Grid item xs={4}>
@@ -579,14 +583,14 @@ function TableTwo({ calcFormData, setCalcFormData, isCalcing, setIsCalcing }) {
         </div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothTable.vp_massfl}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothTable.vp_massfl)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothAppTable.vp_massfl}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothAppTable.vp_massfl)}</div>
       </Grid>
 
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.adiabTable.vp_massfl}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.adiabTable.vp_massfl)}</div>
       </Grid>
     </Grid>
   );
@@ -625,13 +629,13 @@ function TableThree({
         </div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothTable.vp_pcrit}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothTable.vp_pcrit)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothAppTable.vp_pcrit}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothAppTable.vp_pcrit)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.adiabTable.vp_pcrit}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.adiabTable.vp_pcrit)}</div>
       </Grid>
 
       <Grid item xs={4}>
@@ -643,13 +647,13 @@ function TableThree({
         </div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothTable.vp_massflcrit}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothTable.vp_massflcrit)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothAppTable.vp_massflcrit}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothAppTable.vp_massflcrit)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.adiabTable.vp_massflcrit}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.adiabTable.vp_massflcrit)}</div>
       </Grid>
 
       <Grid item xs={4}>
@@ -671,13 +675,13 @@ function TableThree({
         </div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothTable.vp_volflin}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothTable.vp_volflin)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothAppTable.vp_volflin}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothAppTable.vp_volflin)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.adiabTable.vp_volflin}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.adiabTable.vp_volflin)}</div>
       </Grid>
 
       <Grid item xs={4}>
@@ -689,13 +693,13 @@ function TableThree({
         </div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothTable.vp_volflout}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothTable.vp_volflout)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.lsothAppTable.vp_volflout}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.lsothAppTable.vp_volflout)}</div>
       </Grid>
       <Grid item xs={2}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.adiabTable.vp_volflout}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.adiabTable.vp_volflout)}</div>
       </Grid>
     </Grid>
   );

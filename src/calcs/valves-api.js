@@ -7,7 +7,6 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
-import FireExtinguisherIcon from "@mui/icons-material/FireExtinguisher";
 import CircularIndeterminate from "../components/Loading";
 const Liq = React.lazy(() => import("./views/valves/Liq"));
 const Vap = React.lazy(() => import("./views/valves/Vap"));
@@ -57,7 +56,6 @@ function IconLabelTabs({ tabValue, handleChange }) {
     >
       <Tab icon={<CalculateIcon />} label="Valve_liq" />
       <Tab icon={<LocalGasStationIcon />} label="Valve_vap" />
-      <Tab icon={<FireExtinguisherIcon />} label="steam" />
     </Tabs>
   );
 }
@@ -71,14 +69,4 @@ function TabContent({ tabValue }) {
     default:
       return "未完待续";
   }
-}
-
-//公式
-function Formula() {
-  return "";
-  // return <div className="formula fl f-1 f-d-c">
-  //   <div className="fl f-1 f-a-c f-j-c">{" \\(y = ax^2 + bx + c\\)  。当 \\(a \\ne 0\\) 时"}</div>
-  //   <div className="fl f-1 f-a-c f-j-c" style={{marginTop:'50px'}}>{"\\[x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.\\]"}</div>
-
-  // </div>
 }

@@ -29,6 +29,25 @@ const darkTheme = createTheme({
   },
 });
 
+const NavData = [
+  {
+    idx: 0,
+    name: "Valves",
+  },
+  {
+    idx: 1,
+    name: "Pdrop_pipe",
+  },
+  {
+    idx: 2,
+    name: "Pdrop_line",
+  },
+  {
+    idx: 3,
+    name: "Psv_scenarious",
+  },
+];
+
 function App() {
   const [open, setOpen] = React.useState(true);
   const [navIndex, setNavIndex] = React.useState(0);
@@ -79,39 +98,32 @@ function App() {
             </ListItemButton>
             <Collapse in={open} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItemButton
-                  onClick={() => navClick(0)}
-                  selected = {0===navIndex}
-                  sx={{ pl: 4 }}
-                >
-                  <ListItemIcon>
-                    <StarBorder />
-                  </ListItemIcon>
-                  <ListItemText primary="Valves" />
-                </ListItemButton>
-
-                <ListItemButton
-                  onClick={() => navClick(1)}
-                  selected = {1===navIndex}
-                  sx={{ pl: 4 }}
-                >
-                  <ListItemIcon>
-                    <StarBorder />
-                  </ListItemIcon>
-                  <ListItemText primary="Pdrop_pipe" />
-                </ListItemButton>
-
+                {NavData.map((it, ix) => {
+                  return (
+                    <ListItemButton
+                      key={ix}
+                      onClick={() => navClick(it.idx)}
+                      selected={it.idx === navIndex}
+                      sx={{ pl: 4 }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary={it.name} />
+                    </ListItemButton>
+                  );
+                })}
               </List>
             </Collapse>
           </List>
           <Divider />
           <List>
-            <ListItem button key={2}>
+            {/* <ListItem button key={2}>
               <ListItemIcon>
                 <MailIcon />
               </ListItemIcon>
               <ListItemText primary={"测试1"} />
-            </ListItem>
+            </ListItem> */}
           </List>
         </Drawer>
         <Box
