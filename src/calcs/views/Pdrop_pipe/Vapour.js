@@ -120,24 +120,36 @@ export default function Vapour() {
 
       <Grid item xs={12} container direction="row">
       <Grid item xs={6}>
-      <Charts xData={calcFormData.lsoths[0]} yDatas={[
-          calcFormData.lsothApps[3],
-          calcFormData.lsothApps[1],
-          calcFormData.adiabs[1],
-          calcFormData.lsoths[3],
-          calcFormData.adiabs[3],
-          calcFormData.lsoths[1],
-      ]} columns={['unconstr','lsoth.app','adiabatic','unconstr-','unconstr','lsothermal']} />
+        
+      <Charts xData={calcFormData.lsoths[0]}
+      xTickCount={7}
+      yDomain={[0,70]}
+      showDot={<CustomizedDot />}
+      xDomain={[0,3]}
+          yDatas={[
+          calcFormData.lsothApps[3].map((it)=>it.toFixed(2)),
+          calcFormData.lsothApps[1].map((it)=>it.toFixed(2)),
+          calcFormData.adiabs[1].map((it)=>it.toFixed(2)),
+          calcFormData.lsoths[3].map((it)=>it.toFixed(2)),
+          calcFormData.adiabs[3].map((it)=>it.toFixed(2)),
+          calcFormData.lsoths[1].map((it)=>it.toFixed(2)),
+      ]} columns={['unconstr','lsoth.app','adiabatic','unconstr-','unconstr1','lsothermal']} />
       </Grid>
       <Grid item xs={6}>
-      <Charts xData={calcFormData.lsoths[0]} yDatas={[
-          calcFormData.lsothApps[4],
-          calcFormData.lsoths[4],
-          calcFormData.adiabs[4],
-          calcFormData.adiabs[2],
-          calcFormData.lsothApps[2],
-          calcFormData.lsoths[2],
-      ]} columns={['unconstr','unconstr','unconstr','adiabatic','lsoth.app','lsothermal']} />
+      <Charts
+      xTickCount={7}
+      yDomain={[0,calcFormData.uout_auto?'auto':parseInt(calcFormData.uout_max)]}
+      xDomain={[0,3]}
+      showDot={<CustomizedDot />}
+      xData={calcFormData.lsoths[0]} 
+      yDatas={[
+          calcFormData.lsothApps[4].map((it)=>Math.min(it,calcFormData.uout_auto?Infinity:parseInt(calcFormData.uout_max)).toFixed(2)),
+          calcFormData.lsoths[4].map((it)=>Math.min(it,calcFormData.uout_auto?Infinity:parseInt(calcFormData.uout_max)).toFixed(2)),
+          calcFormData.adiabs[4].map((it)=>Math.min(it,calcFormData.uout_auto?Infinity:parseInt(calcFormData.uout_max)).toFixed(2)),
+          calcFormData.adiabs[2].map((it)=>Math.min(it,calcFormData.uout_auto?Infinity:parseInt(calcFormData.uout_max) ).toFixed(2)), 
+          calcFormData.lsothApps[2].map((it)=>Math.min(it,calcFormData.uout_auto?Infinity:parseInt(calcFormData.uout_max)).toFixed(2)),
+          calcFormData.lsoths[2].map((it)=>Math.min(it,calcFormData.uout_auto?Infinity:parseInt(calcFormData.uout_max)).toFixed(2)),
+      ]} columns={['unconstr1','unconstr2','unconstr3','adiabatic','lsoth.app','lsothermal']} /> 
 
       </Grid>
         
@@ -145,6 +157,19 @@ export default function Vapour() {
     </Grid>
   );
 }
+
+const CustomizedDot = (props) => {
+  const { cx, cy, stroke, payload, value,fill } = props;
+  if (props.index % 10 === 0) {
+    return (
+      <circle cx={cx } cy={cy} r={1} stroke={stroke} strokeWidth={3} fill={fill} />
+      
+    );
+  }else{
+    return null
+  }
+};
+
 
 
 
@@ -285,11 +310,7 @@ function TableOne({ calcFormData, setCalcFormData, isCalcing, setIsCalcing }) {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {NumberInput({
-                data: calcFormData,
-                name: "vp_dp",
-                setFunc: setCalcFormData,
-              })}
+              {toFixed(calcFormData.vp_dp)}
             </div>
           </Grid>
 
@@ -388,6 +409,7 @@ function TableOne({ calcFormData, setCalcFormData, isCalcing, setIsCalcing }) {
           <Grid item xs={3}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
               {NumberInput({
+                disabled:Number(calcFormData.specialType) === 2,
                 data: calcFormData,
                 name: "length",
                 setFunc: setCalcFormData,
@@ -424,6 +446,7 @@ function TableOne({ calcFormData, setCalcFormData, isCalcing, setIsCalcing }) {
           <Grid item xs={3}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
               {NumberInput({
+                disabled:Number(calcFormData.specialType) === 1,
                 data: calcFormData,
                 name: "k",
                 setFunc: setCalcFormData,

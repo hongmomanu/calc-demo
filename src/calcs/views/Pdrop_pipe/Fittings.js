@@ -6,30 +6,29 @@ import { Combox } from "../../../components/Combox";
 import { NumberInput } from "../../../components/NumberInput";
 import { LoadingButton } from "@mui/lab";
 import usePrevious from "../../../hooks/use-previous";
-import { toFixed } from "../../../utils";
+import { debounce, toFixed } from "../../../utils";
 
 function calcApi({
   setCalcFormData,
   calcFormData,
-  cvkey,
-  dkey,
-  type,
-  old_unit,
-  kkey,
+  unit_form,old_unit
 }) {
-  calcFormData.ckv = calcFormData[cvkey];
-  calcFormData.d = calcFormData[dkey];
-  calcFormData.type = type;
-  if (old_unit) calcFormData.old_unit = old_unit;
-
+  const new_data={...unit_form}
+  if(old_unit){
+    new_data.old_unit = old_unit
+  }
+  
   httpPost({
     url: "api/pipe/fitting/fitting_values",
-    params: calcFormData,
+    params: {...calcFormData,...new_data},
   }).then((rep) => {
-    rep[kkey] = rep.k;
     setCalcFormData({ ...calcFormData, ...rep });
   });
 }
+const debCalcApi1 = debounce(calcApi)
+const debCalcApi2 = debounce(calcApi)
+const debCalcApi3 = debounce(calcApi)
+const debCalcApi4 = debounce(calcApi)
 
 function LocalCalcResult(formData) {
   console.log("formData", formData);
@@ -45,29 +44,29 @@ function LocalCalcResult(formData) {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {formData[2]
+          {toFixed(formData[2]
             .map((it, ix) => {
               return it * formData[1][ix];
             })
-            .reduce((a, b) => a + b)}
+            .reduce((a, b) => a + b)) }
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {formData[3]
+          {toFixed(formData[3]
             .map((it, ix) => {
               return it * formData[1][ix];
             })
-            .reduce((a, b) => a + b)}
+            .reduce((a, b) => a + b)) }
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {formData[4]
+          {toFixed(formData[4]
             .map((it, ix) => {
               return it * formData[1][ix];
             })
-            .reduce((a, b) => a + b)}
+            .reduce((a, b) => a + b)) }
         </div>
       </Grid>
     </Grid>
@@ -239,6 +238,7 @@ function LocalCalcForm() {
                   setFunc: (val) => {
                     const data = [...formData];
                     data[2] = Object.values(val);
+                    console.log("val",val)
                     setFormData(data);
                   },
                 })}
@@ -352,102 +352,40 @@ function LocalCalc() {
     </Grid>
   );
 }
-let cvt;
+
+
 export default function Fittings() {
   const [calcFormData, setCalcFormData] = useState({
-    cv: 3100,
-    cvm: 860,
-    kv: 2682,
-    kvf: 44430,
-    d: 0.25,
-    cd: 250,
-    md: 250,
-    kd: 250,
-    kfd: 250,
-    kcv: 0.87,
-    kcvm: 0.83,
-    kkv: 0.87,
-    kkvf: 0.88,
     new_unit: "mm",
-    old_unit: "mm",
   });
   const old_unit = usePrevious(calcFormData.new_unit);
-  useEffect(() => {
-    if (cvt) {
-      clearTimeout(cvt);
-    }
-    cvt = setTimeout(() => {
-      const newData = { ...calcFormData };
-      calcApi({
-        calcFormData: newData,
-        setCalcFormData,
-        cvkey: "cv",
-        dkey: "cd",
-        type: 1,
-        old_unit,
-        kkey: "kcv",
-      });
-    }, 200);
-  }, [calcFormData.cv, calcFormData.cd, calcFormData.new_unit]);
-
-  useEffect(() => {
-    if (cvt) {
-      clearTimeout(cvt);
-    }
-    cvt = setTimeout(() => {
-      const newData = { ...calcFormData };
-      calcApi({
-        calcFormData: newData,
-        setCalcFormData,
-        cvkey: "cvm",
-        dkey: "md",
-        type: 2,
-        old_unit,
-        kkey: "kcvm",
-      });
-    }, 200);
-  }, [calcFormData.cvm, calcFormData.md, calcFormData.new_unit]);
-
-  useEffect(() => {
-    if (cvt) {
-      clearTimeout(cvt);
-    }
-    cvt = setTimeout(() => {
-      const newData = { ...calcFormData };
-      calcApi({
-        calcFormData: newData,
-        setCalcFormData,
-        cvkey: "kv",
-        dkey: "kd",
-        type: 3,
-        old_unit,
-        kkey: "kkv",
-      });
-    }, 200);
-  }, [calcFormData.kv, calcFormData.kd, calcFormData.new_unit]);
-
-  useEffect(() => {
-    if (cvt) {
-      clearTimeout(cvt);
-    }
-    cvt = setTimeout(() => {
-      const newData = { ...calcFormData };
-      calcApi({
-        calcFormData: newData,
-        setCalcFormData,
-        cvkey: "kvf",
-        dkey: "kfd",
-        type: 4,
-        old_unit,
-        kkey: "kkvf",
-      });
-    }, 200);
-  }, [calcFormData.kvf, calcFormData.kfd, calcFormData.new_unit]);
+  
 
   return (
     <Grid container>
       <LocalCalc />
-      <Grid item xs={12}>
+      {K1({unit_form:calcFormData,old_unit,setUnitForm:setCalcFormData})}
+      {K2({unit_form:calcFormData,old_unit})}
+      {K3({unit_form:calcFormData,old_unit})}
+      {K4({unit_form:calcFormData,old_unit})}
+      
+    </Grid>
+  );
+}
+
+function K1({unit_form,old_unit,setUnitForm}){
+  
+  const [calcFormData, setCalcFormData] = useState({
+    ckv: 3100,
+    d: 250,
+    type: 1,
+    k:.87
+  });
+  console.log("unit_form.new_unit",unit_form.new_unit)
+  useEffect(()=>{
+    debCalcApi1({calcFormData,setCalcFormData,unit_form,old_unit})
+  },[unit_form.new_unit,calcFormData.ckv,calcFormData.d])
+  return (<><Grid item xs={12}>
         <div className="fl  f-a-c h-30">K from CV (US Units)</div>
       </Grid>
 
@@ -462,7 +400,7 @@ export default function Fittings() {
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             {NumberInput({
               data: calcFormData,
-              name: "cv",
+              name: "ckv",
               setFunc: setCalcFormData,
             })}
           </div>
@@ -482,9 +420,9 @@ export default function Fittings() {
                 { name: "inch", value: "inch" },
                 { name: "ft", value: "ft" },
               ],
-              data: calcFormData,
+              data: unit_form,
               name: "new_unit",
-              setFunc: setCalcFormData,
+              setFunc: setUnitForm,
             })}
           </div>
         </Grid>
@@ -492,7 +430,7 @@ export default function Fittings() {
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             {NumberInput({
               data: calcFormData,
-              name: "cd",
+              name: "d",
               setFunc: setCalcFormData,
             })}
           </div>
@@ -507,11 +445,22 @@ export default function Fittings() {
           <div className="fl f-a-c f-j-c h-30 b-1-gray">-</div>
         </Grid>
         <Grid item xs={3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.kcv}</div>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.k) }</div>
         </Grid>
-      </Grid>
-
-      <Grid item xs={12}>
+      </Grid></>)
+}
+function K2({unit_form,old_unit}){
+  const [calcFormData, setCalcFormData] = useState({
+    ckv: 860,
+    d: 250,
+    type: 2,
+    k:.83
+  });
+  useEffect(()=>{
+    debCalcApi2({calcFormData,setCalcFormData,unit_form,old_unit})
+  },[unit_form.new_unit,calcFormData.ckv,calcFormData.d])
+  return (<>
+    <Grid item xs={12}>
         <div className="fl  f-a-c h-30">K from CVm (Metric Units)</div>
       </Grid>
       <Grid container>
@@ -525,7 +474,7 @@ export default function Fittings() {
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             {NumberInput({
               data: calcFormData,
-              name: "cvm",
+              name: "ckv",
               setFunc: setCalcFormData,
             })}
           </div>
@@ -538,14 +487,14 @@ export default function Fittings() {
         </Grid>
         <Grid item xs={3}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.new_unit}
+            {unit_form.new_unit}
           </div>
         </Grid>
         <Grid item xs={3}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             {NumberInput({
               data: calcFormData,
-              name: "md",
+              name: "d",
               setFunc: setCalcFormData,
             })}
           </div>
@@ -563,14 +512,27 @@ export default function Fittings() {
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             {NumberInput({
               data: calcFormData,
-              name: "kcvm",
+              name: "k",
               setFunc: setCalcFormData,
             })}
           </div>
         </Grid>
       </Grid>
+  </>)
+}
 
-      <Grid item xs={12}>
+function K3({unit_form,old_unit}){
+  const [calcFormData, setCalcFormData] = useState({
+    ckv: 2682,
+    d: 250,
+    type: 3,
+    k:.87
+  });
+  useEffect(()=>{
+    debCalcApi3({calcFormData,setCalcFormData,unit_form,old_unit})
+  },[unit_form.new_unit,calcFormData.ckv,calcFormData.d])
+  return (<>
+    <Grid item xs={12}>
         <div className="fl  f-a-c h-30">K from KV</div>
       </Grid>
       <Grid container>
@@ -584,7 +546,7 @@ export default function Fittings() {
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             {NumberInput({
               data: calcFormData,
-              name: "kv",
+              name: "ckv",
               setFunc: setCalcFormData,
             })}
           </div>
@@ -597,14 +559,14 @@ export default function Fittings() {
         </Grid>
         <Grid item xs={3}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.new_unit}
+            {unit_form.new_unit}
           </div>
         </Grid>
         <Grid item xs={3}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             {NumberInput({
               data: calcFormData,
-              name: "kd",
+              name: "d",
               setFunc: setCalcFormData,
             })}
           </div>
@@ -622,14 +584,27 @@ export default function Fittings() {
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             {NumberInput({
               data: calcFormData,
-              name: "kkv",
+              name: "k",
               setFunc: setCalcFormData,
             })}
           </div>
         </Grid>
       </Grid>
+  </>)
+}
 
-      <Grid item xs={12}>
+function K4({unit_form,old_unit}){
+  const [calcFormData, setCalcFormData] = useState({
+    ckv: 44430,
+    d: 250,
+    type: 4,
+    k:.88
+  });
+  useEffect(()=>{
+    debCalcApi4({calcFormData,setCalcFormData,unit_form,old_unit})
+  },[unit_form.new_unit,calcFormData.ckv,calcFormData.d])
+  return (<>
+    <Grid item xs={12}>
         <div className="fl  f-a-c h-30">K from KV (French)</div>
       </Grid>
       <Grid container>
@@ -643,7 +618,7 @@ export default function Fittings() {
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             {NumberInput({
               data: calcFormData,
-              name: "kvf",
+              name: "ckv",
               setFunc: setCalcFormData,
             })}
           </div>
@@ -656,14 +631,14 @@ export default function Fittings() {
         </Grid>
         <Grid item xs={3}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {calcFormData.new_unit}
+            {unit_form.new_unit}
           </div>
         </Grid>
         <Grid item xs={3}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             {NumberInput({
               data: calcFormData,
-              name: "kfd",
+              name: "d",
               setFunc: setCalcFormData,
             })}
           </div>
@@ -681,12 +656,11 @@ export default function Fittings() {
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
             {NumberInput({
               data: calcFormData,
-              name: "kkvf",
+              name: "k",
               setFunc: setCalcFormData,
             })}
           </div>
         </Grid>
       </Grid>
-    </Grid>
-  );
+  </>)
 }

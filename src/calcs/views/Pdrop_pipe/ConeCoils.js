@@ -4,7 +4,7 @@ import { Combox } from "../../../components/Combox";
 import { NumberInput } from "../../../components/NumberInput";
 import usePrevious from "../../../hooks/use-previous";
 import { httpPost } from "../../../http";
-import { debounce } from "../../../utils";
+import { debounce, toFixed } from "../../../utils";
 
 export default function ConeCoils() {
   return (
@@ -123,7 +123,7 @@ function MultipleApi(){
             </Grid>
             <Grid item xs={4}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {calcFormData.k2}</div>
+              {toFixed(calcFormData.k2) }</div>
             </Grid>
           </Grid>
 
@@ -138,7 +138,7 @@ function MultipleApi(){
             </Grid>
             <Grid item xs={4}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {calcFormData.k3}</div>
+              {toFixed(calcFormData.k3) }</div>
             </Grid>
           </Grid>
         </>
@@ -470,7 +470,7 @@ function DiaphragmTable(){
             </Grid>
             <Grid item xs={4}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {calcFormData.k1}
+              {toFixed(calcFormData.k1) }
               </div>
             </Grid>
           </Grid>
@@ -486,7 +486,7 @@ function DiaphragmTable(){
             </Grid>
             <Grid item xs={4}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-                {calcFormData.k2}
+                { toFixed(calcFormData.k2) }
               </div>
             </Grid>
           </Grid>
@@ -502,7 +502,7 @@ function DiaphragmTable(){
             </Grid>
             <Grid item xs={4}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-                {calcFormData.k3}
+                {toFixed(calcFormData.k3) }
               </div>
             </Grid>
           </Grid>
@@ -538,7 +538,7 @@ function DiaphragmTable(){
             </Grid>
             <Grid item xs={4}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {calcFormData.k4}</div>
+              {toFixed(calcFormData.k4) }</div>
             </Grid>
           </Grid>
     
@@ -793,7 +793,7 @@ function ConeTable() {
         </Grid>
         <Grid item xs={4}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {calcFormData.k1}</div>
+          {toFixed(calcFormData.k1) }</div>
         </Grid>
       </Grid>
 
@@ -808,7 +808,7 @@ function ConeTable() {
         </Grid>
         <Grid item xs={4}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {calcFormData.k2}</div>
+          {toFixed(calcFormData.k2) }</div>
         </Grid>
       </Grid>
 

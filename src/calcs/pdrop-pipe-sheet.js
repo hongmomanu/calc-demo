@@ -8,6 +8,8 @@ import Tab from "@mui/material/Tab";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
 import FireExtinguisherIcon from "@mui/icons-material/FireExtinguisher";
+import Animation from "@mui/icons-material/Animation";
+import Architecture from "@mui/icons-material/Architecture";
 import CircularIndeterminate from "../components/Loading";
 const Vapour = React.lazy(() => import("./views/Pdrop_pipe/Vapour"));
 const Ideal = React.lazy(() => import("./views/Pdrop_pipe/Ideal"));
@@ -61,8 +63,8 @@ function IconLabelTabs({ tabValue, handleChange }) {
       <Tab icon={<CalculateIcon />} label="Vapour pipe" />
       <Tab icon={<LocalGasStationIcon />} label="Ideal gas" />
       <Tab icon={<FireExtinguisherIcon />} label="Fitting and values" />
-      <Tab icon={<FireExtinguisherIcon />} label="Steel Pipes" />
-      <Tab icon={<FireExtinguisherIcon />} label="Cone-elbow-diaphr-coils" />
+      <Tab icon={<Animation />} label="Steel Pipes" />
+      <Tab icon={<Architecture />} label="Cone-elbow-diaphr-coils" />
     </Tabs>
   );
 }

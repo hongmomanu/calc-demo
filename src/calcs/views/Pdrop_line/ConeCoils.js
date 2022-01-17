@@ -72,17 +72,7 @@ function MultipleApi(){
               <div className="fl f-a-c f-j-c h-30 b-1-gray">Pipe diameter</div>
             </Grid>
             <Grid item xs={4}>
-              <div className="fl f-a-c f-j-c h-30 b-1-gray">{Combox({
-                    options: [
-                      { name: "m", value: "m" },
-                      { name: "mm", value: "mm" },
-                      { name: "inch", value: "inch" },
-                      { name: "ft", value: "ft" },
-                    ],
-                    data: calcFormData,
-                    name: "new_unit",
-                    setFunc: setCalcFormData,
-                  })}</div>
+              <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.new_unit}</div>
             </Grid>
 
             <Grid item xs={4}>
@@ -176,17 +166,7 @@ function CoilsTable() {
               <div className="fl f-a-c f-j-c h-30 b-1-gray">Pipe diameter (D)</div>
             </Grid>
             <Grid item xs={4}>
-              <div className="fl f-a-c f-j-c h-30 b-1-gray">{Combox({
-                    options: [
-                      { name: "m", value: "m" },
-                      { name: "mm", value: "mm" },
-                      { name: "inch", value: "inch" },
-                      { name: "ft", value: "ft" },
-                    ],
-                    data: calcFormData,
-                    name: "new_unit",
-                    setFunc: setCalcFormData,
-                  })}</div>
+              <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.new_unit}</div>
             </Grid>
             <Grid item xs={4}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">{NumberInput({
@@ -255,17 +235,7 @@ function CoilsTable() {
             </Grid>
             <Grid item xs={4}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {Combox({
-                    options: [
-                      { name: "m", value: "m" },
-                      { name: "mm", value: "mm" },
-                      { name: "inch", value: "inch" },
-                      { name: "ft", value: "ft" },
-                    ],
-                    data: calcFormData,
-                    name: "equivalent_unit",
-                    setFunc: setCalcFormData,
-                  })}</div>
+              {calcFormData.equivalent_unit}</div>
             </Grid>
             <Grid item xs={4}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
@@ -307,17 +277,7 @@ function BlendTable() {
               <div className="fl f-a-c f-j-c h-30 b-1-gray">Pipe diameter (D)</div>
             </Grid>
             <Grid item xs={4}>
-              <div className="fl f-a-c f-j-c h-30 b-1-gray">{Combox({
-                    options: [
-                      { name: "m", value: "m" },
-                      { name: "mm", value: "mm" },
-                      { name: "inch", value: "inch" },
-                      { name: "ft", value: "ft" },
-                    ],
-                    data: calcFormData,
-                    name: "new_unit",
-                    setFunc: setCalcFormData,
-                  })}</div>
+              <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.new_unit}</div>
             </Grid>
             <Grid item xs={4}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">{NumberInput({
@@ -369,17 +329,7 @@ function BlendTable() {
             </Grid>
             <Grid item xs={4}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {Combox({
-                    options: [
-                      { name: "m", value: "m" },
-                      { name: "mm", value: "mm" },
-                      { name: "inch", value: "inch" },
-                      { name: "ft", value: "ft" },
-                    ],
-                    data: calcFormData,
-                    name: "equivalent_unit",
-                    setFunc: setCalcFormData,
-                  })}</div>
+              {calcFormData.equivalent_unit}</div>
             </Grid>
             <Grid item xs={4}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
@@ -420,17 +370,7 @@ function DiaphragmTable(){
               <div className="fl f-a-c f-j-c h-30 b-1-gray">Pipe diameter (D)</div>
             </Grid>
             <Grid item xs={4}>
-              <div className="fl f-a-c f-j-c h-30 b-1-gray">{Combox({
-                    options: [
-                      { name: "m", value: "m" },
-                      { name: "mm", value: "mm" },
-                      { name: "inch", value: "inch" },
-                      { name: "ft", value: "ft" },
-                    ],
-                    data: calcFormData,
-                    name: "new_unit",
-                    setFunc: setCalcFormData,
-                  })}</div>
+              <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.new_unit}</div>
             </Grid>
             <Grid item xs={4}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">{NumberInput({
@@ -595,17 +535,7 @@ function ElbowTable() {
             </Grid>
             <Grid item xs={4}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {Combox({
-                    options: [
-                      { name: "m", value: "m" },
-                      { name: "mm", value: "mm" },
-                      { name: "inch", value: "inch" },
-                      { name: "ft", value: "ft" },
-                    ],
-                    data: calcFormData,
-                    name: "new_unit",
-                    setFunc: setCalcFormData,
-                  })}
+              {calcFormData.new_unit}
               </div>
             </Grid>
             <Grid item xs={4}>

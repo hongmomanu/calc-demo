@@ -120,6 +120,17 @@ export default function S15() {
     calcFormData.skirt,
     calcFormData.ck_tae,
     calcFormData.ef_opt,
+    calcFormData.vessel_type,
+    calcFormData.head_type,
+    calcFormData.ck_tae,
+    calcFormData.ck_uda1,
+    calcFormData.ck_uda2,
+    calcFormData.tdisch,
+    calcFormData.tw,
+    calcFormData.wa,
+    calcFormData.dt,
+    calcFormData.ic,
+    calcFormData.it,
   ]);
   return (
     <Grid container>
@@ -392,7 +403,12 @@ export default function S15() {
             </Grid>
             <Grid item xs={3}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-                {toFixed(calcFormData.wa)}
+              {NumberInput({
+                  disabled:!calcFormData.ck_uda1,
+                  data: calcFormData,
+                  name: "wa",
+                  setFunc: setCalcFormData,
+                })}
               </div>
             </Grid>
           </Grid>
@@ -521,7 +537,13 @@ export default function S15() {
             </Grid>
             <Grid item xs={3}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-                {toFixed(calcFormData.ic)}
+              {NumberInput({
+                  disabled:+calcFormData.ef_opt !==1,
+                  data: calcFormData,
+                  name: "ic",
+                  setFunc: setCalcFormData,
+                })}
+                
               </div>
             </Grid>
           </Grid>
@@ -549,7 +571,12 @@ export default function S15() {
             </Grid>
             <Grid item xs={3}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-                {toFixed(calcFormData.it)}
+              {NumberInput({
+                  disabled:+calcFormData.ef_opt !==1,
+                  data: calcFormData,
+                  name: "it",
+                  setFunc: setCalcFormData,
+                })}
               </div>
             </Grid>
           </Grid>
@@ -577,7 +604,12 @@ export default function S15() {
             </Grid>
             <Grid item xs={3}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-                {toFixed(calcFormData.dt)}
+              {NumberInput({
+                  disabled:+calcFormData.ef_opt !==1,
+                  data: calcFormData,
+                  name: "dt",
+                  setFunc: setCalcFormData,
+                })}
               </div>
             </Grid>
           </Grid>
@@ -769,7 +801,11 @@ export default function S15() {
             </Grid>
             <Grid item xs={3}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-                {toFixed(calcFormData.tw)}
+              {NumberInput({
+                  data: calcFormData,
+                  name: "tw",
+                  setFunc: setCalcFormData,
+                })}
               </div>
             </Grid>
           </Grid>
@@ -789,7 +825,12 @@ export default function S15() {
             </Grid>
             <Grid item xs={3}>
               <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {toFixed(calcFormData.tdisch)}
+              {NumberInput({
+                  data: calcFormData,
+                  name: "tdisch",
+                  setFunc: setCalcFormData,
+                })}
+              
               </div>
             </Grid>
           </Grid>

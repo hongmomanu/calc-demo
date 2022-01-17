@@ -72,12 +72,12 @@ export default function Liq() {
     flp: 0,
   });
 
-  const [operPos, setOperPos] = React.useState(0.4);
+  const [operPos, setOperPos] = React.useState(40);
   const [fccalc, setFccalc] = React.useState(0.4);
   React.useEffect(() => {
     calcSingleLine({
       valvetype: valveType,
-      xset: operPos,
+      xset: operPos/100,
       setFccalc,
       calcFormData,
       setCalcFormData,
@@ -110,13 +110,13 @@ export default function Liq() {
               setCalcOptionVal,
               valveFlowUnit,
               setValveFlowUnit,
-              operPos,
+              operPos:operPos,
               setOperPos,
             }}
           />
         </Grid>
         <Grid item xs={6}>
-          <Charts {...{ valveType, fccalc, operPos }} />
+          <Charts {...{ valveType, fccalc, operPos:operPos/100 }} />
           <Grid item xs={12}>
             <LoadingButton
               loading={isCalcing}
@@ -317,12 +317,12 @@ function ControlTable({
                 paddingTop: "0px",
                 textAlign: "center",
               },
-              max: 1,
+              max: 100,
               min: 0,
-              step: 0.1,
+              step: 1,
             }}
             value={operPos}
-          />
+          />%
         </div>
       </Grid>
       <Grid item xs={6}>
@@ -334,7 +334,7 @@ function ControlTable({
         <div className="fl f-a-c f-j-c h-30 b-1-gray">%</div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">{toFixed(calcFormData.fc)}</div>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">{toFixed(calcFormData.fc*100)}%</div>
       </Grid>
 
       <Grid item xs={12}>
@@ -528,6 +528,7 @@ function ControlTable({
             onChange={(e) => {
               setCalcFormData({ ...calcFormData, massfl: e.target.value });
             }}
+            disabled= {+calcOptionVal !==2}
             type="number"
             variant="filled"
             size="small"
@@ -568,6 +569,7 @@ function ControlTable({
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
         {NumberInput({
+            disabled:+calcOptionVal !== 3, 
             data: calcFormData,
             name: "volfl",
             setFunc: setCalcFormData,
@@ -750,7 +752,7 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray"></div>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">221.2</div>
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
@@ -804,8 +806,9 @@ function Charts({ valveType, fccalc, operPos }) {
       setChartData(data);
     });
   }, [fccalc, operPos]);
-
+  {console.log("chartData",chartData)}
   return (
+    
     <Box
       style={{ marginTop: "30px", width: "100%", height: "400px" }}
       sx={{ flexGrow: 1 }}

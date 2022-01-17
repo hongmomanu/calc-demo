@@ -6,6 +6,9 @@ import Grid from "@mui/material/Grid";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import FireExtinguisherIcon from "@mui/icons-material/FireExtinguisher";
+import Aod from "@mui/icons-material/Aod";
+import AlignHorizontalLeft from "@mui/icons-material/AlignHorizontalLeft";
+
 import CircularIndeterminate from "../components/Loading";
 
 const Fittins = React.lazy(() => import("./views/Pdrop_line/Fittings"))
@@ -56,8 +59,8 @@ function IconLabelTabs({ tabValue, handleChange }) {
       aria-label="icon label tabs example"
     >
         <Tab icon={<FireExtinguisherIcon />} label="Steel Pipes" />
-        <Tab icon={<FireExtinguisherIcon />} label="Fitting and values" />
-        <Tab icon={<FireExtinguisherIcon />} label="Cone-elbow-diaphr-coils" />
+        <Tab icon={<Aod />} label="Fitting and values" />
+        <Tab icon={<AlignHorizontalLeft />} label="Cone-elbow-diaphr-coils" />
       
       
       

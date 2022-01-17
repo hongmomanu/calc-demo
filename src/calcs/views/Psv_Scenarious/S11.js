@@ -21,7 +21,7 @@ const debCalcApi = debounce(calcApi);
 export default function S11() {
   const [calcFormData, setCalcFormData] = useState({
     pup: 25,
-    pouv: 0,
+    pouv: 5.41,
     pup_new_unit: "bara",
     pup_old_unit: "bara",
     t_unit:"C",
@@ -161,7 +161,11 @@ export default function S11() {
         </Grid>
         <Grid item xs={2}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {toFixed(calcFormData.t1)}
+          {NumberInput({
+              data: calcFormData,
+              name: "t1",
+              setFunc: setCalcFormData,
+          })}
           </div>
         </Grid>
       </Grid>
@@ -290,7 +294,11 @@ export default function S11() {
         </Grid>
         <Grid item xs={2}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {toFixed(calcFormData.d)}
+          {NumberInput({
+              data: calcFormData,
+              name: "d",
+              setFunc: setCalcFormData,
+            })}
           </div>
         </Grid>
       </Grid>   
@@ -327,7 +335,11 @@ export default function S11() {
         </Grid>
         <Grid item xs={2}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {toFixed(calcFormData.n)}
+          {NumberInput({
+              data: calcFormData,
+              name: "n",
+              setFunc: setCalcFormData,
+          })}
           </div>
         </Grid>
       </Grid>  

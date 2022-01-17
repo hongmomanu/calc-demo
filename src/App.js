@@ -17,6 +17,9 @@ import MailIcon from "@mui/icons-material/Mail";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
+import AirplaneTicket from "@mui/icons-material/AirplaneTicket";
+import Adjust from "@mui/icons-material/Adjust";
+import Airplay from "@mui/icons-material/Airplay";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import Content from "./Content";
 import "./App.css";
@@ -33,18 +36,22 @@ const NavData = [
   {
     idx: 0,
     name: "Valves",
+    icon:<AirplaneTicket />,
   },
   {
     idx: 1,
     name: "Pdrop_pipe",
+    icon:<StarBorder />,
   },
   {
     idx: 2,
     name: "Pdrop_line",
+    icon:<Adjust/>
   },
   {
     idx: 3,
     name: "Psv_scenarious",
+    icon:<Airplay/>
   },
 ];
 
@@ -107,7 +114,7 @@ function App() {
                       sx={{ pl: 4 }}
                     >
                       <ListItemIcon>
-                        <StarBorder />
+                        {it.icon}
                       </ListItemIcon>
                       <ListItemText primary={it.name} />
                     </ListItemButton>

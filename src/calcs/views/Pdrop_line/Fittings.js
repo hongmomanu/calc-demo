@@ -45,29 +45,29 @@ function LocalCalcResult(formData) {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {formData[2]
+          {toFixed(formData[2]
             .map((it, ix) => {
               return it * formData[1][ix];
             })
-            .reduce((a, b) => a + b)}
+            .reduce((a, b) => a + b)) }
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {formData[3]
+          {toFixed(formData[3]
             .map((it, ix) => {
               return it * formData[1][ix];
             })
-            .reduce((a, b) => a + b)}
+            .reduce((a, b) => a + b)) }
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {formData[4]
+          {toFixed(formData[4]
             .map((it, ix) => {
               return it * formData[1][ix];
             })
-            .reduce((a, b) => a + b)}
+            .reduce((a, b) => a + b)) }
         </div>
       </Grid>
     </Grid>
@@ -475,7 +475,7 @@ export default function Fittings() {
         </Grid>
         <Grid item xs={3}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {Combox({
+            {/* {Combox({
               options: [
                 { name: "m", value: "m" },
                 { name: "mm", value: "mm" },
@@ -485,7 +485,8 @@ export default function Fittings() {
               data: calcFormData,
               name: "new_unit",
               setFunc: setCalcFormData,
-            })}
+            })} */}
+            {calcFormData.new_unit}
           </div>
         </Grid>
         <Grid item xs={3}>
@@ -507,7 +508,7 @@ export default function Fittings() {
           <div className="fl f-a-c f-j-c h-30 b-1-gray">-</div>
         </Grid>
         <Grid item xs={3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.kcv}</div>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.kcv) }</div>
         </Grid>
       </Grid>
 
@@ -561,11 +562,9 @@ export default function Fittings() {
         </Grid>
         <Grid item xs={3}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {NumberInput({
-              data: calcFormData,
-              name: "kcvm",
-              setFunc: setCalcFormData,
-            })}
+            
+
+            {toFixed(calcFormData.kcvm)}
           </div>
         </Grid>
       </Grid>
@@ -620,11 +619,8 @@ export default function Fittings() {
         </Grid>
         <Grid item xs={3}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {NumberInput({
-              data: calcFormData,
-              name: "kkv",
-              setFunc: setCalcFormData,
-            })}
+           
+            {toFixed(calcFormData.kkv)}
           </div>
         </Grid>
       </Grid>
@@ -679,11 +675,7 @@ export default function Fittings() {
         </Grid>
         <Grid item xs={3}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {NumberInput({
-              data: calcFormData,
-              name: "kkvf",
-              setFunc: setCalcFormData,
-            })}
+            {toFixed(calcFormData.kkvf)}
           </div>
         </Grid>
       </Grid>

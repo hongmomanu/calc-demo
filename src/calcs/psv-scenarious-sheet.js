@@ -11,14 +11,18 @@ import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import AdfScannerIcon from "@mui/icons-material/AdfScanner";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import AirIcon from "@mui/icons-material/Air";
 import CircularIndeterminate from "../components/Loading";
 
 const S9 = React.lazy(() => import("./views/Psv_Scenarious/S9"))
+const S9_LIQ_ISA = React.lazy(() => import("./views/Psv_Scenarious/S9_Liq_ISA"))
+const S9_VAP_ISA = React.lazy(() => import("./views/Psv_Scenarious/S9_Vap_ISA"))
 const S10 = React.lazy(() => import("./views/Psv_Scenarious/S10"))
 const S11 = React.lazy(() => import("./views/Psv_Scenarious/S11"))
 const S14 = React.lazy(() => import("./views/Psv_Scenarious/S14"))
 const S15 = React.lazy(() => import("./views/Psv_Scenarious/S15"))
 const Fire = React.lazy(() => import("./views/Psv_Scenarious/Fire"))
+const Disengagement = React.lazy(() => import("./views/Psv_Scenarious/Disengagement"))
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -67,6 +71,9 @@ function IconLabelTabs({ tabValue, handleChange }) {
       <Tab icon={<AccountBalanceWalletIcon />} label="S14" />
       <Tab icon={<AdfScannerIcon />} label="S15" />
       <Tab icon={<AddShoppingCartIcon />} label="Fire" />
+      <Tab icon={<AirIcon />} label="Disengagement" />
+      <Tab icon={<AirIcon />} label="S9_Liq_ISA" />
+      <Tab icon={<AirIcon />} label="S9_Vap_ISA" />
     </Tabs>
   );
 }
@@ -87,9 +94,19 @@ function TabContent({ tabValue }) {
 
     case 4:
       return <S15 />;  
-      
+
     case 5:
       return <Fire />;  
+      
+    case 6:
+      return <Disengagement />;  
+
+    case 7:
+      return <S9_LIQ_ISA />; 
+
+    case 8:
+      return <S9_VAP_ISA />; 
+
 
     default:
       return "未完待续";

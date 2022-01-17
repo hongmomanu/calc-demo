@@ -83,12 +83,12 @@ export default function Vap() {
     y:.978,
   });
 
-  const [operPos, setOperPos] = React.useState(1);
+  const [operPos, setOperPos] = React.useState(100);
   const [fccalc, setFccalc] = React.useState(0.4);
   React.useEffect(() => {
     calcSingleLine({
       valvetype: valveType,
-      xset: operPos,
+      xset: operPos/100,
       setFccalc,
       calcFormData,
       setCalcFormData,
@@ -129,7 +129,7 @@ export default function Vap() {
           />
         </Grid>
         <Grid item xs={6}>
-          <Charts {...{ valveType, fccalc, operPos }} />
+          <Charts {...{ valveType, fccalc, operPos:operPos/100 }} />
           <Grid item xs={12}>
             <LoadingButton
               loading={isCalcing}
@@ -303,6 +303,7 @@ function ControlTable({
       <Grid item xs={3}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
         {NumberInput({
+            disabled:Number(calcOptionVal) !==  1,
             data: calcFormData,
             name: "kv",
             setFunc: setCalcFormData,
@@ -333,12 +334,12 @@ function ControlTable({
                 paddingTop: "0px",
                 textAlign: "center",
               },
-              max: 1,
+              max: 100,
               min: 0,
-              step: 0.1,
+              step: 1,
             }}
             value={operPos}
-          />
+          />%
         </div>
       </Grid>
       <Grid item xs={6}>
@@ -350,7 +351,7 @@ function ControlTable({
         <div className="fl f-a-c f-j-c h-30 b-1-gray">%</div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcFormData.fc}</div>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">{toFixed(calcFormData.fc*100)}%</div>
       </Grid>
 
       <Grid item xs={12}>
@@ -660,6 +661,7 @@ function ControlTable({
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
         {NumberInput({
+            disabled:Number(calcOptionVal) !== 2,
             data: calcFormData,
             name: "massfl",
             setFunc: setCalcFormData,
@@ -690,7 +692,14 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">{toFixed(calcFormData.volfl)}</div>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">
+          {NumberInput({
+            disabled: Number(calcOptionVal) !==3,
+            data: calcFormData,
+            name: "volfl",
+            setFunc: setCalcFormData,
+          })}
+          </div>
       </Grid>
 
       <Grid item xs={6}>
@@ -715,7 +724,14 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">{toFixed(calcFormData.stdvolfl)}</div>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">
+        {NumberInput({
+            disabled: Number(calcOptionVal) !==4,
+            data: calcFormData,
+            name: "stdvolfl",
+            setFunc: setCalcFormData,
+          })}
+          </div>
       </Grid>
       
       

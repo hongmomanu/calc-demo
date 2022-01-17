@@ -52,6 +52,7 @@ export default function S10() {
     calcFormData.t_new_unit,
     calcFormData.mv_unit,
     calcFormData.sc_unit,
+    calcFormData.t_unit
   ]);
   return (
     <Grid container>
