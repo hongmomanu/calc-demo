@@ -4,6 +4,8 @@ const ValvesSheet = React.lazy(() => import("./calcs/valves-api"));
 const PdropPipeSheet = React.lazy(() => import("./calcs/pdrop-pipe-sheet"));
 const PdropLineSheet = React.lazy(() => import("./calcs/pdrop-line-sheet"));
 const PsvScenariousSheet = React.lazy(() => import("./calcs/psv-scenarious-sheet"));
+const PsvIsoSheet = React.lazy(() => import("./calcs/psv-iso-sheet"))
+const PsvApiNew = React.lazy(() => import("./calcs/psv-api-new"))
 function Content({ navIndex }) {
   switch (navIndex) {
     case 0:
@@ -30,6 +32,18 @@ function Content({ navIndex }) {
                 <PsvScenariousSheet />
             </Suspense>
             );       
+    case 4:
+        return (
+            <Suspense fallback={<CircularIndeterminate />}>
+                <PsvIsoSheet />
+            </Suspense>
+            );
+    case 5:
+        return (
+          <Suspense fallback={<CircularIndeterminate />}>
+                <PsvApiNew />
+            </Suspense>
+        );               
     default:
       return <div>12</div>;
   }

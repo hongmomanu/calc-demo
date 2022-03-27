@@ -20,6 +20,8 @@ import StarBorder from "@mui/icons-material/StarBorder";
 import AirplaneTicket from "@mui/icons-material/AirplaneTicket";
 import Adjust from "@mui/icons-material/Adjust";
 import Airplay from "@mui/icons-material/Airplay";
+import AutofpsSelect from "@mui/icons-material/AutofpsSelect"
+import AirportShuttle from "@mui/icons-material/AirportShuttle"
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import Content from "./Content";
 import "./App.css";
@@ -52,6 +54,16 @@ const NavData = [
     idx: 3,
     name: "Psv_scenarious",
     icon:<Airplay/>
+  },
+  {
+    idx: 4,
+    name: "Psv_iso",
+    icon:<AutofpsSelect/>
+  },
+  {
+    idx: 5,
+    name: "Psv_Api_New",
+    icon:<AirportShuttle/>
   },
 ];
 

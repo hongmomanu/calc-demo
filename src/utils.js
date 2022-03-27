@@ -9,7 +9,7 @@ export function toFixed(val,size=4){
   return val?((Math.sign(val)===-1?'-':'')+ `${val}`.replace(reg, '$1')):val
 }
 
-export function debounce (func, space = 1000) {
+export function debounce (func, space = 200) {
 
     let timeout = null;
     return function (...params) {
