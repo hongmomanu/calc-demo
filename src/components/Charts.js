@@ -65,12 +65,14 @@ export function Charts({
             dataKey={layout === "horizontal" ? "name" : undefined}
             domain={xDomain}
             type="number"
+            // scale="threshold"
           />
           <YAxis
             tickCount={yTickCount}
             domain={yDomain}
             reversed={yReversed}
             type="number"
+            
             dataKey={layout === "vertical" ? "name" : undefined}
           />
           <Legend />

@@ -1,5 +1,5 @@
 import { Button, Grid, InputAdornment } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckedBox } from "../../../components/CheckedBox";
 import { Combox } from "../../../components/Combox";
 import { NumberInput } from "../../../components/NumberInput";
@@ -8,47 +8,55 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import { httpPost } from "../../../http";
 import { debounce, toFixed } from "../../../utils";
+import { Charts } from "../../../components/Charts";
 
-function makePromise(idx,calcFormData,setCalcFormData){
-    return new Promise((resolve, reject) =>{
-        let str = ''
-        if(idx>0){
-            str = `$${idx}`
-        }
-        const formData = {...calcFormData}
-        for(let p in formData){
-            if(formData.hasOwnProperty(`${p}${str}`)){    
-             formData[p] = formData[`${p}${str}`]
-            }
-        }
-        resolve(httpPost({ url: "/api/gasliq/apgl_calculate", params: formData, nofilter:true })
-         .then((rep) => {
-         for(let prop in rep){
-             rep[`${prop}${str}`] = rep[prop]
-             if(idx>0) delete rep[prop]
-         }  
-         return rep
-         }))
-    })
+function makePromise(idx, calcFormData, setCalcFormData) {
+  return new Promise((resolve, reject) => {
+    let str = "";
+    if (idx > 0) {
+      str = `$${idx}`;
+    }
+    const formData = { ...calcFormData };
+    for (let p in formData) {
+      if (formData.hasOwnProperty(`${p}${str}`)) {
+        formData[p] = formData[`${p}${str}`];
+      }
+    }
+    if(formData[`pres${str}`]){
+      resolve(
+        httpPost({
+          url: "/api/gasliq/apgl_calculate",
+          params: formData,
+          nofilter: true,
+        }).then((rep) => {
+          for (let prop in rep) {
+            rep[`${prop}${str}`] = rep[prop];
+            if (idx > 0) delete rep[prop];
+          }
+          return rep;
+        })
+      );
+    }else{
+      resolve({})
+    }
     
+  });
 }
 function calcApi({ setCalcFormData, calcFormData, setIsCalcing }) {
   setIsCalcing(true);
-  const p0 = makePromise(0,calcFormData,setCalcFormData);
-  const p1 = makePromise(1,calcFormData,setCalcFormData);
-  const p2 = makePromise(2,calcFormData,setCalcFormData);
-  const p3 = makePromise(3,calcFormData,setCalcFormData);
+  const p0 = makePromise(0, calcFormData, setCalcFormData);
+  const p1 = makePromise(1, calcFormData, setCalcFormData);
+  const p2 = makePromise(2, calcFormData, setCalcFormData);
+  const p3 = makePromise(3, calcFormData, setCalcFormData);
 
-  
-  Promise.all([p0,p1,p2,p3]).then(([rep0,rep1,rep2,rep3])=>{
-    console.log('rep0,rep1,rep2,rep3',rep0,rep1,rep2,rep3)
-    setCalcFormData({ ...calcFormData, ...rep0 ,...rep1,...rep2,...rep3});
-    setIsCalcing(false);
-  }).finally(()=>{
-    setIsCalcing(false);
-  })
-  
-  
+  Promise.all([p0, p1, p2, p3])
+    .then(([rep0, rep1, rep2, rep3]) => {
+      setCalcFormData({ ...calcFormData, ...rep0, ...rep1, ...rep2, ...rep3 });
+      setIsCalcing(false);
+    })
+    .finally(() => {
+      setIsCalcing(false);
+    });
 }
 const debCalcApi = debounce(calcApi);
 
@@ -231,7 +239,7 @@ export default function GasLiq() {
      * Results
      * Critical pressure
      * apgl_pcrit
-     */ regime: '',
+     */ regime: "",
     /**
      * Results
      * Regime
@@ -246,7 +254,7 @@ export default function GasLiq() {
      * Results
      * Calculated orifice area
      * apgl_sec
-     */ psvsel: '',
+     */ psvsel: "",
     /**
      * Selected standard API 526 orifice
      * apgl_psvsel
@@ -264,6 +272,59 @@ export default function GasLiq() {
      * apgl_deb_calc
      */
   });
+  const [chartData, setChartData] = useState({});
+  const [chartData$1, setChartData$1] = useState({});
+  const [chartData$2, setChartData$2] = useState({});
+  const [chartData$3, setChartData$3] = useState({});
+
+  useEffect(() => {
+    if (calcFormData.omega) {
+      httpPost({
+        url: "/api/gasliq/apgl_atlas",
+        params: { omega: calcFormData.omega },
+      }).then((rep) => {
+        setChartData(rep);
+      });
+    }
+
+  }, [calcFormData.omega]);
+  useEffect(()=>{
+    if (calcFormData.omega$1) {
+      httpPost({
+        url: "/api/gasliq/apgl_atlas",
+        params: { omega: calcFormData.omega$1 },
+      }).then((rep) => {
+        setChartData$1(rep);
+      });
+    }
+  },[calcFormData.omega$1])
+  useEffect(()=>{
+    if (calcFormData.omega$2) {
+      httpPost({
+        url: "/api/gasliq/apgl_atlas",
+        params: { omega: calcFormData.omega$2 },
+      }).then((rep) => {
+        setChartData$2(rep);
+      });
+    }
+  },[calcFormData.omega$2])
+  useEffect(()=>{
+    if (calcFormData.omega$3) {
+      httpPost({
+        url: "/api/gasliq/apgl_atlas",
+        params: { omega: calcFormData.omega$3 },
+      }).then((rep) => {
+        setChartData$3(rep);
+      });
+    }
+  },[calcFormData.omega$3])
+  useEffect(() => {
+    debCalcApi({
+      calcFormData,
+      setIsCalcing,
+      setCalcFormData,
+    })
+  },[])
   return (
     <Grid container>
       <Grid item xs={7}>
@@ -398,7 +459,7 @@ export default function GasLiq() {
             data={calcFormData}
             name="acc"
             setFunc={setCalcFormData}
-            InputProps={{ endAdornment: "%" }}
+            // InputProps={{ endAdornment: "%" }}
           />
         </div>
       </Grid>
@@ -409,7 +470,7 @@ export default function GasLiq() {
             data={calcFormData}
             name="acc$1"
             setFunc={setCalcFormData}
-            InputProps={{ endAdornment: "%" }}
+            // InputProps={{ endAdornment: "%" }}
           />
         </div>
       </Grid>
@@ -420,7 +481,7 @@ export default function GasLiq() {
             data={calcFormData}
             name="acc$2"
             setFunc={setCalcFormData}
-            InputProps={{ endAdornment: "%" }}
+            // InputProps={{ endAdornment: "%" }}
           />
         </div>
       </Grid>
@@ -430,7 +491,7 @@ export default function GasLiq() {
             data={calcFormData}
             name="acc$3"
             setFunc={setCalcFormData}
-            InputProps={{ endAdornment: "%" }}
+            // InputProps={{ endAdornment: "%" }}
           />
         </div>
       </Grid>
@@ -448,19 +509,27 @@ export default function GasLiq() {
       </Grid>
 
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.p1)}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {toFixed(calcFormData.p1)}
+        </div>
       </Grid>
 
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.p1$1)}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {toFixed(calcFormData.p1$1)}
+        </div>
       </Grid>
 
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.p1$2)}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {toFixed(calcFormData.p1$2)}
+        </div>
       </Grid>
 
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.p1$3)}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {toFixed(calcFormData.p1$3)}
+        </div>
       </Grid>
 
       <Grid item xs={4.5}>
@@ -879,7 +948,9 @@ export default function GasLiq() {
       </Grid>
 
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.omega)}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {toFixed(calcFormData.omega)}
+        </div>
       </Grid>
 
       <Grid item xs={1.5}>
@@ -1416,7 +1487,9 @@ export default function GasLiq() {
         </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{toFixed(calcFormData.pcrit)}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixed(calcFormData.pcrit)}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
@@ -1468,16 +1541,24 @@ export default function GasLiq() {
         <div className="fl f-a-c h-30 f-j-c b-1-gray">-</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{toFixed(calcFormData.ggc)}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixed(calcFormData.ggc)}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{toFixed(calcFormData.ggc$1)}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixed(calcFormData.ggc$1)}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{toFixed(calcFormData.ggc$2)}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixed(calcFormData.ggc$2)}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{toFixed(calcFormData.ggc$3)}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixed(calcFormData.ggc$3)}
+        </div>
       </Grid>
 
       <Grid item xs={4.5}>
@@ -1499,16 +1580,24 @@ export default function GasLiq() {
         </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{toFixed(calcFormData.sec)}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixed(calcFormData.sec)}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{toFixed(calcFormData.sec$1)}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixed(calcFormData.sec$1)}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{toFixed(calcFormData.sec$2)}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixed(calcFormData.sec$2)}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{toFixed(calcFormData.sec$3)}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixed(calcFormData.sec$3)}
+        </div>
       </Grid>
 
       <Grid item xs={12}>
@@ -1585,7 +1674,9 @@ export default function GasLiq() {
         <div className="fl f-a-c h-30 f-j-c b-1-gray">-</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{toFixed(calcFormData.npsv)}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixed(calcFormData.npsv)}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
@@ -1630,6 +1721,18 @@ export default function GasLiq() {
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
           {toFixed(calcFormData.deb_calc$3)}
         </div>
+      </Grid>
+
+      <Grid item xs={7}>
+        <Charts
+          xData={(chartData.omegas || []).slice(0,51)}
+          //   xTickCount={7}
+          //   yDomain={[0,70]}
+          //   showDot={<CustomizedDot />}
+          //   xDomain={[0,3]}
+          yDatas={[chartData.ncs || [], chartData$1.ncs||[], chartData$2.ncs||[], chartData$3.ncs||[]]}
+          columns={["case1","case2","case3","case4"]}
+        />
       </Grid>
     </Grid>
   );
