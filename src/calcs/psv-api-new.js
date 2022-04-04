@@ -1,4 +1,4 @@
-import React, { useState, Suspense} from "react";
+import React, { useState, Suspense } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -11,6 +11,8 @@ import FireExtinguisherIcon from "@mui/icons-material/FireExtinguisher";
 import Animation from "@mui/icons-material/Animation";
 import Architecture from "@mui/icons-material/Architecture";
 import CircularIndeterminate from "../components/Loading";
+import { NumberInput } from "../components/NumberInput";
+import { PatmContext } from "./context";
 const GasLiq = React.lazy(() => import("./views/psv_api_new/gas_liq"));
 const Gas = React.lazy(() => import("./views/psv_api_new/gas"));
 const Liq = React.lazy(() => import("./views/psv_api_new/liq"))
@@ -25,35 +27,45 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function PdropPipeSheet() {
   const [tabValue, setTabValue] = useState(0);
+  const [calcFormData, setCalcFormData] = useState({
+    bar: 1.01325,
+    psi: 14.69595,
+  })
+  console.log("patm calcFormData",calcFormData)
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
   };
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={1}>
-        <Grid item xs={24}>
-          <Item>
-            <IconLabelTabs tabValue={tabValue} handleChange={handleChange} />
-          </Item>
+    <PatmContext.Provider value={{...calcFormData}}>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={1}>
+          <Grid item xs={24}>
+            <Item>
+              <IconLabelTabs tabValue={tabValue} handleChange={handleChange} calcFormData={calcFormData} setCalcFormData={setCalcFormData} />
+            </Item>
+          </Grid>
+          <Grid item xs={24}>
+            <Item>
+              <Suspense fallback={<CircularIndeterminate />}>
+                <TabContent tabValue={tabValue} />
+              </Suspense>
+
+            </Item>
+          </Grid>
         </Grid>
-        <Grid item xs={24}>
-          <Item>
-          <Suspense fallback={<CircularIndeterminate />}>
-             <TabContent tabValue={tabValue} />
-         </Suspense>  
-            
-          </Item>
-        </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </PatmContext.Provider>
+
   );
 }
 export default PdropPipeSheet;
 
-function IconLabelTabs({ tabValue, handleChange }) {
+function IconLabelTabs({ tabValue, handleChange, calcFormData, setCalcFormData }) {
   return (
-    <Tabs
+    <Grid container direction={"row"}>
+      <Grid item xs={6}>
+      <Tabs
       value={tabValue}
       onChange={handleChange}
       aria-label="icon label tabs example"
@@ -62,6 +74,55 @@ function IconLabelTabs({ tabValue, handleChange }) {
       <Tab icon={<LocalGasStationIcon />} label="gas" />
       <Tab icon={<FireExtinguisherIcon />} label="liq" />
     </Tabs>
+      </Grid>
+      <Grid item xs={6}>
+      <Grid container xs={12}>
+        <Grid container xs={3}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray" style={{ height: "60px", width: '100%' }}>
+            Patm
+          </div>
+        </Grid>
+        <Grid container xs={9} direction="column">
+          <Grid container direction="row">
+            <Grid item xs={6}>
+              <div className="fl f-a-c f-j-c h-30 b-1-gray">
+                bar
+              </div>
+            </Grid>
+            <Grid item xs={6}>
+              <div className="fl f-a-c f-j-c h-30 b-1-gray">
+                psi
+              </div>
+            </Grid>
+
+            <Grid item xs={6}>
+              <div className="fl f-a-c f-j-c h-30 b-1-gray">
+                <NumberInput
+                  data={calcFormData}
+                  name="bar"
+                  setFunc={setCalcFormData}
+                />
+              </div>
+            </Grid>
+            <Grid item xs={6}>
+              <div className="fl f-a-c f-j-c h-30 b-1-gray">
+                <NumberInput
+                  data={calcFormData}
+                  name="psi"
+                  setFunc={setCalcFormData}
+                />
+              </div>
+            </Grid>
+
+          </Grid>
+
+        </Grid>
+
+      </Grid>
+      </Grid>
+
+    </Grid>
+    
   );
 }
 
@@ -72,7 +133,7 @@ function TabContent({ tabValue }) {
     case 1:
       return <Gas />;
     case 2:
-      return <Liq />;         
+      return <Liq />;
     default:
       return "未完待续";
   }

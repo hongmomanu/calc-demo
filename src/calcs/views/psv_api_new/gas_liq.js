@@ -1,5 +1,5 @@
 import { Button, Grid, InputAdornment } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CheckedBox } from "../../../components/CheckedBox";
 import { Combox } from "../../../components/Combox";
 import { NumberInput } from "../../../components/NumberInput";
@@ -9,6 +9,7 @@ import CalculateIcon from "@mui/icons-material/Calculate";
 import { httpPost } from "../../../http";
 import { debounce, toFixed } from "../../../utils";
 import { Charts } from "../../../components/Charts";
+import { PatmContext } from "../../context";
 
 function makePromise(idx, calcFormData, setCalcFormData) {
   return new Promise((resolve, reject) => {
@@ -62,6 +63,14 @@ const debCalcApi = debounce(calcApi);
 
 export default function GasLiq() {
   const [isCalcing, setIsCalcing] = useState(false);
+  const patmContext = useContext(PatmContext);  
+  console.log('patmContext',patmContext)
+
+  useEffect(()=>{
+    calcFormData.patm = patmContext.bar
+    calcFormData.patmpsi = patmContext.psi
+    setCalcFormData({ ...calcFormData})
+  },[patmContext])
 
   const [calcFormData, setCalcFormData] = useState({
     pres_unit: "barg",
@@ -205,11 +214,11 @@ export default function GasLiq() {
      * api526 = false必填
      * Selected orifice area
      * apgl_secsel
-     */ patm: 1.01325,
+     */ patm: patmContext.bar,
     /**
      * sheet Doc
      * Patm bar
-     */ patmpsi: 14.6959487755135,
+     */ patmpsi: patmContext.psi,
     /**
      * sheet Doc
      * Patm psi
