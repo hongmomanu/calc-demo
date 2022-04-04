@@ -760,16 +760,36 @@ export default function GasLiq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">-</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray"></div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+            <NumberInput data={calcFormData}
+            disabled={!calcFormData.rupturedisc}
+            name="kc"
+            setFunc={setCalcFormData} />
+        </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray"></div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+        <NumberInput data={calcFormData}
+            disabled={!calcFormData.rupturedisc$1}
+            name="kc$1"
+            setFunc={setCalcFormData} />
+        </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray"></div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+        <NumberInput data={calcFormData}
+            disabled={!calcFormData.rupturedisc$2}
+            name="kc$2"
+            setFunc={setCalcFormData} />
+        </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray"></div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+        <NumberInput data={calcFormData}
+            disabled={!calcFormData.rupturedisc$3}
+            name="kc$3"
+            setFunc={setCalcFormData} />
+        </div>
       </Grid>
 
       <Grid item xs={6}></Grid>
@@ -854,6 +874,7 @@ export default function GasLiq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
+            disabled={!calcFormData.kbSpecif && !calcFormData.bellow}
             name="kb"
             setFunc={setCalcFormData}
           />
@@ -863,6 +884,7 @@ export default function GasLiq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
+            disabled={!calcFormData.kbSpecif$1 && !calcFormData.bellow$1}
             name="kb$1"
             setFunc={setCalcFormData}
           />
@@ -872,6 +894,7 @@ export default function GasLiq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
+            disabled={!calcFormData.kbSpecif$2 && !calcFormData.bellow$2}
             name="kb$2"
             setFunc={setCalcFormData}
           />
@@ -881,6 +904,7 @@ export default function GasLiq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
+            disabled={!calcFormData.kbSpecif$3 && !calcFormData.bellow$3}
             name="kb$3"
             setFunc={setCalcFormData}
           />
