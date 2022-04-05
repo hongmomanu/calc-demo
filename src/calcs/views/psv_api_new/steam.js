@@ -4,16 +4,7 @@ import { httpPost } from "../../../http";
 import { debounce, toFixed } from "../../../utils";
 import { PatmContext } from "../../context";
 import CalculateIcon from "@mui/icons-material/Calculate";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  TextField,
-} from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import { NumberInput } from "../../../components/NumberInput";
 import { CheckedBox } from "../../../components/CheckedBox";
 import { Combox } from "../../../components/Combox";
@@ -33,7 +24,7 @@ function makePromise(idx, calcFormData, setCalcFormData) {
     if (formData[`pres${str}`]) {
       resolve(
         httpPost({
-          url: "/api/liq/apl_calculate",
+          url: "/api/steam/aps_calculate",
           params: formData,
           nofilter: true,
         }).then((rep) => {
@@ -48,13 +39,6 @@ function makePromise(idx, calcFormData, setCalcFormData) {
       resolve({});
     }
   });
-}
-function getAplWater(params){
-    return httpPost({
-        url: "/api/liq/apl_water",
-        params,
-        nofilter: true,
-      })
 }
 function calcApi({ setCalcFormData, calcFormData, setIsCalcing }) {
   setIsCalcing(true);
@@ -73,7 +57,7 @@ function calcApi({ setCalcFormData, calcFormData, setIsCalcing }) {
     });
 }
 const debCalcApi = debounce(calcApi);
-export default function Liq() {
+export default function Steam() {
   const patmContext = useContext(PatmContext);
   const [isCalcing, setIsCalcing] = useState(false);
   useEffect(() => {
@@ -90,99 +74,81 @@ export default function Liq() {
   }, []);
 
   const [calcFormData, setCalcFormData] = useState({
-    pres: 4,
+    pres: 28,
     /**
      * Set pressure of the PSV (Pset)
-     * apl_pres
+     * aps_pres
      */
-    pres_unit: "barg",
+    pres_unit: "psig",
     /**
      * Set pressure of the PSV (Pset)
-     * apl_pres
+     * aps_pres
      */
     acc: 0.1,
     /**
      * Overpressure (10% by default)
-     * apg_acc,可为空，默认0.1
+     * aps_acc,可为空，默认0.1
+     */
+    dtsat: 0,
+    /**
+     * DT Superheating
+     * aps_dtsat
+     */
+    temp_unit: "C",
+    /**
+     * DT Superheating
+     * aps_dtsat
      */
     contpr: 0,
     /**
-     * Back-pressure (P2)
-     * apl_contpr
+     * Back-pressure
+     * aps_contpr
      */
-    kd: 0.65,
+    kd: 0.975,
     /**
-     * Kd: discharge coefficient (0.65 by default)
-     * apl_kd,可为空，默认0.65
+     * Kd: discharge coefficient (0.975 by default)
+     * aps_kd,可为空，默认0.975
      */
     rupturedisc: false,
+
     /**
      * rupt.disc,根据case
      */
     kc: 0.9,
     /**
      * Kc: PSV-RD correction (0.9 by default)
-     * apl_kc,可为空，默认0.9
+     * aps_kc,可为空，默认0.9
      */
     bellow: false,
     /**
      * Bellows,根据case
      */
-    kwSpecif: false,
+    kbSpecif: false,
     /**
-     * Kw specif,根据case
+     * Kb specif,根据case
      */
-    kw: 0,
+    kb: 0,
     /**
-     * Kw: corr. factor due to backpressure
-     * apl_kw
-     * 当bellow=true，kwSpecif=true必填
-     * 否则就算填了，也会设为0
+     * Kb: correction factor due to back press.
+     * apg_kb,
+     * bellow =true;kbSpecif=true作为参数,not null
      */
-    certified: true,
+    deb: 10000,
     /**
-     * cap.cet
-     */
-    debl: 28800,
-    /**
-     * Liquid characteristics
+     * Steam characteristics
      * Flowrate (m)
-     * apl_deb
+     * aps_deb
      */
-    massfl_unit: "kg/h",
+    massfl_unit: "lb/h",
     /**
-     * Liquid characteristics
      * Flowrate (m)
-     * apl_deb
+     * aps_deb
      */
-    temp_unit: "C",
-    /**
-     * Relieving temperature
-     * apg_temp
-     */
-    rhol: 1200,
-    /**
-     * Liquid characteristics
-     * Density (r)
-     * apl_rhol
-     */
-    rho_unit: "kg/m3",
-    /**
-     * Liquid characteristics
-     * Density (r)
-     * apl_rhol
-     */
-    viscl: 0.3,
-    /**
-     * Liquid characteristics
-     * Viscosity
-     * apl_viscl
-     */
-    area_unit: "cm2",
+    area_unit: "in2",
     /**
      * Results
      * Calculated orifice area
-     * apl_area
+     * aps_sec
      */
     api526: true,
     /**
@@ -191,7 +157,7 @@ export default function Liq() {
     secsel: 0,
     /**
      * Selected orifice area
-     * apg_secsel
+     * aps_secsel
      * 当api526=false，必填
      */
     patm: patmContext.bar,
@@ -200,12 +166,6 @@ export default function Liq() {
      * Patm bar
      */
   });
-  const [open, setOpen] = useState(false);
-  const [paramForm, setParamForm] = useState({
-    case: "0",
-    pressure: 0,
-    temp: 0,
-  });
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -213,78 +173,12 @@ export default function Liq() {
           Sizing of pressure safety valves for liquid
         </div>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={8}>
         <div className="fl f-a-c h-30">
           API standard RP-520 9th 2014 / 10th 2020
         </div>
       </Grid>
       <Grid item xs={4}>
-        <Button size="large" onClick={() => setOpen(true)} variant="contained">
-          Set Water Properties
-        </Button>
-        <Dialog open={open} onClose={() => setOpen(false)}>
-          <DialogTitle>Water properties</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Thermodynamic state by Case</DialogContentText>
-            {Combox({
-              size:'large',
-              options: [
-                { name: "Case1", value: "0" },
-                { name: "Case2", value: "1" },
-                { name: "Case3", value: "2" },
-                { name: "Case4", value: "3" },
-              ],
-              data: paramForm,
-              name: "case",
-              setFunc: setParamForm,
-            })}
-            <NumberInput
-              data={paramForm}
-              label={`Pressure (${calcFormData.pres_unit})`}
-              name="pressure"
-              setFunc={setParamForm}
-            />
-            <NumberInput
-              data={paramForm}
-              label={`Temperature (${calcFormData.temp_unit})`}
-              name="temp"
-              setFunc={setParamForm}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                setOpen(false);
-                getAplWater({
-                    p:Number(paramForm.pressure),
-                    t:Number(paramForm.temp),
-                    pres_unit:calcFormData.pres_unit,
-                    temp_unit:calcFormData.temp_unit,
-                    rho_unit:calcFormData.rho_unit
-                }).then((rep) => {
-                    if(paramForm.case === '0'){
-                        setCalcFormData({...calcFormData,...rep})
-                    }else{
-                        const data = {}
-                        for(let key in rep){
-                            if(rep.hasOwnProperty(key)){
-                                data[`${key}$${paramForm.case}`] = rep[key]
-                            }
-                        }
-                        setCalcFormData({...calcFormData,...data})
-                    }
-                    
-                    console.log('getAplWater rep',rep)
-                  })
-              }}
-            >
-              Ok
-            </Button>
-            <Button onClick={() => setOpen(false)}>Cancel</Button>
-          </DialogActions>
-        </Dialog>
-      </Grid>
-      <Grid item xs={2}>
         <LoadingButton
           loading={isCalcing}
           loadingPosition="start"
@@ -316,7 +210,6 @@ export default function Liq() {
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">{`Patm=${patmContext.bar}(bar)/${patmContext.psi}(psi)`}</div>
       </Grid>
-
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">Case1</div>
       </Grid>
@@ -605,7 +498,7 @@ export default function Liq() {
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">
-          Kd: discharge coefficient (0.85 by default)
+          Kd: discharge coefficient (0.975 by default)
         </div>
       </Grid>
       <Grid item xs={1.5}>
@@ -804,7 +697,7 @@ export default function Liq() {
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">
-          Kw: corr. factor due to backpressure
+        Kb: correction factor due to back press.
         </div>
       </Grid>
       <Grid item xs={1.5}>
@@ -814,8 +707,8 @@ export default function Liq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            disabled={!calcFormData.kwSpecif && !calcFormData.bellow}
-            name="kw"
+            disabled={!calcFormData.kbSpecif && !calcFormData.bellow}
+            name="kb"
             setFunc={setCalcFormData}
           />
         </div>
@@ -824,8 +717,8 @@ export default function Liq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            disabled={!calcFormData.kwSpecif$1 && !calcFormData.bellow$1}
-            name="kw$1"
+            disabled={!calcFormData.kbSpecif$1 && !calcFormData.bellow$1}
+            name="kb$1"
             setFunc={setCalcFormData}
           />
         </div>
@@ -834,8 +727,8 @@ export default function Liq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            disabled={!calcFormData.kwSpecif$2 && !calcFormData.bellow$2}
-            name="kw$2"
+            disabled={!calcFormData.kbSpecif$2 && !calcFormData.bellow$2}
+            name="kb$2"
             setFunc={setCalcFormData}
           />
         </div>
@@ -844,8 +737,8 @@ export default function Liq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            disabled={!calcFormData.kwSpecif$3 && !calcFormData.bellow$3}
-            name="kw$3"
+            disabled={!calcFormData.kbSpecif$3 && !calcFormData.bellow$3}
+            name="kb$3"
             setFunc={setCalcFormData}
           />
         </div>
@@ -853,62 +746,50 @@ export default function Liq() {
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">
-          Kv: viscosity correction factor
+         KSH: correction factor due to superheating
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">-</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.kv}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.ksh)}</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.kv$1}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.ksh$1)}</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.kv$2}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.ksh$2)}</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.kv$3}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.ksh$3)}</div>
       </Grid>
 
-      <Grid item xs={6}></Grid>
+      <Grid item xs={4.5}>
+        <div className="fl f-a-c h-30 b-1-gray">
+        KN: correction factor for Napier equation
+        </div>
+      </Grid>
       <Grid item xs={1.5}>
-        <CheckedBox
-          data={calcFormData}
-          name={"certified"}
-          setFunc={setCalcFormData}
-          label="cap.cert"
-        />
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">-</div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.kn)}</div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.kn$1)}</div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.kn$2)}</div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.kn$3)}</div>
       </Grid>
 
-      <Grid item xs={1.5}>
-        <CheckedBox
-          data={calcFormData}
-          name={"certified$1"}
-          setFunc={setCalcFormData}
-          label="cap.cert"
-        />
-      </Grid>
-      <Grid item xs={1.5}>
-        <CheckedBox
-          data={calcFormData}
-          name={"certified$2"}
-          setFunc={setCalcFormData}
-          label="cap.cert"
-        />
-      </Grid>
-      <Grid item xs={1.5}>
-        <CheckedBox
-          data={calcFormData}
-          name={"certified$3"}
-          setFunc={setCalcFormData}
-          label="cap.cert"
-        />
-      </Grid>
+     
 
       <Grid item xs={12}>
-        <div className="fl f-a-c  h-30 ">Liq characteristics</div>
+        <div className="fl f-a-c  h-30 ">Steam characteristics</div>
       </Grid>
 
       <Grid item xs={4.5}>
@@ -934,7 +815,7 @@ export default function Liq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            name="debl"
+            name="deb"
             setFunc={setCalcFormData}
           />
         </div>
@@ -943,7 +824,7 @@ export default function Liq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            name="debl$1"
+            name="deb$1"
             setFunc={setCalcFormData}
           />
         </div>
@@ -952,7 +833,7 @@ export default function Liq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            name="debl$2"
+            name="deb$2"
             setFunc={setCalcFormData}
           />
         </div>
@@ -961,81 +842,71 @@ export default function Liq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            name="debl$3"
-            setFunc={setCalcFormData}
-          />
-        </div>
-      </Grid>
-
-      <Grid item xs={4.5}>
-        <div className="fl f-a-c h-30 b-1-gray">Density (r)</div>
-      </Grid>
-      <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {Combox({
-            options: [
-              { name: "kg/m3", value: "kg/m3" },
-              { name: "kg/l", value: "kg/l" },
-              { name: "lb/gal", value: "lb/gal" },
-              { name: "lb/ft3", value: "lb/ft3" },
-            ],
-            data: calcFormData,
-            name: "rho_unit",
-            setFunc: setCalcFormData,
-          })}
-        </div>
-      </Grid>
-
-      <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <NumberInput
-            data={calcFormData}
-            name="rhol"
-            setFunc={setCalcFormData}
-          />
-        </div>
-      </Grid>
-
-      <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <NumberInput
-            data={calcFormData}
-            name="rhol$1"
-            setFunc={setCalcFormData}
-          />
-        </div>
-      </Grid>
-      <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <NumberInput
-            data={calcFormData}
-            name="rhol$2"
-            setFunc={setCalcFormData}
-          />
-        </div>
-      </Grid>
-      <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <NumberInput
-            data={calcFormData}
-            name="rhol$3"
+            name="deb$3"
             setFunc={setCalcFormData}
           />
         </div>
       </Grid>
 
       <Grid item xs={4.5}>
-        <div className="fl f-a-c h-30 b-1-gray">Viscosity</div>
+        <div className="fl f-a-c h-30 b-1-gray">k=Cp/Cv</div>
       </Grid>
+
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">mNs/m2</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">-</div>
       </Grid>
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            name="viscl"
+            name="kcp"
+            setFunc={setCalcFormData}
+          />
+        </div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <NumberInput
+            data={calcFormData}
+            name="kcp$1"
+            setFunc={setCalcFormData}
+          />
+        </div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <NumberInput
+            data={calcFormData}
+            name="kcp$2"
+            setFunc={setCalcFormData}
+          />
+        </div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <NumberInput
+            data={calcFormData}
+            name="kcp$3"
+            setFunc={setCalcFormData}
+          />
+        </div>
+      </Grid>
+
+      <Grid item xs={4.5}>
+        <div className="fl f-a-c h-30 b-1-gray">
+          Compressibility factor z=PV/RT
+        </div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">-</div>
+      </Grid>
+
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <NumberInput
+            data={calcFormData}
+            name="zcompr"
             setFunc={setCalcFormData}
           />
         </div>
@@ -1045,7 +916,7 @@ export default function Liq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            name="viscl$1"
+            name="zcompr$1"
             setFunc={setCalcFormData}
           />
         </div>
@@ -1054,7 +925,7 @@ export default function Liq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            name="viscl$2"
+            name="zcompr$2"
             setFunc={setCalcFormData}
           />
         </div>
@@ -1063,7 +934,7 @@ export default function Liq() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            name="viscl$3"
+            name="zcompr$3"
             setFunc={setCalcFormData}
           />
         </div>
@@ -1074,29 +945,31 @@ export default function Liq() {
       </Grid>
 
       <Grid item xs={4.5}>
-        <div className="fl f-a-c h-30 b-1-gray">Reynolds at orifice</div>
-      </Grid>
-      <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">-</div>
+        <div className="fl f-a-c h-30 b-1-gray">Critical pressure</div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.rel)}
+          {calcFormData.pres_unit}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.rel$1)}
+          {toFixed(calcFormData.pcrit)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.rel$2)}
+          {toFixed(calcFormData.pcrit$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.rel$3)}
+          {toFixed(calcFormData.pcrit$2)}
+        </div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixed(calcFormData.pcrit$3)}
         </div>
       </Grid>
 
@@ -1243,22 +1116,22 @@ export default function Liq() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.debl_calc)}
+          {toFixed(calcFormData.deb_calc)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.debl_calc$1)}
+          {toFixed(calcFormData.deb_calc$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.debl_calc$2)}
+          {toFixed(calcFormData.deb_calc$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.debl_calc$3)}
+          {toFixed(calcFormData.deb_calc$3)}
         </div>
       </Grid>
     </Grid>

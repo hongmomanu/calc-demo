@@ -19,11 +19,14 @@ const colorArr = getHslArray().map(function (item) {
 export function Charts({
   xData,
   yDatas,
+  xScale = 'auto',
   columns = [],
   scatters = [],
   showDot = false,
   yTickCount = 5,
   xTickCount = 5,
+  xTickSize = 5,
+  yTickSize = 5,
   scatters_data = [],
   layout = "horizontal",
   yReversed = false,
@@ -34,15 +37,28 @@ export function Charts({
   scatters_data.forEach((it) => {
     chartData.push(it);
   });
+  let isMultiX = false
   
   for (let i = 0; i < xData.length; i++) {
-    const item = {
-      name: xData[i],
-    };
-    yDatas.forEach((it, ix) => {
-      item[columns[ix]] = it[i];
-    });
-    chartData.push(item);
+    
+    if(typeof(xData[i]) === 'object'){
+      xData[i].forEach((it,ix)=>{
+        const item = {}
+        item.name = it
+        item[columns[i]] = yDatas[i][ix]
+        chartData.push(item);
+      })
+      
+    }else{
+      const item = {}
+      item.name = xData[i]
+      yDatas.forEach((it, ix) => {
+        item[columns[ix]] = it[i];
+      });
+      chartData.push(item);
+    }
+    
+    
   }
 
   console.log("chartData", chartData);
@@ -62,13 +78,18 @@ export function Charts({
           <Tooltip />
           <XAxis
             tickCount={xTickCount}
+            tickSize={xTickSize}
+            scale={xScale}
             dataKey={layout === "horizontal" ? "name" : undefined}
             domain={xDomain}
             type="number"
             // scale="threshold"
           />
+
+        
           <YAxis
             tickCount={yTickCount}
+            tickSize={yTickSize}
             domain={yDomain}
             reversed={yReversed}
             type="number"

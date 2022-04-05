@@ -1,5 +1,5 @@
 import { LoadingButton } from "@mui/lab";
-import { Grid, TextField } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField } from "@mui/material";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import { useContext, useEffect, useState } from "react";
 import { PatmContext } from "../../context";
@@ -41,6 +41,13 @@ function makePromise(idx, calcFormData, setCalcFormData) {
       
     });
   }
+  function getAplWater(params){
+    return httpPost({
+        url: "/api/gas/apg_steam",
+        params,
+        nofilter: true,
+      })
+ }
   function calcApi({ setCalcFormData, calcFormData, setIsCalcing }) {
     setIsCalcing(true);
     const p0 = makePromise(0, calcFormData, setCalcFormData);
@@ -194,6 +201,14 @@ export default function Gas() {
          */
 
   });
+
+  const [open, setOpen] = useState(false);
+  const [paramForm, setParamForm] = useState({
+    case: "0",
+    pressure: 5,
+    temp: 0,
+  });
+
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -204,12 +219,77 @@ export default function Gas() {
           Solvay GEC-PEE-NOH/PJR version 2.6
         </div>
       </Grid>
-      <Grid item xs={8}>
+      <Grid item xs={6}>
         <div className="fl f-a-c h-30">
             API standard RP-520 9th 2014 / 10th 2020
         </div>
       </Grid>
       <Grid item xs={4}>
+        <Button size="large" onClick={() => setOpen(true)} variant="contained">
+          Set Water Properties
+        </Button>
+        <Dialog open={open} onClose={() => setOpen(false)}>
+          <DialogTitle>Water properties</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Thermodynamic state by Case</DialogContentText>
+            {Combox({
+              size:'large',
+              options: [
+                { name: "Case1", value: "0" },
+                { name: "Case2", value: "1" },
+                { name: "Case3", value: "2" },
+                { name: "Case4", value: "3" },
+              ],
+              data: paramForm,
+              name: "case",
+              setFunc: setParamForm,
+            })}
+            <NumberInput
+              data={paramForm}
+              label={`Pressure (${calcFormData.pres_unit})`}
+              name="pressure"
+              setFunc={setParamForm}
+            />
+            <NumberInput
+              data={paramForm}
+              label={`Temperature (${calcFormData.temp_unit})`}
+              name="temp"
+              setFunc={setParamForm}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                setOpen(false);
+                getAplWater({
+                    p:Number(paramForm.pressure),
+                    t:Number(paramForm.temp),
+                    pres_unit:calcFormData.pres_unit,
+                    temp_unit:calcFormData.temp_unit
+                }).then((rep) => {
+                    if(paramForm.case === '0'){
+                        setCalcFormData({...calcFormData,...rep})
+                    }else{
+                        const data = {}
+                        for(let key in rep){
+                            if(rep.hasOwnProperty(key)){
+                                data[`${key}$${paramForm.case}`] = rep[key]
+                            }
+                        }
+                        setCalcFormData({...calcFormData,...data})
+                    }
+                    
+                    console.log('getAplWater rep',rep)
+                  })
+              }}
+            >
+              Ok
+            </Button>
+            <Button onClick={() => setOpen(false)}>Cancel</Button>
+          </DialogActions>
+        </Dialog>
+      </Grid>
+      <Grid item xs={2}>
       <LoadingButton
           loading={isCalcing}
           loadingPosition="start"
@@ -238,11 +318,8 @@ export default function Gas() {
       </div>
       </Grid>
 
-      <Grid item xs={4.5}>
+      <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">{`Patm=${patmContext.bar}(bar)/${patmContext.psi}(psi)`}</div>
-      </Grid>
-      <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray"></div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">Case1</div>

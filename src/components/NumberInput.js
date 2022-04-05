@@ -11,6 +11,7 @@ export function NumberInput({
   type = "number",
   formaterFunc = (val)=>{return val},
   InputProps ={},
+  label
 }) {
   return (
     <TextField
@@ -27,6 +28,7 @@ export function NumberInput({
       variant="filled"
       size="small"
       style={{ width: "100%" }}
+      label= {label}
       InputProps={InputProps}
       inputProps={{
         style: {

@@ -8,7 +8,8 @@ import Tab from "@mui/material/Tab";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
 import FireExtinguisherIcon from "@mui/icons-material/FireExtinguisher";
-import Animation from "@mui/icons-material/Animation";
+import AgricultureIcon from '@mui/icons-material/Agriculture';
+import AnimationIcon from "@mui/icons-material/Animation";
 import Architecture from "@mui/icons-material/Architecture";
 import CircularIndeterminate from "../components/Loading";
 import { NumberInput } from "../components/NumberInput";
@@ -16,6 +17,8 @@ import { PatmContext } from "./context";
 const GasLiq = React.lazy(() => import("./views/psv_api_new/gas_liq"));
 const Gas = React.lazy(() => import("./views/psv_api_new/gas"));
 const Liq = React.lazy(() => import("./views/psv_api_new/liq"))
+const Steam = React.lazy(() => import("./views/psv_api_new/steam"))
+const LiqSubc = React.lazy(() => import("./views/psv_api_new/liq_subc"))
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -63,19 +66,8 @@ export default PdropPipeSheet;
 
 function IconLabelTabs({ tabValue, handleChange, calcFormData, setCalcFormData }) {
   return (
-    <Grid container direction={"row"}>
-      <Grid item xs={6}>
-      <Tabs
-      value={tabValue}
-      onChange={handleChange}
-      aria-label="icon label tabs example"
-    >
-      <Tab icon={<CalculateIcon />} label="gas-liq" />
-      <Tab icon={<LocalGasStationIcon />} label="gas" />
-      <Tab icon={<FireExtinguisherIcon />} label="liq" />
-    </Tabs>
-      </Grid>
-      <Grid item xs={6}>
+    <Grid container direction={"column"}>
+      <Grid item xs={12}>
       <Grid container xs={12}>
         <Grid container xs={3}>
           <div className="fl f-a-c f-j-c h-30 b-1-gray" style={{ height: "60px", width: '100%' }}>
@@ -120,6 +112,20 @@ function IconLabelTabs({ tabValue, handleChange, calcFormData, setCalcFormData }
 
       </Grid>
       </Grid>
+      <Grid item xs={12}>
+      <Tabs
+      value={tabValue}
+      onChange={handleChange}
+      aria-label="icon label tabs example"
+    >
+      <Tab icon={<CalculateIcon />} label="gas-liq" />
+      <Tab icon={<LocalGasStationIcon />} label="gas" />
+      <Tab icon={<FireExtinguisherIcon />} label="liq" />
+      <Tab icon={<AgricultureIcon />} label="steam" />
+      <Tab icon={<AnimationIcon />} label="liq_subc" />
+    </Tabs>
+      </Grid>
+      
 
     </Grid>
     
@@ -134,6 +140,10 @@ function TabContent({ tabValue }) {
       return <Gas />;
     case 2:
       return <Liq />;
+    case 3:
+      return <Steam />  
+    case 4:
+      return <LiqSubc />  
     default:
       return "未完待续";
   }

@@ -379,12 +379,10 @@ export default function GasLiq() {
         </div>
       </Grid>
 
-      <Grid item xs={4.5}>
+      <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">{`Patm=${calcFormData.patm}(bar)/${calcFormData.patmpsi}(psi)`}</div>
       </Grid>
-      <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray"></div>
-      </Grid>
+      
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">Case1</div>
       </Grid>
