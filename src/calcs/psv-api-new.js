@@ -10,7 +10,8 @@ import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
 import FireExtinguisherIcon from "@mui/icons-material/FireExtinguisher";
 import AgricultureIcon from '@mui/icons-material/Agriculture';
 import AnimationIcon from "@mui/icons-material/Animation";
-import Architecture from "@mui/icons-material/Architecture";
+import ArchitectureIcon from "@mui/icons-material/Architecture";
+import AdUnitsIcon from "@mui/icons-material/AdUnits"
 import CircularIndeterminate from "../components/Loading";
 import { NumberInput } from "../components/NumberInput";
 import { PatmContext } from "./context";
@@ -19,6 +20,8 @@ const Gas = React.lazy(() => import("./views/psv_api_new/gas"));
 const Liq = React.lazy(() => import("./views/psv_api_new/liq"))
 const Steam = React.lazy(() => import("./views/psv_api_new/steam"))
 const LiqSubc = React.lazy(() => import("./views/psv_api_new/liq_subc"))
+const DirectIntegr = React.lazy(() => import("./views/psv_api_new/direct_integr"))
+const SatWater = React.lazy(() => import("./views/psv_api_new/sat_water"))
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -123,6 +126,9 @@ function IconLabelTabs({ tabValue, handleChange, calcFormData, setCalcFormData }
       <Tab icon={<FireExtinguisherIcon />} label="liq" />
       <Tab icon={<AgricultureIcon />} label="steam" />
       <Tab icon={<AnimationIcon />} label="liq_subc" />
+      <Tab icon={<ArchitectureIcon />} label="direct_integr" />
+      <Tab icon={<AdUnitsIcon />} label="sat_water" />
+      
     </Tabs>
       </Grid>
       
@@ -144,6 +150,10 @@ function TabContent({ tabValue }) {
       return <Steam />  
     case 4:
       return <LiqSubc />  
+    case 5:
+      return <DirectIntegr />  
+    case 6:
+      return <SatWater />  
     default:
       return "未完待续";
   }

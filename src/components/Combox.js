@@ -2,9 +2,9 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-export function Combox({ options, setFunc, name,data, label = "",size }) {
+export function Combox({ options, setFunc, name,data, label = "",size,minWidth=120 }) {
   return (
-    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+    <FormControl variant="standard" sx={{ m: 1, minWidth}}>
       <Select size={size} value={data[name]} onChange={(e) => {
           const newData = {...data}
           newData[name] = e.target.value
