@@ -124,13 +124,13 @@ export default function Hybrid() {
     <Grid container>
       <Grid item xs={7}>
         <div className="fl f-a-c h-30">
-        Pressure relief valve sizing for high vapour pressure or gassy systems
+        Pressure relief valve sizing for hybrid systems
         </div>
         <div className="fl f-a-c h-30">
         IND-HSE-PTS.15-03 / ISO 4126-10 First edition 2010-10-01
         </div>
         <div className="fl f-a-c h-30">
-        Leung omega method (Homogeneous Equilibrium Method) + boiling delay factor (N)
+        Leung omega method (Homogeneous Equilibrium Method)
         </div>
       </Grid>
       <Grid item xs={5}>
