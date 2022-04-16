@@ -306,7 +306,7 @@ secsel:1.981,
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">{`Patm=${patmContext.bar}(bar)/${patmContext.psi}(psi)`}</div>
       </Grid>
-      
+
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">Case1</div>
       </Grid>
@@ -794,7 +794,7 @@ secsel:1.981,
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">
-        Kb: correction factor due to back press.
+          Kb: correction factor due to back press.
         </div>
       </Grid>
       <Grid item xs={1.5}>
@@ -898,9 +898,7 @@ secsel:1.981,
       </Grid>
 
       <Grid item xs={4.5}>
-        <div className="fl f-a-c h-30 b-1-gray">
-        Omega parameter (ws)
-        </div>
+        <div className="fl f-a-c h-30 b-1-gray">Omega parameter (ws)</div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">-</div>
@@ -941,8 +939,6 @@ secsel:1.981,
           />
         </div>
       </Grid>
-
-
 
       <Grid item xs={12}>
         <div className="fl f-a-c  h-30 ">Subcooled liquid characteristics</div>
@@ -1224,18 +1220,18 @@ secsel:1.981,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-        {Combox({
-                options: [
-                  { name: "bar", value: "bar" },
-                { name: "psi", value: "psi" },
-                { name: "Pa", value: "Pa" },
-                { name: "bara", value: "bara" },
-                { name: "psia", value: "psia" },
-                ],
-                data: calcFormData,
-                name: "pres_unit",
-                setFunc: setCalcFormData,
-              })}
+          {Combox({
+            options: [
+              { name: "bar", value: "bar" },
+              { name: "psi", value: "psi" },
+              { name: "Pa", value: "Pa" },
+              { name: "bara", value: "bara" },
+              { name: "psia", value: "psia" },
+            ],
+            data: calcFormData,
+            name: "pres_unit",
+            setFunc: setCalcFormData,
+          })}
         </div>
       </Grid>
       <Grid item xs={1.5}>
@@ -1274,8 +1270,6 @@ secsel:1.981,
           />
         </div>
       </Grid>
-
-
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">Molecular weight</div>
@@ -1379,7 +1373,6 @@ secsel:1.981,
         </div>
       </Grid>
 
-
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">Density at saturation</div>
       </Grid>
@@ -1437,11 +1430,6 @@ secsel:1.981,
         </div>
       </Grid>
 
-
-
-
-
-
       <Grid item xs={12}>
         <div className="fl f-a-c h-30">Results</div>
       </Grid>
@@ -1454,17 +1442,17 @@ secsel:1.981,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.rel) }
+          {toFixed(calcFormData.rel)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.rel$1) }
+          {toFixed(calcFormData.rel$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.rel$2) }
+          {toFixed(calcFormData.rel$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
@@ -1472,7 +1460,6 @@ secsel:1.981,
           {toFixed(calcFormData.rel$3)}
         </div>
       </Grid>
-
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">Subcooling region</div>
@@ -1487,12 +1474,12 @@ secsel:1.981,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {calcFormData.region$1 }
+          {calcFormData.region$1}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {calcFormData.region$2 }
+          {calcFormData.region$2}
         </div>
       </Grid>
       <Grid item xs={1.5}>
@@ -1500,7 +1487,6 @@ secsel:1.981,
           {calcFormData.region$3}
         </div>
       </Grid>
-
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">Saturation pressure ratio</div>
@@ -1510,17 +1496,17 @@ secsel:1.981,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratios) }
+          {toFixed(calcFormData.pratios)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratios$1) }
+          {toFixed(calcFormData.pratios$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratios$2) }
+          {toFixed(calcFormData.pratios$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
@@ -1529,26 +1515,27 @@ secsel:1.981,
         </div>
       </Grid>
 
-
       <Grid item xs={4.5}>
-        <div className="fl f-a-c h-30 b-1-gray">Transition saturation pressure ratio</div>
+        <div className="fl f-a-c h-30 b-1-gray">
+          Transition saturation pressure ratio
+        </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">-</div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratiost) }
+          {toFixed(calcFormData.pratiost)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratiost$1) }
+          {toFixed(calcFormData.pratiost$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratiost$2) }
+          {toFixed(calcFormData.pratiost$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
@@ -1640,7 +1627,6 @@ secsel:1.981,
         </div>
       </Grid>
 
-
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">G/Gc</div>
       </Grid>
@@ -1667,8 +1653,6 @@ secsel:1.981,
           {toFixed(calcFormData.ggc$3)}
         </div>
       </Grid>
-
-
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">Calculated orifice area</div>
@@ -1753,7 +1737,9 @@ secsel:1.981,
         <div className="fl f-a-c h-30 b-1-gray">Selected orifice area</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{calcFormData.area_unit}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {calcFormData.area_unit}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
@@ -1833,12 +1819,21 @@ secsel:1.981,
       </Grid>
 
       <Grid item xs={12}>
-      <Charts xData={[high_subc_x,omega40_x,omega20_x, omega15_x, omega10_x, omega7_x,omega5_x]}
-      xTickCount={7}
-      yTickCount={12}
-      yDomain={[0.5,1]}
-      // showDot={<CustomizedDot />}
-      xDomain={[0.7,1]}
+        <Charts
+          xData={[
+            high_subc_x,
+            omega40_x,
+            omega20_x,
+            omega15_x,
+            omega10_x,
+            omega7_x,
+            omega5_x,
+          ]}
+          xTickCount={7}
+          yTickCount={12}
+          yDomain={[0.5, 1]}
+          // showDot={<CustomizedDot />}
+          xDomain={[0.7, 1]}
           yDatas={[
             high_subc_x,
             omega40_y,
@@ -1846,17 +1841,36 @@ secsel:1.981,
             omega15_y,
             omega10_y,
             omega7_y,
-            omega5_y
-      ]} columns={['Hign subc','omega40','omega20','omega15','omega10','omega7','omega5']} />
+            omega5_y,
+          ]}
+          columns={[
+            "Hign subc",
+            "omega40",
+            "omega20",
+            "omega15",
+            "omega10",
+            "omega7",
+            "omega5",
+          ]}
+        />
       </Grid>
 
       <Grid item xs={12}>
-      <Charts xData={[high_subc_x,omega40_x,omega20_x, omega15_x, omega10_x, omega7_x,omega5_x]}
-      xTickCount={7}
-      yTickCount={7}
-      yDomain={[0,1.2]}
-      // showDot={<CustomizedDot />}
-      xDomain={[0.7,1]}
+        <Charts
+          xData={[
+            high_subc_x,
+            omega40_x,
+            omega20_x,
+            omega15_x,
+            omega10_x,
+            omega7_x,
+            omega5_x,
+          ]}
+          xTickCount={7}
+          yTickCount={7}
+          yDomain={[0, 1.2]}
+          // showDot={<CustomizedDot />}
+          xDomain={[0.7, 1]}
           yDatas={[
             high_subc_y,
             omega40_ad_y,
@@ -1864,21 +1878,60 @@ secsel:1.981,
             omega15_ad_y,
             omega10_ad_y,
             omega7_ad_y,
-            omega5_ad_y
-      ]} columns={['Hign subc','omega40','omega20','omega15','omega10','omega7','omega5']} />
+            omega5_ad_y,
+          ]}
+          columns={[
+            "Hign subc",
+            "omega40",
+            "omega20",
+            "omega15",
+            "omega10",
+            "omega7",
+            "omega5",
+          ]}
+        />
       </Grid>
 
       <Grid item xs={12}>
-      <Charts xData={[ws_x]}
-      xTickCount={7}
-      yTickCount={7}
-      yDomain={[0,1]}
-      xScale={'log'}
-      // showDot={<CustomizedDot />}
-      xDomain={[0.01,100]}
-          yDatas={[
-            ws_y
-      ]} columns={['ws']} />
+        <Charts
+          xData={[ws_x]}
+          xScale={"log"}
+          xTickFormatter={(val, ix) => {
+            const filterArr = [0.01, 0.1, 1, 10, 100];
+            if (filterArr.includes(val)) return val;
+            else return "";
+          }}
+          // showDot={<CustomizedDot />}
+          xTicks={[
+            0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.2, 0.3,
+            0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30,
+            40, 50, 60, 70, 80, 90, 100,
+          ]}
+          scatters={["case1","case2","case3","case4"]}
+          scatters_data={[
+            {
+              name: calcFormData.omega,
+              case1: calcFormData.pratios,
+            },
+            {
+              name: calcFormData.omega$1,
+              case2: calcFormData.pratios$1,
+            },
+            {
+              name: calcFormData.omega$2,
+              case3: calcFormData.pratios$2,
+            },
+            {
+              name: calcFormData.omega$3,
+              case4: calcFormData.pratios$3,
+            },
+          ]}
+          yTicks={[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]}
+          xDomain={["auto", "auto"]}
+          yDomain={["auto", "auto"]}
+          yDatas={[ws_y]}
+          columns={["ws"]}
+        />
       </Grid>
     </Grid>
   );

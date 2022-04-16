@@ -796,6 +796,62 @@ export default function LiqSubc() {
       </Grid>
 
 
+      <Grid item xs={4.5}>
+        <div className="fl f-a-c h-30 b-1-gray">Specific heat (Cp)</div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+        {Combox({
+            options: [
+              { name: "J/kg.K", value: "J/kg.K" },
+              { name: "kJ/kg.K", value: "kJ/kg.K" },
+              { name: "kcal/kg.K", value: "kcal/kg.K" },
+              { name: "Btu/lb.R", value: "Btu/lb.R" },
+            ],
+            data: calcFormData,
+            name: "masscp_unit",
+            setFunc: setCalcFormData,
+          })}
+        </div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c h-30  f-j-c b-1-gray">
+          <NumberInput
+            data={calcFormData}
+            name="cpl"
+            setFunc={setCalcFormData}
+          />
+        </div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c h-30  f-j-c b-1-gray">
+          <NumberInput
+            data={calcFormData}
+            name="cpl$1"
+            setFunc={setCalcFormData}
+          />
+        </div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c h-30  f-j-c b-1-gray">
+          <NumberInput
+            data={calcFormData}
+            name="cpl$2"
+            setFunc={setCalcFormData}
+          />
+        </div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c h-30  f-j-c b-1-gray">
+          <NumberInput
+            data={calcFormData}
+            name="cpl$3"
+            setFunc={setCalcFormData}
+          />
+        </div>
+      </Grid>
+
+
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">Heat of vaporization</div>
@@ -1098,38 +1154,23 @@ export default function LiqSubc() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <NumberInput
-            data={calcFormData}
-            name="omega"
-            setFunc={setCalcFormData}
-          />
+        {toFixed(calcFormData.omega_hem)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <NumberInput
-            data={calcFormData}
-            name="omega$1"
-            setFunc={setCalcFormData}
-          />
+          {toFixed(calcFormData.omega_hem$1)}
+          
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <NumberInput
-            data={calcFormData}
-            name="omega$2"
-            setFunc={setCalcFormData}
-          />
+        {toFixed(calcFormData.omega_hem$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <NumberInput
-            data={calcFormData}
-            name="omega$3"
-            setFunc={setCalcFormData}
-          />
+        {toFixed(calcFormData.omega_hem$3)}
         </div>
       </Grid>
 
@@ -1491,11 +1532,31 @@ export default function LiqSubc() {
 
       <Grid item xs={7}>
         <Charts
-          yDomain={[0,1]}
-          xTickCount={17}
-          yTickCount={10}
-          xScale={'log'}
-          xDomain={[0.01,9000]}
+          yDomain={['auto','auto']}
+          yTicks={[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]}
+          scatters={["Case1","Case2","Case3","Case4"]}
+          scatters_data={[
+            {
+              name: calcFormData.fcX,
+              Case1: calcFormData.fcY,
+            },
+            {
+              name: calcFormData.fcX$1,
+              Case2: calcFormData.fcY$1,
+            },
+            {
+              name: calcFormData.fcX$2,
+              Case3: calcFormData.fcY$2,
+            },
+            {
+              name: calcFormData.fcX$3,
+              Case4: calcFormData.fcY$3,
+            },
+          ]}  
+          
+          // xScale={'log'}
+          xDomain={['auto','auto']}
+          xTicks={[0,0.05,0.1,0.15,0.20,0.25,0.3,0.35,0.4]}
           xData={[calcFormData.xs||[],calcFormData.xs$1||[],calcFormData.xs$2||[],calcFormData.xs$3||[]]}
           yDatas={[calcFormData.ys||[],calcFormData.ys$1||[],calcFormData.ys$2||[],calcFormData.ys$3||[]]}
           columns={["case1","case2","case3","case4"]}

@@ -120,51 +120,19 @@ export default function GasLiq() {
         "method$3":3,
   });
   const [chartData, setChartData] = useState({});
-  const [chartData$1, setChartData$1] = useState({});
-  const [chartData$2, setChartData$2] = useState({});
-  const [chartData$3, setChartData$3] = useState({});
+  
 
   useEffect(() => {
-    if (calcFormData.omega) {
       httpPost({
         url: "/api/pgasliq/isogl_atlas",
-        params: { omega: calcFormData.omega },
+        params: { omega: 0.01 },
       }).then((rep) => {
         setChartData(rep);
       });
-    }
 
-  }, [calcFormData.omega]);
-  useEffect(()=>{
-    if (calcFormData.omega$1) {
-      httpPost({
-        url: "/api/pgasliq/isogl_atlas",
-        params: { omega: calcFormData.omega$1 },
-      }).then((rep) => {
-        setChartData$1(rep);
-      });
-    }
-  },[calcFormData.omega$1])
-  useEffect(()=>{
-    if (calcFormData.omega$2) {
-      httpPost({
-        url: "/api/pgasliq/isogl_atlas",
-        params: { omega: calcFormData.omega$2 },
-      }).then((rep) => {
-        setChartData$2(rep);
-      });
-    }
-  },[calcFormData.omega$2])
-  useEffect(()=>{
-    if (calcFormData.omega$3) {
-      httpPost({
-        url: "/api/pgasliq/isogl_atlas",
-        params: { omega: calcFormData.omega$3 },
-      }).then((rep) => {
-        setChartData$3(rep);
-      });
-    }
-  },[calcFormData.omega$3])
+  }, []);
+  
+  
   useEffect(() => {
     debCalcApi({
       calcFormData,
@@ -1610,12 +1578,39 @@ export default function GasLiq() {
           yDomain={['auto','auto']}
           yTickCount={10}
           xScale={'log'}
-          xTicks = {[0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,600]}
+          xTicks = {[0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.2, 0.3,
+            0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30,
+            40, 50, 60, 70, 80, 90, 100,]}
+            scatters={["case1","case2","case3","case4"]}
+            xTickFormatter={(val, ix) => {
+              const filterArr = [0.01, 0.1, 1, 10, 100];
+              if (filterArr.includes(val)) return val;
+              else return "";
+            }}
+            scatters_data={[
+              {
+                name: calcFormData.omega,
+                case1: calcFormData.pratio_crit,
+              },
+              {
+                name: calcFormData.omega$1,
+                case2: calcFormData.pratio_crit$1,
+              },
+              {
+                name: calcFormData.omega$2,
+                case3: calcFormData.pratio_crit$2,
+              },
+              {
+                name: calcFormData.omega$3,
+                case4: calcFormData.pratio_crit$3,
+              },
+            ]}  
+            
           yTicks = {[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]}
           xDomain={['auto','auto']}
           xData={(chartData.omegas || []).map((it)=>toFixed(it)).slice(0,51)}
-          yDatas={[chartData.ncs || [], chartData$1.ncs||[], chartData$2.ncs||[], chartData$3.ncs||[]]}
-          columns={["case1","case2","case3","case4"]}
+          yDatas={[chartData.ncs || []]}
+          columns={["Omega"]}
         />
       </Grid>
     </Grid>
