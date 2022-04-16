@@ -11,7 +11,8 @@ export function NumberInput({
   type = "number",
   formaterFunc = (val)=>{return val},
   InputProps ={},
-  label
+  label,
+  deceil=undefined,
 }) {
   return (
     <TextField
@@ -39,7 +40,7 @@ export function NumberInput({
         min,
         step,
       }}
-      value={data == null ? undefined : formaterFunc(toFixed(data[name]))}
+      value={data == null ? undefined : formaterFunc(toFixed(data[name],deceil))}
     />
   );
 }

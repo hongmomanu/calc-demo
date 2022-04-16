@@ -36,6 +36,7 @@ export function Charts({
   yinterval = 'preserveEnd',
   xTick = {},
   xTickFormatter = null,
+  xTicks = null,
 }) {
   const chartData = [];
   scatters_data.forEach((it) => {
@@ -89,6 +90,7 @@ export function Charts({
             dataKey={layout === "horizontal" ? "name" : undefined}
             domain={xDomain}
             type="number"
+            ticks={xTicks}
             tickFormatter={xTickFormatter}
             // scale="threshold"
           />

@@ -1,3 +1,662 @@
-export default function RdHybrid(){
-    return <div>未完待续</div>
+import { Grid, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Charts } from "../../../components/Charts";
+import { Combox } from "../../../components/Combox";
+import { NumberInput } from "../../../components/NumberInput";
+import usePrevious from "../../../hooks/use-previous";
+import { httpPost } from "../../../http";
+import { debounce, toFixed } from "../../../utils";
+
+function calcApi({ setCalcFormData, calcFormData }) {
+  httpPost({
+    url: "/api/rdHybrid/valveflow",
+    params: calcFormData,
+  }).then((rep) => {
+    setCalcFormData({ ...calcFormData, ...rep });
+  });
+}
+const debCalcApi = debounce(calcApi);
+export default function RdHybrid() {
+  const [calcFormData, setCalcFormData] = useState({
+    urp: 4.4,
+    /**
+     * Upstream relieving pressure (P0)
+     */
+    urp_new_unit: "barg",
+    /**
+     * Upstream relieving pressure (P0)
+     */
+    urp_old_unit: "barg",
+    /**
+     * Upstream relieving pressure (P0)
+     */
+    bp: 0,
+    /**
+     * Back-pressure (Pb)
+     */
+    id: 300,
+    /**
+     * Inlet density (r0 = 1/v0)
+     */
+    id_new_unit: "kg/m3",
+    /**
+     * Inlet density (r0 = 1/v0)
+     */
+    id_old_unit: "kg/m3",
+    /**
+     * Inlet density (r0 = 1/v0)
+     */
+     hfo:85,	
+         /**
+          * Hybrid flow omega (ws)
+          */	
+     gpvf:0.4,	
+         /**
+          * Gas phase volume fraction (a0)
+          */	
+     gppr:0.4,	
+         /**
+          * Gas partial pressure ratio (yg0)
+          */
+    
+    d: 50,
+    /**
+     * Discharge line
+     * Diameter (D)
+     */
+    d_new_unit: "mm",
+    /**
+     * Discharge line
+     * Diameter (D)
+     */
+    d_old_unit: "mm",
+    /**
+     * Discharge line
+     * Diameter (D)
+     */
+    l: 32.8084,
+    /**
+     * Discharge line
+     * Length (L)
+     */
+    l_new_unit: "ft",
+    /**
+     * Discharge line
+     * Length (L)
+     */
+    l_old_unit: "ft",
+    /**
+     * Discharge line
+     * Length (L)
+     */
+    h: 3.28084,
+    /**
+     * Discharge line
+     * Height (H)
+     */
+    fff: 0.005,
+    /**
+     * Discharge line
+     * Faning friction factor (f)
+     */
+    frc: 1,
+    /**
+     * Discharge line
+     * Fittings resistance coeff. (K)
+     */
+    pcs_unit: "cm2",
+    /**
+     * Discharge line
+     * Pipe cross section
+     */
+    mf_unit: "kg/h",
+    /**
+     * Nozzle+pipe
+     * Mass flow
+     */
+  });
+
+  const urp_old_unit =
+    usePrevious(calcFormData.urp_new_unit) || calcFormData.urp_new_unit;
+  const id_old_unit =
+    usePrevious(calcFormData.id_new_unit) || calcFormData.id_new_unit;
+  const d_old_unit =
+    usePrevious(calcFormData.d_new_unit) || calcFormData.d_new_unit;
+  const l_old_unit =
+    usePrevious(calcFormData.l_new_unit) || calcFormData.l_new_unit;
+  
+
+  useEffect(() => {
+    debCalcApi({
+      calcFormData: {
+        ...calcFormData,
+        ...{ urp_old_unit, id_old_unit, d_old_unit, l_old_unit },
+      },
+      setCalcFormData,
+    });
+  }, [
+    calcFormData.urp,
+    calcFormData.urp_new_unit,
+    calcFormData.bp,
+    calcFormData.id,
+    calcFormData.id_new_unit,
+    calcFormData.d,
+    calcFormData.hfo,
+    calcFormData.d_new_unit,
+    calcFormData.l,
+    calcFormData.l_new_unit,
+    calcFormData.h,
+    calcFormData.fff,
+    calcFormData.frc,
+    calcFormData.pcs_unit,
+    calcFormData.mf_unit,
+  ]);
+  return (
+    <Grid container>
+      <Grid item xs={5}>
+        <Grid container>
+          <Grid item xs={12}>
+            <div className="fl f-a-c h-30">
+            Rupture disk checking for hybrid systems
+            </div>
+          </Grid>
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">Case study</div>
+          </Grid>
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              <TextField fullWidth variant="standard" />
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              Upstream relieving pressure (P0)
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {Combox({
+                options: [
+                  { name: "psig", value: "psig" },
+                  { name: "barg", value: "barg" },
+                ],
+                data: calcFormData,
+                name: "urp_new_unit",
+                setFunc: setCalcFormData,
+              })}
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              <NumberInput
+                data={calcFormData}
+                name="urp"
+                setFunc={setCalcFormData}
+              />
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">Back-pressure (Pb)</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {calcFormData.urp_new_unit}
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              <NumberInput
+                data={calcFormData}
+                name="bp"
+                setFunc={setCalcFormData}
+              />
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              Inlet density (r0 = 1/v0)
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {Combox({
+                options: [
+                  { name: "kg/m3", value: "kg/m3" },
+                  { name: "kg/l", value: "kg/l" },
+                  { name: "lb/gal", value: "lb/gal" },
+                  { name: "lb/ft3", value: "lb/ft3" },
+                ],
+                data: calcFormData,
+                name: "id_new_unit",
+                setFunc: setCalcFormData,
+              })}
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              <NumberInput
+                data={calcFormData}
+                name="id"
+                setFunc={setCalcFormData}
+              />
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+            Hybrid flow omega (ws)
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+            -
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              <NumberInput
+                data={calcFormData}
+                name="hfo"
+                setFunc={setCalcFormData}
+              />
+            </div>
+          </Grid>
+
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+            Gas phase volume fraction (a0)
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+            -
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              <NumberInput
+                data={calcFormData}
+                name="gpvf"
+                setFunc={setCalcFormData}
+              />
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+            Gas partial pressure ratio (yg0)
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+            -
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              <NumberInput
+                data={calcFormData}
+                name="gppr"
+                setFunc={setCalcFormData}
+              />
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">Omega parameter (w)</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c b-1-gray">
+              <NumberInput
+                data={calcFormData}
+                name="op"
+                setFunc={setCalcFormData}
+              />
+            </div>
+          </Grid>
+
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">Pb/P0</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {toFixed(calcFormData.pp)}
+            </div>
+          </Grid>
+
+          <Grid item xs={12}>
+            <div className="fl f-a-c h-30">Discharge line</div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">Diameter (D)</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {Combox({
+                options: [
+                  { name: "m", value: "m" },
+                  { name: "mm", value: "mm" },
+                  { name: "inch", value: "inch" },
+                  { name: "ft", value: "ft" },
+                ],
+                data: calcFormData,
+                name: "d_new_unit",
+                setFunc: setCalcFormData,
+              })}
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              <NumberInput
+                data={calcFormData}
+                name="d"
+                setFunc={setCalcFormData}
+              />
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">Length (L)</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {Combox({
+                options: [
+                  { name: "m", value: "m" },
+                  { name: "mm", value: "mm" },
+                  { name: "inch", value: "inch" },
+                  { name: "ft", value: "ft" },
+                ],
+                data: calcFormData,
+                name: "l_new_unit",
+                setFunc: setCalcFormData,
+              })}
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              <NumberInput
+                data={calcFormData}
+                name="l"
+                setFunc={setCalcFormData}
+              />
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">Height (H)</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {calcFormData.l_new_unit}
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              <NumberInput
+                data={calcFormData}
+                name="h"
+                setFunc={setCalcFormData}
+              />
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              Faning friction factor (f)
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              <NumberInput
+                data={calcFormData}
+                name="fff"
+                setFunc={setCalcFormData}
+              />
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              Fittings resistance coeff. (K)
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              <NumberInput
+                data={calcFormData}
+                name="frc"
+                setFunc={setCalcFormData}
+              />
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              Flow resistance factor (4f L/D)
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {toFixed(calcFormData.frf)}
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              Inclination factor (Fi)
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {toFixed(calcFormData.inf)}
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">Pipe cross section</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {Combox({
+                options: [
+                  { name: "m2", value: "m2" },
+                  { name: "cm2", value: "cm2" },
+                  { name: "ft2", value: "ft2" },
+                  { name: "in2", value: "in2" },
+                ],
+                data: calcFormData,
+                name: "pcs_unit",
+                setFunc: setCalcFormData,
+              })}
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {toFixed(calcFormData.pcs)}
+            </div>
+          </Grid>
+
+          <Grid item xs={12}>
+            <div className="fl f-a-c h-30">Nozzle</div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              Critical pressure ratio
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {toFixed(calcFormData.n_cpr)}
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              Adimensional crit. mass flux
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {toFixed(calcFormData.n_acmf)}
+            </div>
+          </Grid>
+
+          <Grid item xs={12}>
+            <div className="fl f-a-c h-30">Nozzle+pipe</div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              Critical flow reduction (Gc/G0c)
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {toFixed(calcFormData.np_cfr)}
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              Critical pressure ratio (P2c/P0)
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {toFixed(calcFormData.np_cpr)}
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">
+              Adimensional crit. mass flux
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {toFixed(calcFormData.np_acmf)}
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">Regime</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {toFixed(calcFormData.np_regime)}
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">Adimensional mass flux</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {toFixed(calcFormData.np_amf)}
+            </div>
+          </Grid>
+
+          <Grid item xs={6}>
+            <div className="fl f-a-c h-30 b-1-gray">Mass flow</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {Combox({
+                options: [
+                  { name: "kg/h", value: "kg/h" },
+                  { name: "kg/s", value: "kg/s" },
+                  { name: "lb/h", value: "lb/h" },
+                  { name: "t/h", value: "t/h" },
+                ],
+                data: calcFormData,
+                name: "mf_unit",
+                setFunc: setCalcFormData,
+              })}
+            </div>
+          </Grid>
+          <Grid item xs={3}>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
+              {toFixed(calcFormData.np_mf)}
+            </div>
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid item xs={7}>
+        <Grid container>
+          <Grid item xs={12}>
+            <Charts
+              xinterval={0}
+              xTickCount={10}
+              xTickFormatter={(val, ix) => {
+                if (ix % 10 === 0) return toFixed(val, 1);
+                else return "";
+              }}
+              xData={[calcFormData.xs || []]}
+              xTickSize={10}
+              yDomain={[0, 1]}
+              xScale={"log"}
+              xDomain={[0.1, "dataMax"]}
+              scatters={["Current"]}
+              scatters_data={[
+                {
+                  name: calcFormData.frf || 0,
+                  Current: calcFormData.np_cfr || 0,
+                },
+              ]}
+              yDatas={[calcFormData.ys || []]}
+              columns={["w=0.001"]}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
+  );
 }
