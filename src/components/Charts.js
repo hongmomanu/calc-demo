@@ -20,6 +20,7 @@ export function Charts({
   xData,
   yDatas,
   xScale = 'auto',
+  yScale = 'auto',
   columns = [],
   scatters = [],
   showDot = false,
@@ -37,6 +38,11 @@ export function Charts({
   xTick = {},
   xTickFormatter = null,
   xTicks = null,
+  yTicks = null,
+  height = 400,
+  width = '100%',
+  legengHeight= null,
+  legendStyle={},
 }) {
   const chartData = [];
   scatters_data.forEach((it) => {
@@ -70,10 +76,10 @@ export function Charts({
   
   return (
     <Box
-      style={{ marginTop: "30px", width: "100%", height: "400px" }}
+      style={{ marginTop: "30px", width: "100%", height: `${height}px` }}
       sx={{ flexGrow: 1 }}
     >
-      <ResponsiveContainer>
+      <ResponsiveContainer width={width}>
         <ComposedChart
           layout={layout}
           data={chartData}
@@ -97,16 +103,17 @@ export function Charts({
 
         
           <YAxis
+            ticks={yTicks}
             interval={yinterval}
             tickCount={yTickCount}
             tickSize={yTickSize}
             domain={yDomain}
             reversed={yReversed}
             type="number"
-            
+            scale={yScale}
             dataKey={layout === "vertical" ? "name" : undefined}
           />
-          <Legend />
+          <Legend wrapperStyle={legendStyle}  height={legengHeight}/>
 
           {scatters.map((it,ix) => {
             return (
@@ -158,7 +165,7 @@ function randomHsl() {
 // 获取HSL数组
 function getHslArray () {
   var HSL = [];
-  var hslLength = 16; // 获取数量
+  var hslLength = 20; // 获取数量
   for (var i = 0; i < hslLength; i++) {
     var ret = randomHsl();
 

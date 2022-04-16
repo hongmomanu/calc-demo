@@ -14,31 +14,27 @@ function calcApi({ setCalcFormData, calcFormData, url }) {
 }
 const debCalcApiOne = debounce(calcApi);
 const debCalcApiTwo = debounce(calcApi);
+const debCalcApiThree = debounce(calcApi);
 
-function ViewOne(){
-    const [calcFormData, setCalcFormData] = useState({
-        pp: 0.4,
-        op: 5,
-        frf: 10,
-        inf: 0.1,
-      });
-      useEffect(() => {
-        debCalcApiOne({
-          url:'/api/pipeCorrGraph/valveflowOne',
-          calcFormData: {
-            ...calcFormData,
-          },
-          setCalcFormData,
-        });
-      }, [
-        calcFormData.pp,
-        calcFormData.op,
-        calcFormData.frf,
-        calcFormData.inf
-      ]);
+function ViewOne() {
+  const [calcFormData, setCalcFormData] = useState({
+    pp: 0.4,
+    op: 5,
+    frf: 10,
+    inf: 0.1,
+  });
+  useEffect(() => {
+    debCalcApiOne({
+      url: "/api/pipeCorrGraph/valveflowOne",
+      calcFormData: {
+        ...calcFormData,
+      },
+      setCalcFormData,
+    });
+  }, [calcFormData.pp, calcFormData.op, calcFormData.frf, calcFormData.inf]);
 
-      return <>
-
+  return (
+    <>
       <Grid item xs={12}>
         <div className="fl f-a-c h-30">High vapour {"&"} gassy system</div>
       </Grid>
@@ -145,7 +141,7 @@ function ViewOne(){
 
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">
-        Critical flow reduction (Gc/G0c)
+          Critical flow reduction (Gc/G0c)
         </div>
       </Grid>
       <Grid item xs={3}>
@@ -159,7 +155,7 @@ function ViewOne(){
 
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">
-        Critical pressure ratio (P2c/P0)
+          Critical pressure ratio (P2c/P0)
         </div>
       </Grid>
       <Grid item xs={3}>
@@ -173,7 +169,7 @@ function ViewOne(){
 
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">
-        Adimensional crit. mass flux
+          Adimensional crit. mass flux
         </div>
       </Grid>
       <Grid item xs={3}>
@@ -185,11 +181,8 @@ function ViewOne(){
         </div>
       </Grid>
 
-
       <Grid item xs={6}>
-        <div className="fl f-a-c h-30 b-1-gray">
-        Regime
-        </div>
+        <div className="fl f-a-c h-30 b-1-gray">Regime</div>
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
@@ -201,9 +194,7 @@ function ViewOne(){
       </Grid>
 
       <Grid item xs={6}>
-        <div className="fl f-a-c h-30 b-1-gray">
-        Adimensional mass flux
-        </div>
+        <div className="fl f-a-c h-30 b-1-gray">Adimensional mass flux</div>
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
@@ -214,61 +205,66 @@ function ViewOne(){
         </div>
       </Grid>
 
-
       <Grid item xs={12}>
-      <Charts
-          xData={(calcFormData.cmfrs || []).map((it)=>it.xs)}
+        <Charts
+          xData={(calcFormData.cmfrs || []).map((it) => it.xs)}
           xTickCount={10}
           yTickCount={8}
           yDomain={[0, 1]}
-          xScale={'log'}
-          xTickFormatter = {(val,ix) => {
-           return toFixed(val,1)
+          xScale={"log"}
+          xTickFormatter={(val, ix) => {
+            const filterArr = [0.1, 1, 10, 100];
+            if (filterArr.includes(val)) return val;
+            else return "";
           }}
-          xTicks = {[0.1,1,10,100]}
-          xDomain={['auto', 'auto']}
+          xTicks={[
+            0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+          ]}
+          xDomain={["auto", "auto"]}
           scatters={["Current"]}
           scatters_data={[
             {
-                name: calcFormData.frf,
-                Current: calcFormData.np_cfr,
+              name: calcFormData.frf,
+              Current: calcFormData.np_cfr,
             },
           ]}
-          yDatas={(calcFormData.cmfrs||[]).map((it)=>it.ys)}
-          columns={(calcFormData.cmfrs||[]).map((it)=>it.w)}
+          yDatas={(calcFormData.cmfrs || []).map((it) => it.ys)}
+          columns={(calcFormData.cmfrs || []).map((it) => it.w)}
         />
       </Grid>
-      </>
+    </>
+  );
 }
 
-function ViewTwo(){
-    const [calcFormData, setCalcFormData] = useState({
-        "pp":0.7,
-        "hfo":20,
-        "gpvf":0.1,
-        "gppr":0.4,
-        "frf":10,
-        "inf":0.01
-      });
-      useEffect(() => {
-        debCalcApiTwo({
-          url:'/api/pipeCorrGraph/valveflowTwo',
-          calcFormData: {
-            ...calcFormData,
-          },
-          setCalcFormData,
-        });
-      }, [
-        calcFormData.pp,
-        calcFormData.op,
-        calcFormData.gpvf,
-        calcFormData.gppr,
-        calcFormData.frf,
-        calcFormData.inf
-      ]);
+function ViewTwo() {
+  const [calcFormData, setCalcFormData] = useState({
+    pp: 0.7,
+    hfo: 20,
+    gpvf: 0.1,
+    gppr: 0.4,
+    frf: 10,
+    inf: 0.01,
+  });
+  useEffect(() => {
+    debCalcApiTwo({
+      url: "/api/pipeCorrGraph/valveflowTwo",
+      calcFormData: {
+        ...calcFormData,
+      },
+      setCalcFormData,
+    });
+  }, [
+    calcFormData.pp,
+    calcFormData.op,
+    calcFormData.gpvf,
+    calcFormData.gppr,
+    calcFormData.frf,
+    calcFormData.inf,
+  ]);
 
-      return <>
-
+  return (
+    <>
       <Grid item xs={12}>
         <div className="fl f-a-c h-30">Hybrid system</div>
       </Grid>
@@ -305,7 +301,9 @@ function ViewTwo(){
         </div>
       </Grid>
       <Grid item xs={6}>
-        <div className="fl f-a-c h-30 b-1-gray">gas phase volume fraction (a0)</div>
+        <div className="fl f-a-c h-30 b-1-gray">
+          gas phase volume fraction (a0)
+        </div>
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
@@ -321,7 +319,9 @@ function ViewTwo(){
       </Grid>
 
       <Grid item xs={6}>
-        <div className="fl f-a-c h-30 b-1-gray">Gas partial pressure ratio (yg0)</div>
+        <div className="fl f-a-c h-30 b-1-gray">
+          Gas partial pressure ratio (yg0)
+        </div>
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
@@ -336,8 +336,6 @@ function ViewTwo(){
         </div>
       </Grid>
 
-      
-
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">Omega parameter (w)</div>
       </Grid>
@@ -346,11 +344,9 @@ function ViewTwo(){
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {toFixed(calcFormData.op)}  
+          {toFixed(calcFormData.op)}
         </div>
       </Grid>
-
-
 
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">
@@ -422,7 +418,7 @@ function ViewTwo(){
 
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">
-        Critical flow reduction (Gc/G0c)
+          Critical flow reduction (Gc/G0c)
         </div>
       </Grid>
       <Grid item xs={3}>
@@ -436,7 +432,7 @@ function ViewTwo(){
 
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">
-        Critical pressure ratio (P2c/P0)
+          Critical pressure ratio (P2c/P0)
         </div>
       </Grid>
       <Grid item xs={3}>
@@ -450,7 +446,7 @@ function ViewTwo(){
 
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">
-        Adimensional crit. mass flux
+          Adimensional crit. mass flux
         </div>
       </Grid>
       <Grid item xs={3}>
@@ -462,11 +458,8 @@ function ViewTwo(){
         </div>
       </Grid>
 
-
       <Grid item xs={6}>
-        <div className="fl f-a-c h-30 b-1-gray">
-        Regime
-        </div>
+        <div className="fl f-a-c h-30 b-1-gray">Regime</div>
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
@@ -478,9 +471,7 @@ function ViewTwo(){
       </Grid>
 
       <Grid item xs={6}>
-        <div className="fl f-a-c h-30 b-1-gray">
-        Adimensional mass flux
-        </div>
+        <div className="fl f-a-c h-30 b-1-gray">Adimensional mass flux</div>
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
@@ -491,19 +482,23 @@ function ViewTwo(){
         </div>
       </Grid>
 
-
       <Grid item xs={12}>
-      <Charts
-          xData={(calcFormData.xs || [])}
+        <Charts
+          xData={calcFormData.xs || []}
           xTickCount={10}
           yTickCount={8}
           yDomain={[0, 1]}
-          xScale={'log'}
-          xTickFormatter = {(val,ix) => {
-           return toFixed(val,1)
+          xScale={"log"}
+          xTickFormatter={(val, ix) => {
+            const filterArr = [0.1, 1, 10, 100];
+            if (filterArr.includes(val)) return val;
+            else return "";
           }}
-          xTicks = {[0.1,1,10,100]}
-          xDomain={['auto', 'auto']}
+          xTicks={[
+            0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+          ]}
+          xDomain={["auto", "auto"]}
           scatters={["Current"]}
           scatters_data={[
             {
@@ -511,40 +506,41 @@ function ViewTwo(){
               Current: calcFormData.np_cfr,
             },
           ]}
-          yDatas={(calcFormData.cmfrs||[]).map((it)=>it.ys)}
-          columns={(calcFormData.cmfrs||[]).map((it)=>it.yg0)}
+          yDatas={(calcFormData.cmfrs || []).map((it) => it.ys)}
+          columns={(calcFormData.cmfrs || []).map((it) => it.yg0)}
         />
       </Grid>
-      </>
+    </>
+  );
 }
 
-function ViewThree(){
-    const [calcFormData, setCalcFormData] = useState({
-        "pp":0.5,
-        "hfo":50,
-        "psp":0.7,
-        "frf":50,
-        "inf":0.01
-      });
-      useEffect(() => {
-        debCalcApiTwo({
-          url:'/api/pipeCorrGraph/valveflowThree',
-          calcFormData: {
-            ...calcFormData,
-          },
-          setCalcFormData,
-        });
-      }, [
-        calcFormData.pp,
-        calcFormData.hfo,
-        calcFormData.psp,
-        calcFormData.gppr,
-        calcFormData.frf,
-        calcFormData.inf
-      ]);
+function ViewThree() {
+  const [calcFormData, setCalcFormData] = useState({
+    pp: 0.5,
+    hfo: 50,
+    psp: 0.7,
+    frf: 50,
+    inf: 0.01,
+  });
+  useEffect(() => {
+    debCalcApiThree({
+      url: "/api/pipeCorrGraph/valveflowThree",
+      calcFormData: {
+        ...calcFormData,
+      },
+      setCalcFormData,
+    });
+  }, [
+    calcFormData.pp,
+    calcFormData.hfo,
+    calcFormData.psp,
+    calcFormData.gppr,
+    calcFormData.frf,
+    calcFormData.inf,
+  ]);
 
-      return <>
-
+  return (
+    <>
       <Grid item xs={12}>
         <div className="fl f-a-c h-30">Subcooled liquid</div>
       </Grid>
@@ -596,7 +592,6 @@ function ViewThree(){
         </div>
       </Grid>
 
-
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">
           Flow resistance factor (4f L/D)
@@ -667,7 +662,7 @@ function ViewThree(){
 
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">
-        Critical flow reduction (Gc/G0c)
+          Critical flow reduction (Gc/G0c)
         </div>
       </Grid>
       <Grid item xs={3}>
@@ -681,7 +676,7 @@ function ViewThree(){
 
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">
-        Critical pressure ratio (P2c/P0)
+          Critical pressure ratio (P2c/P0)
         </div>
       </Grid>
       <Grid item xs={3}>
@@ -695,7 +690,7 @@ function ViewThree(){
 
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">
-        Adimensional crit. mass flux
+          Adimensional crit. mass flux
         </div>
       </Grid>
       <Grid item xs={3}>
@@ -707,11 +702,8 @@ function ViewThree(){
         </div>
       </Grid>
 
-
       <Grid item xs={6}>
-        <div className="fl f-a-c h-30 b-1-gray">
-        Regime
-        </div>
+        <div className="fl f-a-c h-30 b-1-gray">Regime</div>
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
@@ -723,9 +715,7 @@ function ViewThree(){
       </Grid>
 
       <Grid item xs={6}>
-        <div className="fl f-a-c h-30 b-1-gray">
-        Adimensional mass flux
-        </div>
+        <div className="fl f-a-c h-30 b-1-gray">Adimensional mass flux</div>
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
@@ -736,19 +726,23 @@ function ViewThree(){
         </div>
       </Grid>
 
-
       <Grid item xs={12}>
-      <Charts
-          xData={(calcFormData.cmfrs||[]).map((it)=>it.xs)}
+        <Charts
+          xData={(calcFormData.cmfrs || []).map((it) => it.xs)}
           xTickCount={10}
           yTickCount={8}
           yDomain={[0, 1]}
-          xScale={'log'}
-          xTickFormatter = {(val,ix) => {
-           return toFixed(val,1)
+          xScale={"log"}
+          xTickFormatter={(val, ix) => {
+            const filterArr = [0.1, 1, 10, 100];
+            if (filterArr.includes(val)) return val;
+            else return "";
           }}
-          xTicks = {[0.1,1,10,100]}
-          xDomain={['auto', 'auto']}
+          xTicks={[
+            0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+          ]}
+          xDomain={["auto", "auto"]}
           scatters={["Current"]}
           scatters_data={[
             {
@@ -756,29 +750,25 @@ function ViewThree(){
               Current: calcFormData.np_cfr,
             },
           ]}
-          yDatas={(calcFormData.cmfrs||[]).map((it)=>it.ys)}
-          columns={(calcFormData.cmfrs||[]).map((it)=>it.w)}
+          yDatas={(calcFormData.cmfrs || []).map((it) => it.ys)}
+          columns={(calcFormData.cmfrs || []).map((it) => it.w)}
         />
       </Grid>
-      </>
+    </>
+  );
 }
 
-
-
-
 export default function PipeCorrGraph() {
-  
   return (
     <Grid container>
-        <Grid item xs={12}>
+      <Grid item xs={12}>
         <div className="fl f-a-c h-30">
           Flow reduction (friction /inclination of vent line)
         </div>
       </Grid>
-        <ViewOne />
-        <ViewTwo />
-        <ViewThree />
-
+      <ViewOne />
+      <ViewTwo />
+      <ViewThree />
     </Grid>
   );
 }

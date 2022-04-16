@@ -620,17 +620,17 @@ export default function RdLiqSubc() {
         <Grid container>
           <Grid item xs={12}>
             <Charts
-              xinterval={0}
-              xTickCount={10}
-              xTickFormatter={(val, ix) => {
-                if (ix % 10 === 0) return toFixed(val, 1);
-                else return "";
-              }}
+             legendStyle={{bottom:'-15px'}}
               xData={[calcFormData.xs || []]}
-              xTickSize={10}
-              yDomain={[0, 1]}
+              yDomain={['auto', 'auto']}
+              yTicks={[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]}
               xScale={"log"}
-              xDomain={[0.1, "dataMax"]}
+              xDomain={['auto', "auto"]}
+              xTicks={[
+                0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6,
+                7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+              ]}
+              legengHeight={30}
               scatters={["Current"]}
               scatters_data={[
                 {

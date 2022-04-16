@@ -1607,16 +1607,13 @@ export default function GasLiq() {
 
       <Grid item xs={7}>
         <Charts
-          yDomain={[0,1]}
-          xTickCount={17}
+          yDomain={['auto','auto']}
           yTickCount={10}
           xScale={'log'}
-          xDomain={[0.01,9000]}
+          xTicks = {[0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,600]}
+          yTicks = {[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]}
+          xDomain={['auto','auto']}
           xData={(chartData.omegas || []).map((it)=>toFixed(it)).slice(0,51)}
-          //   xTickCount={7}
-          //   yDomain={[0,70]}
-          //   showDot={<CustomizedDot />}
-          //   xDomain={[0,3]}
           yDatas={[chartData.ncs || [], chartData$1.ncs||[], chartData$2.ncs||[], chartData$3.ncs||[]]}
           columns={["case1","case2","case3","case4"]}
         />

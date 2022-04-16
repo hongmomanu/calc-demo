@@ -1,19 +1,21 @@
 import { Grid, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Charts } from "../../../components/Charts";
 import { Combox } from "../../../components/Combox";
 import { NumberInput } from "../../../components/NumberInput";
 import usePrevious from "../../../hooks/use-previous";
 import { httpPost } from "../../../http";
 import { debounce, toFixed } from "../../../utils";
+import { faning_ys, fanning_xs } from "./data";
 function calcApi({ setCalcFormData, calcFormData }) {
-    httpPost({
-      url: "/api/fanning/valveflow",
-      params: calcFormData,
-    }).then((rep) => {
-      setCalcFormData({ ...calcFormData, ...rep });
-    });
-  }
-  const debCalcApi = debounce(calcApi);
+  httpPost({
+    url: "/api/fanning/valveflow",
+    params: calcFormData,
+  }).then((rep) => {
+    setCalcFormData({ ...calcFormData, ...rep });
+  });
+}
+const debCalcApi = debounce(calcApi);
 export default function Fanning() {
   const [calcFormData, setCalcFormData] = useState({
     r: 0.001,
@@ -49,13 +51,12 @@ export default function Fanning() {
     usePrevious(calcFormData.r_new_unit) || calcFormData.r_new_unit;
   const pd_old_unit =
     usePrevious(calcFormData.pd_new_unit) || calcFormData.pd_new_unit;
-  
 
   useEffect(() => {
     debCalcApi({
       calcFormData: {
         ...calcFormData,
-        ...{ r_old_unit, pd_old_unit},
+        ...{ r_old_unit, pd_old_unit },
       },
       setCalcFormData,
     });
@@ -133,14 +134,11 @@ export default function Fanning() {
         </div>
       </Grid>
 
-
       <Grid item xs={4}>
         <div className="fl f-a-c h-30 b-1-gray">Reynolds</div>
       </Grid>
       <Grid item xs={4}>
-        <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          -
-        </div>
+        <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
       </Grid>
 
       <Grid item xs={4}>
@@ -157,24 +155,22 @@ export default function Fanning() {
         <div className="fl f-a-c h-30 b-1-gray">Relative rugosity (eps)</div>
       </Grid>
       <Grid item xs={4}>
-        <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          -
-        </div>
+        <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
       </Grid>
 
       <Grid item xs={4}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {toFixed(calcFormData.rr,5)}
+          {toFixed(calcFormData.rr, 5)}
         </div>
       </Grid>
 
       <Grid item xs={4}>
-        <div className="fl f-a-c h-30 b-1-gray">fanning friction factor (f)</div>
+        <div className="fl f-a-c h-30 b-1-gray">
+          fanning friction factor (f)
+        </div>
       </Grid>
       <Grid item xs={4}>
-        <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          -
-        </div>
+        <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
       </Grid>
 
       <Grid item xs={4}>
@@ -183,7 +179,37 @@ export default function Fanning() {
         </div>
       </Grid>
 
-
+      <Grid style={{ height: "560px" }} item xs={11}>
+        <Charts
+          xData={fanning_xs}
+          legendStyle={{ bottom: "-20px" }}
+          xScale={"log"}
+          xTickFormatter={(val, ix) => {
+            const filterArr = [100, 1000, 10000, 100000, 1000000, 10000000];
+            if (filterArr.includes(val)) return val;
+            else return "";
+          }}
+          xTicks={[
+            100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 4000,
+            5000, 6000, 7000, 8000, 9000, 10000, 20000, 30000, 40000, 50000,
+            60000, 70000, 80000, 90000, 100000, 200000, 300000, 400000, 500000,
+            600000, 700000, 800000, 900000, 1000000, 2000000, 3000000, 4000000,
+            5000000, 6000000, 7000000, 8000000, 9000000, 10000000,
+          ]}
+          yTicks={[0, 0.005, 0.01, 0.015, 0.02, 0.025, 0.03]}
+          xDomain={["auto", "auto"]}
+          yDomain={["auto", "auto"]}
+          scatters={["Current"]}
+          scatters_data={[
+            {
+              name: calcFormData.reynolds,
+              Current: calcFormData.fff,
+            },
+          ]}
+          yDatas={faning_ys.map((it) => it.ys)}
+          columns={faning_ys.map((it) => it.name)}
+        />
+      </Grid>
     </Grid>
   );
 }

@@ -46,19 +46,19 @@ export default function RdHybrid() {
     /**
      * Inlet density (r0 = 1/v0)
      */
-     hfo:85,	
-         /**
-          * Hybrid flow omega (ws)
-          */	
-     gpvf:0.4,	
-         /**
-          * Gas phase volume fraction (a0)
-          */	
-     gppr:0.4,	
-         /**
-          * Gas partial pressure ratio (yg0)
-          */
-    
+    hfo: 85,
+    /**
+     * Hybrid flow omega (ws)
+     */
+    gpvf: 0.4,
+    /**
+     * Gas phase volume fraction (a0)
+     */
+    gppr: 0.4,
+    /**
+     * Gas partial pressure ratio (yg0)
+     */
+
     d: 50,
     /**
      * Discharge line
@@ -124,7 +124,6 @@ export default function RdHybrid() {
     usePrevious(calcFormData.d_new_unit) || calcFormData.d_new_unit;
   const l_old_unit =
     usePrevious(calcFormData.l_new_unit) || calcFormData.l_new_unit;
-  
 
   useEffect(() => {
     debCalcApi({
@@ -157,7 +156,7 @@ export default function RdHybrid() {
         <Grid container>
           <Grid item xs={12}>
             <div className="fl f-a-c h-30">
-            Rupture disk checking for hybrid systems
+              Rupture disk checking for hybrid systems
             </div>
           </Grid>
           <Grid item xs={6}>
@@ -246,14 +245,10 @@ export default function RdHybrid() {
           </Grid>
 
           <Grid item xs={6}>
-            <div className="fl f-a-c h-30 b-1-gray">
-            Hybrid flow omega (ws)
-            </div>
+            <div className="fl f-a-c h-30 b-1-gray">Hybrid flow omega (ws)</div>
           </Grid>
           <Grid item xs={3}>
-            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-            -
-            </div>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 b-1-gray">
@@ -265,16 +260,13 @@ export default function RdHybrid() {
             </div>
           </Grid>
 
-
           <Grid item xs={6}>
             <div className="fl f-a-c h-30 b-1-gray">
-            Gas phase volume fraction (a0)
+              Gas phase volume fraction (a0)
             </div>
           </Grid>
           <Grid item xs={3}>
-            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-            -
-            </div>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 b-1-gray">
@@ -288,13 +280,11 @@ export default function RdHybrid() {
 
           <Grid item xs={6}>
             <div className="fl f-a-c h-30 b-1-gray">
-            Gas partial pressure ratio (yg0)
+              Gas partial pressure ratio (yg0)
             </div>
           </Grid>
           <Grid item xs={3}>
-            <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-            -
-            </div>
+            <div className="fl f-a-c h-30 f-j-c  b-1-gray">-</div>
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 b-1-gray">
@@ -321,7 +311,6 @@ export default function RdHybrid() {
               />
             </div>
           </Grid>
-
 
           <Grid item xs={6}>
             <div className="fl f-a-c h-30 b-1-gray">Pb/P0</div>
@@ -633,17 +622,15 @@ export default function RdHybrid() {
         <Grid container>
           <Grid item xs={12}>
             <Charts
-              xinterval={0}
-              xTickCount={10}
-              xTickFormatter={(val, ix) => {
-                if (ix % 10 === 0) return toFixed(val, 1);
-                else return "";
-              }}
+              legendStyle={{bottom:'-10px'}}
               xData={[calcFormData.xs || []]}
-              xTickSize={10}
               yDomain={[0, 1]}
               xScale={"log"}
-              xDomain={[0.1, "dataMax"]}
+              xTicks={[
+                0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6,
+                7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+              ]}
+              xDomain={["auto", "auto"]}
               scatters={["Current"]}
               scatters_data={[
                 {
@@ -652,7 +639,7 @@ export default function RdHybrid() {
                 },
               ]}
               yDatas={[calcFormData.ys || []]}
-              columns={["w=0.001"]}
+              columns={["w=0.0001"]}
             />
           </Grid>
         </Grid>

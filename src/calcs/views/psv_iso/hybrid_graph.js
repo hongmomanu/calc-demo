@@ -194,15 +194,15 @@ export default function HybridGraph() {
         </div>
       </Grid>
 
-     <Grid item xs={6}>
+    
+     <Grid item style={{height:'400px'}} xs={6}>
      <Charts
+          height={300}
+          legendStyle={{bottom:'-10px'}}
           xData={calcFormData.xs || []}
-          xTickCount={25}
-        //   xinterval={0}
-          yTickCount={8}
           yDomain={[0, 1.2]}
-          // showDot={<CustomizedDot />}
-          xDomain={[0, 1]}
+          xDomain={['auto', 'auto']}
+          xTicks ={[0,0.2,0.4,0.6,0.8,1]}
           scatters={["Current"]}
           scatters_data={[
             {
@@ -216,16 +216,16 @@ export default function HybridGraph() {
 
      </Grid>
 
-     <Grid item xs={6}>
+     <Grid item style={{height:'400px'}} xs={6}>
 
      <Charts
           xData={calcFormData.xs || []}
-          xTickCount={25}
-        //   xinterval={0}
-          yTickCount={8}
-          yDomain={[0, 1.4]}
-          // showDot={<CustomizedDot />}
-          xDomain={[0, 1]}
+          height={300}
+          legendStyle={{bottom:'-10px'}}
+          yDomain={['auto', 'auto']}
+          yTicks={[0,0.2,0.4,0.6,0.8,1,1.2,1.4]}
+          xTicks={[0,0.2,0.4,0.6,0.8,1]}
+          xDomain={['auto', 'auto']}
           scatters={["Current"]}
           scatters_data={[
             {
