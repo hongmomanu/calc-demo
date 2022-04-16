@@ -23,3 +23,9 @@ export function debounce (func, space = 200) {
     };
   
   }
+
+  export function makeLineArr (data,limits,idx){
+    // if(data[idx])
+   
+
+  }

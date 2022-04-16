@@ -1314,22 +1314,22 @@ export default function LiqSubc() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {calcFormData.c}
+          {toFixed(calcFormData.c) }
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {calcFormData.c$1}
+          {toFixed(calcFormData.c$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {calcFormData.c$2}
+          {toFixed(calcFormData.c$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {calcFormData.c$3}
+          {toFixed(calcFormData.c$3)}
         </div>
       </Grid>
 

@@ -32,6 +32,10 @@ export function Charts({
   yReversed = false,
   yDomain = [0, "auto"],
   xDomain = [0, "auto"],
+  xinterval = 'preserveEnd',
+  yinterval = 'preserveEnd',
+  xTick = {},
+  xTickFormatter = null,
 }) {
   const chartData = [];
   scatters_data.forEach((it) => {
@@ -77,17 +81,21 @@ export function Charts({
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
           <XAxis
+            tick = {xTick}
+            interval={xinterval}
             tickCount={xTickCount}
             tickSize={xTickSize}
             scale={xScale}
             dataKey={layout === "horizontal" ? "name" : undefined}
             domain={xDomain}
             type="number"
+            tickFormatter={xTickFormatter}
             // scale="threshold"
           />
 
         
           <YAxis
+            interval={yinterval}
             tickCount={yTickCount}
             tickSize={yTickSize}
             domain={yDomain}
@@ -104,7 +112,7 @@ export function Charts({
                 key={it}
                 name={it}
                 dataKey={it}
-                fill={'rgb(' + colorArr[ix].toString() + ')'}
+                fill={'rgb(' + colorArr[colorArr.length-1-ix].toString() + ')'}
               />
             );
           })}
@@ -114,7 +122,6 @@ export function Charts({
               <Line
                 key={ix}
                 dot={showDot}
-                // strokeDasharray={strokeDasharrayWrap(ix%2===0)}
                 dataKey={it}
                 stroke={'rgb(' + colorArr[ix].toString() + ')'}
               />
