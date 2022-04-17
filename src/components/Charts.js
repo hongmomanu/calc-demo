@@ -43,6 +43,8 @@ export function Charts({
   width = '100%',
   legengHeight= null,
   legendStyle={},
+  rightY=false,
+  yRightTicks= null
 }) {
   const chartData = [];
   scatters_data.forEach((it) => {
@@ -54,9 +56,10 @@ export function Charts({
     
     if(typeof(xData[i]) === 'object'){
       xData[i].forEach((it,ix)=>{
+        const key = (typeof columns[i] === 'object')? columns[i].dataKey: columns[i]
         const item = {}
         item.name = it
-        item[columns[i]] = yDatas[i][ix]
+        item[key] = yDatas[i][ix]
         chartData.push(item);
       })
       
@@ -64,7 +67,8 @@ export function Charts({
       const item = {}
       item.name = xData[i]
       yDatas.forEach((it, ix) => {
-        item[columns[ix]] = it[i];
+        const key = (typeof columns[ix] === 'object')? columns[ix].dataKey: columns[ix]
+        item[key] = it[i];
       });
       chartData.push(item);
     }
@@ -72,7 +76,7 @@ export function Charts({
     
   }
 
-  console.log("chartData", chartData);
+  
   
   return (
     <Box
@@ -86,7 +90,7 @@ export function Charts({
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip />
+          
           <XAxis
             tick = {xTick}
             interval={xinterval}
@@ -113,6 +117,19 @@ export function Charts({
             scale={yScale}
             dataKey={layout === "vertical" ? "name" : undefined}
           />
+          {rightY&&<YAxis
+            ticks={yRightTicks}
+            interval={yinterval}
+            tickCount={yTickCount}
+            tickSize={yTickSize}
+            domain={yDomain}
+            reversed={yReversed}
+            type="number"
+            scale={yScale}
+            yAxisId="right"
+            orientation="right"
+            dataKey={layout === "vertical" ? "name" : undefined}
+          />}
           <Legend wrapperStyle={legendStyle}  height={legengHeight}/>
 
           {scatters.map((it,ix) => {
@@ -125,17 +142,20 @@ export function Charts({
               />
             );
           })}
-
+          <Tooltip content={<CustomTooltip />} />
           {columns.map((it, ix) => {
+            const params =(typeof it === 'object')?it:{dataKey:it}
             return (
               <Line
                 key={ix}
+                type="monotone"
                 dot={showDot}
-                dataKey={it}
                 stroke={'rgb(' + colorArr[ix].toString() + ')'}
+                {...{...params}}
               />
             );
           })}
+          
         </ComposedChart>
       </ResponsiveContainer>
     </Box>
@@ -146,6 +166,22 @@ export function Charts({
 //     const n = isNoDash?0:parseInt(10 * Math.random())
 //     return `${n} ${n}`;
 // }
+
+const CustomTooltip = ({ active, payload, label }) => {
+  console.log("active, payload, label", active, payload, label)
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip">
+        {payload.map((it,ix)=>{
+          return <p key={ix} style={{color:it.color}}  className="label">{`${it.name}坐标：(${label},${it.value})`}</p>
+        })}
+        
+      </div>
+    );
+  }
+
+  return null;
+};
 
 function getRandomColor() {
   // const color= `#${Math.floor(Math.random() * 16777215).toString(16)}`

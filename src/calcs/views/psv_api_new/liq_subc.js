@@ -595,7 +595,7 @@ secsel:1.981,
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">
-          Kd: discharge coefficient (0.85 by default)
+          Kd: discharge coefficient (0.65 by default)
         </div>
       </Grid>
       <Grid item xs={1.5}>
@@ -1743,24 +1743,47 @@ secsel:1.981,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel)}
+        <NumberInput
+            disabled={calcFormData.api526}
+            data={calcFormData}
+            name="secsel"
+            setFunc={setCalcFormData}
+          />
+          
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel$1)}
+        <NumberInput
+            disabled={calcFormData.api526}
+            data={calcFormData}
+            name="secsel$1"
+            setFunc={setCalcFormData}
+          />
+          
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel$2)}
+        <NumberInput
+            disabled={calcFormData.api526}
+            data={calcFormData}
+            name="secsel$2"
+            setFunc={setCalcFormData}
+          />
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel$3)}
+          <NumberInput
+            disabled={calcFormData.api526}
+            data={calcFormData}
+            name="secsel$3"
+            setFunc={setCalcFormData}
+          />
         </div>
       </Grid>
+      
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">Number of PSV</div>

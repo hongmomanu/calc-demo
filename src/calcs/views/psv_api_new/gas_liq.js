@@ -117,7 +117,7 @@ export default function GasLiq() {
      */ kbSpecif: false,
     /**
      * Kb.specif,根据case
-     */ kb: 0,
+     */ kb: null,
     /**
      * Kb: correction factor due to back press.
      * apgl_kb
@@ -1647,22 +1647,44 @@ export default function GasLiq() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel)}
+        <NumberInput
+            disabled={calcFormData.api526}
+            data={calcFormData}
+            name="secsel"
+            setFunc={setCalcFormData}
+          />
+          
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel$1)}
+        <NumberInput
+            disabled={calcFormData.api526}
+            data={calcFormData}
+            name="secsel$1"
+            setFunc={setCalcFormData}
+          />
+          
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel$2)}
+        <NumberInput
+            disabled={calcFormData.api526}
+            data={calcFormData}
+            name="secsel$2"
+            setFunc={setCalcFormData}
+          />
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel$3)}
+          <NumberInput
+            disabled={calcFormData.api526}
+            data={calcFormData}
+            name="secsel$3"
+            setFunc={setCalcFormData}
+          />
         </div>
       </Grid>
 

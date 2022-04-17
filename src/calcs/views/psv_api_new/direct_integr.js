@@ -4,12 +4,41 @@ import { httpPost } from "../../../http";
 import { debounce, toFixed } from "../../../utils";
 import { PatmContext } from "../../context";
 import CalculateIcon from "@mui/icons-material/Calculate";
-import { Grid, TextField } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField } from "@mui/material";
 import { NumberInput } from "../../../components/NumberInput";
 import { CheckedBox } from "../../../components/CheckedBox";
 import { Combox } from "../../../components/Combox";
 import { Charts } from "../../../components/Charts";
-import { direct_table_liq, direct_table_p, direct_table_t, direct_table_vap, direct_table_vf, high_subc_x, high_subc_y, omega10_ad_y, omega10_x, omega10_y, omega15_ad_y, omega15_x, omega15_y, omega20_ad_y, omega20_x, omega20_y, omega40_ad_y, omega40_x, omega40_y, omega5_ad_y, omega5_x, omega5_y, omega7_ad_y, omega7_x, omega7_y, ws_x, ws_y } from "./data";
+import {
+  direct_table_liq,
+  direct_table_p,
+  direct_table_t,
+  direct_table_vap,
+  direct_table_vf,
+  high_subc_x,
+  high_subc_y,
+  omega10_ad_y,
+  omega10_x,
+  omega10_y,
+  omega15_ad_y,
+  omega15_x,
+  omega15_y,
+  omega20_ad_y,
+  omega20_x,
+  omega20_y,
+  omega40_ad_y,
+  omega40_x,
+  omega40_y,
+  omega5_ad_y,
+  omega5_x,
+  omega5_y,
+  omega7_ad_y,
+  omega7_x,
+  omega7_y,
+  ws_x,
+  ws_y,
+} from "./data";
+import { RadioGroups } from "../../../components/RadioGroup";
 
 function makePromise(idx, calcFormData, setCalcFormData) {
   return new Promise((resolve, reject) => {
@@ -41,6 +70,13 @@ function makePromise(idx, calcFormData, setCalcFormData) {
       resolve({});
     }
   });
+}
+function getAplWater(params){
+  return httpPost({
+      url: "/api/directIntegr/water_steam",
+      params,
+      nofilter: true,
+    })
 }
 function calcApi({ setCalcFormData, calcFormData, setIsCalcing }) {
   setIsCalcing(true);
@@ -76,162 +112,308 @@ export default function DirectIntegr() {
   }, []);
 
   const [calcFormData, setCalcFormData] = useState({
-    pres:135,	
-/**
+    pres: 135,
+    /**
      * Set pressure of the PSV (Pset)
      * apdi_pres
-     */	
-pres_unit:'barg',	
-/**
+     */
+    pres_unit: "barg",
+    /**
      * Set pressure of the PSV (Pset)
      * apdi_pres
-     */	
-acc:0.0,	
+     */
+    acc: 0.0,
     /**
      * Overpressure (10% by default)
      * apdi_acc，什么情况下都可传空,默认0.1
-     */	
-temp_unit:'C',	
+     */
+    temp_unit: "C",
     /**
      * Temperature
-     */	
-contpr:20,	
-   /**
+     */
+    contpr: 20,
+    /**
      * Back-pressure (P2)
      * apdi_contpr
-     */	
-kd:0.85,	
+     */
+    kd: 0.85,
     /**
      * Kd: discharge coefficient (0.85 by default)
      * apdi_kd，什么情况下都可传空,默认0.85
-     */	
-rupturedisc:false,	
+     */
+    rupturedisc: false,
     /**
      * rupt.disc,根据case
-     */	
-kc:0.9,	
+     */
+    kc: 0.9,
     /**
      * Kc: PSV-RD correction (0.9 by default)
      * apdi_kc，什么情况下都可传空
      * 即使不传空，后端代码也会默认设置0.9
-     */	
-bellow:false,	
+     */
+    bellow: false,
     /**
      * Bellows,根据case
-     */	
-kbSpecif:false,	
+     */
+    kbSpecif: false,
     /**
      * Kb specif,根据case
-     */	
-kb:0,	
+     */
+    kb: 0,
     /**
      * Kb: correction factor due to back press.
      * apdi_kb
      * kbSpecif = true,kb必填
      * 注：此处excel存在点问题，bellow=true；kbSpecif=true时kb才会填值，实际bellow=true就应该填值
-     */	
-deb:136000,	
+     */
+    deb: 136000,
     /**
      * Flowrate
      * apdi_deb
-     */	
-massfl_unit:'kg/h',	
+     */
+    massfl_unit: "kg/h",
     /**
      * Flowrate
-     */	
-flux_unit:	'kg/s.m2',
+     */
+    flux_unit: "kg/s.m2",
     /**
      * Results
      * Mass flux (G)
-     */	
-area_unit: 'cm2',	
+     */
+    area_unit: "cm2",
     /**
      * Results
      * Calculated orifice area
-     */	
-patm: patmContext.bar,	
+     */
+    patm: patmContext.bar,
     /**
      * sheet Doc
      * Patm bar
-     */	
-api526:	true,	
+     */
+    api526: true,
     /**
      * Selection of a standard oriffice from API 526
-     */	
-secsel:0,	
+     */
+    secsel: 0,
     /**
      * Selected orifice area
      * apdi_secsel
      * api526 = false，必传
-     */	
-d_pres_unit:'bara',	
+     */
+    d_pres_unit: "bara",
     /**
      * Physical properties (Vap-Liq)
      * P
-     */	
-d_temp_unit:'C',	
+     */
+    d_temp_unit: "C",
     /**
      * Physical properties (Vap-Liq)
      * T
-     */	
-d_rhog_unit:'kg/m3',	
+     */
+    d_rhog_unit: "kg/m3",
     /**
      * Physical properties (Vap-Liq)
      * Rho Vap
-     */	
-d_rhol_unit:'kg/m3',	
+     */
+    d_rhol_unit: "kg/m3",
     /**
      * Physical properties (Vap-Liq)
      * Rho Liq
-     */	
-det_p:direct_table_p,
+     */
+    det_p: direct_table_p,
     /**
      * Physical properties (Vap-Liq)
      * P
-     */	
-det_t:direct_table_t,
+     */
+    det_t: direct_table_t,
     /**
      * Physical properties (Vap-Liq)
      * T
-     */	
-det_vf:direct_table_vf,
+     */
+    det_vf: direct_table_vf,
     /**
      * Physical properties (Vap-Liq)
      * VF
-     */	
-det_rhog: direct_table_vap,
-/**
+     */
+    det_rhog: direct_table_vap,
+    /**
      * Physical properties (Vap-Liq)
      * Rho Vap
      * 大小和det_p一样，不足补null
-     */	
-det_rhol: direct_table_liq,	
+     */
+    det_rhol: direct_table_liq,
     /**
      * Physical properties (Vap-Liq)
      * Rho Liq
      * 大小和det_p一样，不足补null
+     */
+  });
+
+  const [open, setOpen] = useState(false);
+  const [paramForm, setParamForm] = useState({
+
+    pt:1,	
+ /**
+     * State variables
+     * pt true
+     * p false
      */	
-  })
+pinit:null,	
+/**
+     * Pressure(bara)
+     */	
+tvinit:null,	
+    /**
+     * Temperature(C)
+     * Vapour fraction
+     */	
+isenth:1,	
+/**
+     * Expansion
+     */	
+pmin:1.01325,
+/**
+     * Minimum pressure(bara)
+     * pmin<pinit
+     */	
+pmax:null,	
+
+
+  });
   return (
     <Grid container>
       <Grid item xs={12}>
         <div className="fl f-a-c h-30">
-        Sizing of pressure safety valves by direct integration method
+          Sizing of pressure safety valves by direct integration method
         </div>
-
       </Grid>
-      <Grid item xs={8}>
+      <Grid item xs={4.5}>
         <div className="fl f-a-c h-30">
           API standard RP-520 9th 2014 / 10th 2020
         </div>
-        <div className="fl f-a-c h-30">
-          Homogeneous Equilibrium Method
-        </div>
+        <div className="fl f-a-c h-30">Homogeneous Equilibrium Method</div>
         <div className="fl f-a-c h-30 c-red">
           This method is known to be very conservative for two phase flow
         </div>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={5}>
+      <Button size="large" onClick={() => setOpen(true)} variant="contained">
+          Create Properties table for water/steam
+        </Button>
+        <Dialog open={open} onClose={() => setOpen(false)}>
+          <DialogTitle>Water properties</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Inlet Thermodynamic  state </DialogContentText>
+
+            <RadioGroups
+              label="State variables"
+              row={true}
+              data={paramForm}
+              name={"pt"}
+              options={[
+                { label: "P,T", value: 1 },
+                { label: "P", value: 0 },
+              ]}
+              setFunc={setParamForm}
+            />
+            {paramForm.pt=='1'?<>
+              <div style={{height:'50px'}}>
+              <NumberInput
+              paddingTop={10}
+              data={paramForm}
+              label={`Pressure (${calcFormData.pres_unit})`}
+              name="pinit"
+              setFunc={setParamForm}
+            />
+            </div>
+            <div style={{height:'50px'}}>
+            <NumberInput
+            paddingTop={10}
+              data={paramForm}
+              label={`Temperature (${calcFormData.temp_unit})`}
+              name="tvinit"
+              setFunc={setParamForm}
+            />
+            </div>
+            </>:<>
+            <div style={{height:'50px'}}>
+            <NumberInput
+            paddingTop={10}
+              data={paramForm}
+              label={`Pressure (${calcFormData.pres_unit})`}
+              name="pinit"
+              setFunc={setParamForm}
+            />
+            </div>
+            <div style={{height:'50px'}}>
+            <NumberInput
+              paddingTop={10}
+              data={paramForm}
+              label={`Vapour fraction (-)`}
+              name="tvinit"
+              setFunc={setParamForm}
+            />
+            </div>
+            </>}
+
+            <DialogContentText>Expansion </DialogContentText>
+            <RadioGroups
+              row={true}
+              label="State variables"
+              data={paramForm}
+              name={"isenth"}
+              options={[
+                { label: "Isenthalpic", value: 1 },
+                { label: "Isentroppic", value: 0 },
+              ]}
+              setFunc={setParamForm}
+            />
+
+
+            <NumberInput
+            paddingTop={10}
+              data={paramForm}
+              label={`Minimium pressure (${calcFormData.pres_unit})`}
+              name="pmin"
+              setFunc={setParamForm}
+            />
+            <NumberInput
+            paddingTop={10}
+              data={paramForm}
+              label={`Maximium pressure (${calcFormData.pres_unit})`}
+              name="pmax"
+              setFunc={setParamForm}
+            />
+            
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                setOpen(false);
+                getAplWater({
+                    ...paramForm,
+                    rhov_unit:calcFormData.d_rhog_unit,
+                    rhol_unit:calcFormData.d_rhol_unit,
+                    pres_unit:calcFormData.pres_unit,
+                    temp_unit:calcFormData.temp_unit,
+                    patm:patmContext.bar,
+                    isenth:paramForm.isenth == '0'?false:true,
+                    pt:paramForm.pt == '0'?false:true
+                }).then((rep) => {
+                    
+                      setCalcFormData({...calcFormData,...rep})
+                    
+                    console.log('getAplWater rep',rep)
+                  })
+              }}
+            >
+              Ok
+            </Button>
+            <Button onClick={() => setOpen(false)}>Cancel</Button>
+          </DialogActions>
+        </Dialog>
+      </Grid>
+      <Grid item xs={2.5}>
         <LoadingButton
           loading={isCalcing}
           loadingPosition="start"
@@ -263,7 +445,7 @@ det_rhol: direct_table_liq,
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray">{`Patm=${patmContext.bar}(bar)/${patmContext.psi}(psi)`}</div>
       </Grid>
-      
+
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">Case1</div>
       </Grid>
@@ -751,7 +933,7 @@ det_rhol: direct_table_liq,
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">
-        Kb: correction factor due to back press.
+          Kb: correction factor due to back press.
         </div>
       </Grid>
       <Grid item xs={1.5}>
@@ -799,13 +981,11 @@ det_rhol: direct_table_liq,
       </Grid>
 
       <Grid item xs={4.5}>
-        <div className="fl f-a-c h-30 b-1-gray">
-        Flowrate
-        </div>
+        <div className="fl f-a-c h-30 b-1-gray">Flowrate</div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-        {Combox({
+          {Combox({
             options: [
               { name: "kg/h", value: "kg/h" },
               { name: "kg/s", value: "kg/s" },
@@ -819,22 +999,25 @@ det_rhol: direct_table_liq,
         </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.deb)}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {toFixed(calcFormData.deb)}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.deb$1)}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {toFixed(calcFormData.deb$1)}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.deb$2)}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {toFixed(calcFormData.deb$2)}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{toFixed(calcFormData.deb$3)}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {toFixed(calcFormData.deb$3)}
+        </div>
       </Grid>
-
-      
-
-
-
 
       <Grid item xs={12}>
         <div className="fl f-a-c h-30">Results</div>
@@ -845,7 +1028,7 @@ det_rhol: direct_table_liq,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-        {Combox({
+          {Combox({
             options: [
               { name: "kg/s.m2", value: "kg/s.m2" },
               { name: "kg/h.m2", value: "kg/h.m2" },
@@ -862,17 +1045,17 @@ det_rhol: direct_table_liq,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.massflux) }
+          {toFixed(calcFormData.massflux)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.massflux$1) }
+          {toFixed(calcFormData.massflux$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.massflux$2) }
+          {toFixed(calcFormData.massflux$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
@@ -936,7 +1119,6 @@ det_rhol: direct_table_liq,
           {toFixed(calcFormData.pcrit$3)}
         </div>
       </Grid>
-      
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">Regime</div>
@@ -964,8 +1146,6 @@ det_rhol: direct_table_liq,
           {calcFormData.regime$3}
         </div>
       </Grid>
-
-
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">Calculated orifice area</div>
@@ -1006,8 +1186,6 @@ det_rhol: direct_table_liq,
         </div>
       </Grid>
 
-
-
       <Grid item xs={12}>
         <div className="fl f-a-c h-30 b-1-gray">
           <CheckedBox
@@ -1018,7 +1196,7 @@ det_rhol: direct_table_liq,
           />
         </div>
       </Grid>
-      
+
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">
           Selected standard API 526 orifice
@@ -1048,17 +1226,17 @@ det_rhol: direct_table_liq,
         </div>
       </Grid>
 
-
-      
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">Selected orifice area</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{calcFormData.area_unit}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {calcFormData.area_unit}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-        <NumberInput
+          <NumberInput
             data={calcFormData}
             disabled={calcFormData.api526}
             name="secsel"
@@ -1068,7 +1246,7 @@ det_rhol: direct_table_liq,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-        <NumberInput
+          <NumberInput
             data={calcFormData}
             disabled={calcFormData.api526}
             name="secsel$1"
@@ -1078,7 +1256,7 @@ det_rhol: direct_table_liq,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-        <NumberInput
+          <NumberInput
             data={calcFormData}
             disabled={calcFormData.api526}
             name="secsel$2"
@@ -1088,7 +1266,7 @@ det_rhol: direct_table_liq,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-        <NumberInput
+          <NumberInput
             data={calcFormData}
             disabled={calcFormData.api526}
             name="secsel$3"
@@ -1096,8 +1274,6 @@ det_rhol: direct_table_liq,
           />
         </div>
       </Grid>
-
-      
 
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">Number of PSV</div>
@@ -1126,7 +1302,6 @@ det_rhol: direct_table_liq,
         </div>
       </Grid>
 
-      
       <Grid item xs={4.5}>
         <div className="fl f-a-c h-30 b-1-gray">Flowrate through PSV</div>
       </Grid>
@@ -1156,136 +1331,183 @@ det_rhol: direct_table_liq,
         </div>
       </Grid>
 
-
       <Grid item xs={4.5}>
-        <div className="fl f-a-c h-30 b-1-gray">Physical properties (Vap-Liq)</div>
-      </Grid>
-      <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          P
+        <div className="fl f-a-c h-30 b-1-gray">
+          Physical properties (Vap-Liq)
         </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          T
-        </div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">P</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          VF
-        </div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">T</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          Rho Vap
-        </div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">VF</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          Rho Liq
-        </div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">Rho Vap</div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">Rho Liq</div>
       </Grid>
 
-
-      <Grid item xs={4.5}>
-        
+      <Grid item xs={4.5}></Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">bara</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          bara
-        </div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">C</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          C
-        </div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">-</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          -
-        </div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">kg/m3</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          kg/m3
-        </div>
-      </Grid>
-      <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          kg/m3
-        </div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">kg/m3</div>
       </Grid>
 
-      {calcFormData.det_p.map((it,ix)=>{
-        return <>
-          <Grid item xs={4.5}>
-        
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          <NumberInput
-            data={calcFormData.det_p}
-            name={ix}
-            setFunc={(data)=>{
-              console.log("det_p",data)
-              calcFormData.det_p=Object.values(data)
-              setCalcFormData({...calcFormData})
-            }}
-          />
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          <NumberInput
-            data={calcFormData.det_t}
-            name={ix}
-            setFunc={(data)=>{
-              calcFormData.det_t=Object.values(data)
-              setCalcFormData({...calcFormData})
-            }}
-          />
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          <NumberInput
-            data={calcFormData.det_vf}
-            name={ix}
-            setFunc={(data)=>{
-              calcFormData.det_vf=Object.values(data)
-              setCalcFormData({...calcFormData})
-            }}
-          />
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          <NumberInput
-            data={calcFormData.det_rhog}
-            name={ix}
-            setFunc={(data)=>{
-              calcFormData.det_rhog=Object.values(data)
-              setCalcFormData({...calcFormData})
-            }}
-          />
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          <NumberInput
-            data={calcFormData.det_rhol}
-            name={ix}
-            setFunc={(data)=>{
-              calcFormData.det_rhol=Object.values(data)
-              setCalcFormData({...calcFormData})
-            }}
-          />
-          </div>
-        </Grid>
-        </>
+      {calcFormData.det_p.map((it, ix) => {
+        return (
+          <>
+            <Grid item xs={4.5}></Grid>
+            <Grid item xs={1.5}>
+              <div className="fl f-a-c h-30 f-j-c b-1-gray">
+                <NumberInput
+                  data={calcFormData.det_p}
+                  name={ix}
+                  setFunc={(data) => {
+                    console.log("det_p", data);
+                    calcFormData.det_p = Object.values(data);
+                    setCalcFormData({ ...calcFormData });
+                  }}
+                />
+              </div>
+            </Grid>
+            <Grid item xs={1.5}>
+              <div className="fl f-a-c h-30 f-j-c b-1-gray">
+                <NumberInput
+                  data={calcFormData.det_t}
+                  name={ix}
+                  setFunc={(data) => {
+                    calcFormData.det_t = Object.values(data);
+                    setCalcFormData({ ...calcFormData });
+                  }}
+                />
+              </div>
+            </Grid>
+            <Grid item xs={1.5}>
+              <div className="fl f-a-c h-30 f-j-c b-1-gray">
+                <NumberInput
+                  data={calcFormData.det_vf}
+                  name={ix}
+                  setFunc={(data) => {
+                    calcFormData.det_vf = Object.values(data);
+                    setCalcFormData({ ...calcFormData });
+                  }}
+                />
+              </div>
+            </Grid>
+            <Grid item xs={1.5}>
+              <div className="fl f-a-c h-30 f-j-c b-1-gray">
+                <NumberInput
+                  data={calcFormData.det_rhog}
+                  name={ix}
+                  setFunc={(data) => {
+                    calcFormData.det_rhog = Object.values(data);
+                    setCalcFormData({ ...calcFormData });
+                  }}
+                />
+              </div>
+            </Grid>
+            <Grid item xs={1.5}>
+              <div className="fl f-a-c h-30 f-j-c b-1-gray">
+                <NumberInput
+                  data={calcFormData.det_rhol}
+                  name={ix}
+                  setFunc={(data) => {
+                    calcFormData.det_rhol = Object.values(data);
+                    setCalcFormData({ ...calcFormData });
+                  }}
+                />
+              </div>
+            </Grid>
+          </>
+        );
       })}
 
-      
+      <Grid item xs={6}>
+        <Charts
+          yDomain={["auto", "auto"]}
+          xTicks={[
+            0, 0.04, 0.08, 0.12, 0.16, 0.2, 0.24, 0.28, 0.32, 0.36, 0.4, 0.44,
+            0.48, 0.52, 0.56, 0.6, 0.64, 0.68, 0.72, 0.76, 0.8, 0.84, 0.88,
+            0.92, 0.96, 1,
+          ]}
+          scatters={["case1", "case2", "case3", "case4"]}
+          xTickFormatter={(val, ix) => {
+            const filterArr = [0, 0.2, 0.4,0.6, 0.8, 1];
+            if (filterArr.includes(val)) return val;
+            else return "";
+          }}
+          scatters_data={[
+            {
+              name: calcFormData.workDiA2,
+              case1: calcFormData.workDiB2,
+            },
+            {
+              name: calcFormData.workDiA2$1,
+              case2: calcFormData.workDiB2$1,
+            },
+            {
+              name: calcFormData.workDiA2$2,
+              case3: calcFormData.workDiB2$2,
+            },
+            {
+              name: calcFormData.workDiA2$3,
+              case4: calcFormData.workDiB2$3,
+            },
+          ]}
+          xDomain={["auto", "auto"]}
+          xData={(calcFormData.workDiA || []).map((it) => toFixed(it))}
+          yDatas={[calcFormData.workDiB || []]}
+          yTicks={[
+            0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000,
+            11000, 12000, 13000, 14000, 15000, 16000, 17000, 18000, 19000,
+            20000, 21000, 22000, 23000, 24000,
+          ]}
+          columns={["p/p1"]}
+        />
+      </Grid>
+      <Grid item xs={6}>
+        <Charts
+          yDomain={["auto", "auto"]}
+          xTicks={[
+            0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110,
+            120, 130, 140, 150, 160, 170, 180, 190, 200
+          ]}
+          
+          xTickFormatter={(val, ix) => {
+            const filterArr = [0, 50, 100,150, 200];
+            if (filterArr.includes(val)) return val;
+            else return "";
+          }}
+          
+          xDomain={[0, 'dataMax']}
+          xData={(calcFormData.det_p || []).map((it) => toFixed(it))}
+          yDatas={[(calcFormData.det_t || []),(calcFormData.det_vf || [])]}
+          yTicks={[
+            -15, -10,-5,0,5,10,15,20,25,30
+          ]}
+          rightY={true}
+          yRightTicks={[
+            0,0.01,0.02,0.03,0.04,0.05,0.06
+          ]}
+          columns={[{dataKey:"T(C)"},{dataKey:"VF",yAxisId:"right"}]}
+        />
+      </Grid>
     </Grid>
   );
 }

@@ -366,13 +366,16 @@ export default function Steam() {
         </div>
       </Grid>
 
+
       <Grid item xs={4.5}>
-        <div className="fl f-a-c h-30 b-1-gray">Relieving temperature</div>
+        <div className="fl f-a-c h-30 b-1-gray">
+        DT Superheating
+        </div>
       </Grid>
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {Combox({
+        {Combox({
             options: [
               { name: "°C", value: "C" },
               { name: "K", value: "K" },
@@ -385,13 +388,47 @@ export default function Steam() {
           })}
         </div>
       </Grid>
+
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <NumberInput
+        <NumberInput
             data={calcFormData}
-            name="temp"
+            name="dtsat"
             setFunc={setCalcFormData}
           />
+        </div>
+      </Grid>
+
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {toFixed(calcFormData.dtsat$1)}
+        </div>
+      </Grid>
+
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {toFixed(calcFormData.dtsat$2)}
+        </div>
+      </Grid>
+
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {toFixed(calcFormData.dtsat$3)}
+        </div>
+      </Grid>
+
+      <Grid item xs={4.5}>
+        <div className="fl f-a-c h-30 b-1-gray">Relieving temperature</div>
+      </Grid>
+
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {calcFormData.temp_unit}
+        </div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          {toFixed(calcFormData.temp)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
@@ -664,34 +701,34 @@ export default function Steam() {
       <Grid item xs={1.5}>
         <CheckedBox
           data={calcFormData}
-          name={"kwSpecif"}
+          name={"kbSpecif"}
           setFunc={setCalcFormData}
-          label="Kw specif"
+          label="Kb specif"
         />
       </Grid>
 
       <Grid item xs={1.5}>
         <CheckedBox
           data={calcFormData}
-          name={"kwSpecif$1"}
+          name={"kbSpecif$1"}
           setFunc={setCalcFormData}
-          label="Kw specif"
+          label="Kb specif"
         />
       </Grid>
       <Grid item xs={1.5}>
         <CheckedBox
           data={calcFormData}
-          name={"kwSpecif$2"}
+          name={"kbSpecif$2"}
           setFunc={setCalcFormData}
-          label="Kw specif"
+          label="Kb specif"
         />
       </Grid>
       <Grid item xs={1.5}>
         <CheckedBox
           data={calcFormData}
-          name={"kwSpecif$3"}
+          name={"kbSpecif$3"}
           setFunc={setCalcFormData}
-          label="Kw specif"
+          label="Kb specif"
         />
       </Grid>
 
@@ -1060,22 +1097,44 @@ export default function Steam() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel)}
+        <NumberInput
+            disabled={calcFormData.api526}
+            data={calcFormData}
+            name="secsel"
+            setFunc={setCalcFormData}
+          />
+          
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel$1)}
+        <NumberInput
+            disabled={calcFormData.api526}
+            data={calcFormData}
+            name="secsel$1"
+            setFunc={setCalcFormData}
+          />
+          
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel$2)}
+        <NumberInput
+            disabled={calcFormData.api526}
+            data={calcFormData}
+            name="secsel$2"
+            setFunc={setCalcFormData}
+          />
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel$3)}
+          <NumberInput
+            disabled={calcFormData.api526}
+            data={calcFormData}
+            name="secsel$3"
+            setFunc={setCalcFormData}
+          />
         </div>
       </Grid>
 
