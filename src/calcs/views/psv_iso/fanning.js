@@ -5,7 +5,7 @@ import { Combox } from "../../../components/Combox";
 import { NumberInput } from "../../../components/NumberInput";
 import usePrevious from "../../../hooks/use-previous";
 import { httpPost } from "../../../http";
-import { debounce, toFixed } from "../../../utils";
+import { debounce, toFixed, toFixedTip } from "../../../utils";
 import { faning_ys, fanning_xs } from "./data";
 function calcApi({ setCalcFormData, calcFormData }) {
   httpPost({
@@ -160,7 +160,7 @@ export default function Fanning() {
 
       <Grid item xs={4}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {toFixed(calcFormData.rr, 5)}
+          {toFixedTip(calcFormData.rr, 5)}
         </div>
       </Grid>
 
@@ -175,7 +175,7 @@ export default function Fanning() {
 
       <Grid item xs={4}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {toFixed(calcFormData.fff)}
+          {toFixedTip(calcFormData.fff)}
         </div>
       </Grid>
 

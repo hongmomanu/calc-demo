@@ -1,7 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { useContext, useEffect, useState } from "react";
 import { httpPost } from "../../../http";
-import { debounce, toFixed } from "../../../utils";
+import { debounce, toFixed, toFixedTip } from "../../../utils";
 import { PatmContext } from "../../context";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import {
@@ -451,25 +451,25 @@ export default function Liq() {
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.p1)}
+          {toFixedTip(calcFormData.p1)}
         </div>
       </Grid>
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.p1$1)}
+          {toFixedTip(calcFormData.p1$1)}
         </div>
       </Grid>
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.p1$2)}
+          {toFixedTip(calcFormData.p1$2)}
         </div>
       </Grid>
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.p1$3)}
+          {toFixedTip(calcFormData.p1$3)}
         </div>
       </Grid>
 
@@ -584,22 +584,22 @@ export default function Liq() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.pgratio)}
+          {toFixedTip(calcFormData.pgratio)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.pgratio$1)}
+          {toFixedTip(calcFormData.pgratio$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.pgratio$2)}
+          {toFixedTip(calcFormData.pgratio$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.pgratio$3)}
+          {toFixedTip(calcFormData.pgratio$3)}
         </div>
       </Grid>
 
@@ -908,6 +908,41 @@ export default function Liq() {
       </Grid>
 
       <Grid item xs={12}>
+        <div className="fl f-a-c  h-30 "></div>
+      </Grid>
+
+      <Grid item xs={4.5}>
+        <div className="fl f-a-c h-30 b-1-gray">Kp: corr. factor due to overpressure</div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">-</div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixedTip(calcFormData.kp)}
+        </div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixedTip(calcFormData.kp$1)}
+        </div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixedTip(calcFormData.kp$2)}
+        </div>
+      </Grid>
+      <Grid item xs={1.5}>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {toFixedTip(calcFormData.kp$3)}
+        </div>
+      </Grid>
+
+
+
+
+
+      <Grid item xs={12}>
         <div className="fl f-a-c  h-30 ">Liq characteristics</div>
       </Grid>
 
@@ -1081,22 +1116,22 @@ export default function Liq() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.rel)}
+          {toFixedTip(calcFormData.rel)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.rel$1)}
+          {toFixedTip(calcFormData.rel$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.rel$2)}
+          {toFixedTip(calcFormData.rel$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.rel$3)}
+          {toFixedTip(calcFormData.rel$3)}
         </div>
       </Grid>
 
@@ -1120,22 +1155,22 @@ export default function Liq() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.sec)}
+          {toFixedTip(calcFormData.sec)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.sec$1)}
+          {toFixedTip(calcFormData.sec$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.sec$2)}
+          {toFixedTip(calcFormData.sec$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.sec$3)}
+          {toFixedTip(calcFormData.sec$3)}
         </div>
       </Grid>
 
@@ -1236,22 +1271,22 @@ export default function Liq() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.npsv)}
+          {toFixedTip(calcFormData.npsv)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.npsv$1)}
+          {toFixedTip(calcFormData.npsv$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.npsv$2)}
+          {toFixedTip(calcFormData.npsv$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.npsv$3)}
+          {toFixedTip(calcFormData.npsv$3)}
         </div>
       </Grid>
 
@@ -1265,22 +1300,22 @@ export default function Liq() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.debl_calc)}
+          {toFixedTip(calcFormData.debl_calc)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.debl_calc$1)}
+          {toFixedTip(calcFormData.debl_calc$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.debl_calc$2)}
+          {toFixedTip(calcFormData.debl_calc$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.debl_calc$3)}
+          {toFixedTip(calcFormData.debl_calc$3)}
         </div>
       </Grid>
     </Grid>

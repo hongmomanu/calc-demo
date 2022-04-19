@@ -1,7 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { useContext, useEffect, useState } from "react";
 import { httpPost } from "../../../http";
-import { debounce, toFixed } from "../../../utils";
+import { debounce, toFixed, toFixedTip } from "../../../utils";
 import { PatmContext } from "../../context";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField } from "@mui/material";
@@ -15,28 +15,6 @@ import {
   direct_table_t,
   direct_table_vap,
   direct_table_vf,
-  high_subc_x,
-  high_subc_y,
-  omega10_ad_y,
-  omega10_x,
-  omega10_y,
-  omega15_ad_y,
-  omega15_x,
-  omega15_y,
-  omega20_ad_y,
-  omega20_x,
-  omega20_y,
-  omega40_ad_y,
-  omega40_x,
-  omega40_y,
-  omega5_ad_y,
-  omega5_x,
-  omega5_y,
-  omega7_ad_y,
-  omega7_x,
-  omega7_y,
-  ws_x,
-  ws_y,
 } from "./data";
 import { RadioGroups } from "../../../components/RadioGroup";
 
@@ -278,6 +256,11 @@ pmin:1.01325,
      */	
 pmax:null,	
 
+rhov_unit:'kg/m3',
+rhol_unit:'kg/m3',
+pres_unit:'bara',
+temp_unit:'C',
+
 
   });
   return (
@@ -321,7 +304,7 @@ pmax:null,
               <NumberInput
               paddingTop={10}
               data={paramForm}
-              label={`Pressure (${calcFormData.pres_unit})`}
+              label={`Pressure (${paramForm.pres_unit})`}
               name="pinit"
               setFunc={setParamForm}
             />
@@ -330,7 +313,7 @@ pmax:null,
             <NumberInput
             paddingTop={10}
               data={paramForm}
-              label={`Temperature (${calcFormData.temp_unit})`}
+              label={`Temperature (${paramForm.temp_unit})`}
               name="tvinit"
               setFunc={setParamForm}
             />
@@ -340,7 +323,7 @@ pmax:null,
             <NumberInput
             paddingTop={10}
               data={paramForm}
-              label={`Pressure (${calcFormData.pres_unit})`}
+              label={`Pressure (${paramForm.pres_unit})`}
               name="pinit"
               setFunc={setParamForm}
             />
@@ -373,14 +356,14 @@ pmax:null,
             <NumberInput
             paddingTop={10}
               data={paramForm}
-              label={`Minimium pressure (${calcFormData.pres_unit})`}
+              label={`Minimium pressure (${paramForm.pres_unit})`}
               name="pmin"
               setFunc={setParamForm}
             />
             <NumberInput
             paddingTop={10}
               data={paramForm}
-              label={`Maximium pressure (${calcFormData.pres_unit})`}
+              label={`Maximium pressure (${paramForm.pres_unit})`}
               name="pmax"
               setFunc={setParamForm}
             />
@@ -392,10 +375,6 @@ pmax:null,
                 setOpen(false);
                 getAplWater({
                     ...paramForm,
-                    rhov_unit:calcFormData.d_rhog_unit,
-                    rhol_unit:calcFormData.d_rhol_unit,
-                    pres_unit:calcFormData.pres_unit,
-                    temp_unit:calcFormData.temp_unit,
                     patm:patmContext.bar,
                     isenth:paramForm.isenth == '0'?false:true,
                     pt:paramForm.pt == '0'?false:true
@@ -580,25 +559,25 @@ pmax:null,
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.p1)}
+          {toFixedTip(calcFormData.p1)}
         </div>
       </Grid>
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.p1$1)}
+          {toFixedTip(calcFormData.p1$1)}
         </div>
       </Grid>
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.p1$2)}
+          {toFixedTip(calcFormData.p1$2)}
         </div>
       </Grid>
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.p1$3)}
+          {toFixedTip(calcFormData.p1$3)}
         </div>
       </Grid>
 
@@ -713,22 +692,22 @@ pmax:null,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.pgratio)}
+          {toFixedTip(calcFormData.pgratio)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.pgratio$1)}
+          {toFixedTip(calcFormData.pgratio$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.pgratio$2)}
+          {toFixedTip(calcFormData.pgratio$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.pgratio$3)}
+          {toFixedTip(calcFormData.pgratio$3)}
         </div>
       </Grid>
 
@@ -1000,22 +979,22 @@ pmax:null,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.deb)}
+          {toFixedTip(calcFormData.deb)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.deb$1)}
+          {toFixedTip(calcFormData.deb$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.deb$2)}
+          {toFixedTip(calcFormData.deb$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.deb$3)}
+          {toFixedTip(calcFormData.deb$3)}
         </div>
       </Grid>
 
@@ -1045,22 +1024,22 @@ pmax:null,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.massflux)}
+          {toFixedTip(calcFormData.massflux)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.massflux$1)}
+          {toFixedTip(calcFormData.massflux$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.massflux$2)}
+          {toFixedTip(calcFormData.massflux$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.massflux$3)}
+          {toFixedTip(calcFormData.massflux$3)}
         </div>
       </Grid>
 
@@ -1072,22 +1051,22 @@ pmax:null,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratio_crit)}
+          {toFixedTip(calcFormData.pratio_crit)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratio_crit$1)}
+          {toFixedTip(calcFormData.pratio_crit$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratio_crit$2)}
+          {toFixedTip(calcFormData.pratio_crit$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratio_crit$3)}
+          {toFixedTip(calcFormData.pratio_crit$3)}
         </div>
       </Grid>
 
@@ -1101,22 +1080,22 @@ pmax:null,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pcrit)}
+          {toFixedTip(calcFormData.pcrit)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pcrit$1)}
+          {toFixedTip(calcFormData.pcrit$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pcrit$2)}
+          {toFixedTip(calcFormData.pcrit$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pcrit$3)}
+          {toFixedTip(calcFormData.pcrit$3)}
         </div>
       </Grid>
 
@@ -1167,22 +1146,22 @@ pmax:null,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.sec)}
+          {toFixedTip(calcFormData.sec)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.sec$1)}
+          {toFixedTip(calcFormData.sec$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.sec$2)}
+          {toFixedTip(calcFormData.sec$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.sec$3)}
+          {toFixedTip(calcFormData.sec$3)}
         </div>
       </Grid>
 
@@ -1283,22 +1262,22 @@ pmax:null,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.npsv)}
+          {toFixedTip(calcFormData.npsv)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.npsv$1)}
+          {toFixedTip(calcFormData.npsv$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.npsv$2)}
+          {toFixedTip(calcFormData.npsv$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.npsv$3)}
+          {toFixedTip(calcFormData.npsv$3)}
         </div>
       </Grid>
 
@@ -1312,22 +1291,22 @@ pmax:null,
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.deb_calc)}
+          {toFixedTip(calcFormData.deb_calc)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.deb_calc$1)}
+          {toFixedTip(calcFormData.deb_calc$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.deb_calc$2)}
+          {toFixedTip(calcFormData.deb_calc$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.deb_calc$3)}
+          {toFixedTip(calcFormData.deb_calc$3)}
         </div>
       </Grid>
 
@@ -1354,19 +1333,69 @@ pmax:null,
 
       <Grid item xs={4.5}></Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">bara</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+        {Combox({
+                options: [
+                  { name: "bar", value: "bar" },
+                  { name: "psi", value: "psi" },
+                  { name: "Pa", value: "Pa" },
+                  { name: "bara", value: "bara" },
+                  { name: "psia", value: "psia" },
+                  { name: "barg", value: "barg" },
+                  { name: "psig", value: "psig" },
+                ],
+                data: paramForm,
+                name: "pres_unit",
+                setFunc: setParamForm,
+              })}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">C</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+        {Combox({
+            options: [
+              { name: "°C", value: "C" },
+              { name: "K", value: "K" },
+              { name: "F", value: "F" },
+              { name: "R", value: "R" },
+            ],
+            data: paramForm,
+            name: "temp_unit",
+            setFunc: setParamForm,
+          })}
+        </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">-</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">kg/m3</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+          {Combox({
+                options: [
+                  { name: "kg/m3", value: "kg/m3" },
+                  { name: "kg/l", value: "kg/l" },
+                  { name: "lb/gal", value: "lb/gal" },
+                  { name: "lb/ft3", value: "lb/ft3" },
+                ],
+                data: paramForm,
+                name: "rhov_unit",
+                setFunc: setParamForm,
+              })}</div>
       </Grid>
       <Grid item xs={1.5}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">kg/m3</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">
+        {Combox({
+                options: [
+                  { name: "kg/m3", value: "kg/m3" },
+                  { name: "kg/l", value: "kg/l" },
+                  { name: "lb/gal", value: "lb/gal" },
+                  { name: "lb/ft3", value: "lb/ft3" },
+                ],
+                data: paramForm,
+                name: "rhol_unit",
+                setFunc: setParamForm,
+              })}
+        </div>
       </Grid>
 
       {calcFormData.det_p.map((it, ix) => {
@@ -1483,31 +1512,18 @@ pmax:null,
       </Grid>
       <Grid item xs={6}>
         <Charts
-          yDomain={["auto", "auto"]}
-          xTicks={[
-            0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110,
-            120, 130, 140, 150, 160, 170, 180, 190, 200
-          ]}
-          
-          xTickFormatter={(val, ix) => {
-            const filterArr = [0, 50, 100,150, 200];
-            if (filterArr.includes(val)) return val;
-            else return "";
-          }}
-          
-          xDomain={[0, 'dataMax']}
+          yDomain={['dataMin', 'auto']}
+          yRightDomain={['dataMin', 'auto']}
+          xDomain={[0 , Math.max(...calcFormData.det_p)]}
           xData={(calcFormData.det_p || []).map((it) => toFixed(it))}
           yDatas={[(calcFormData.det_t || []),(calcFormData.det_vf || [])]}
-          yTicks={[
-            -15, -10,-5,0,5,10,15,20,25,30
-          ]}
+          
           rightY={true}
-          yRightTicks={[
-            0,0.01,0.02,0.03,0.04,0.05,0.06
-          ]}
+        
           columns={[{dataKey:"T(C)"},{dataKey:"VF",yAxisId:"right"}]}
         />
       </Grid>
     </Grid>
   );
+
 }

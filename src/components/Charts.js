@@ -44,7 +44,8 @@ export function Charts({
   legengHeight= null,
   legendStyle={},
   rightY=false,
-  yRightTicks= null
+  yRightTicks= null,
+  yRightDomain = [0, "auto"],
 }) {
   const chartData = [];
   scatters_data.forEach((it) => {
@@ -119,13 +120,8 @@ export function Charts({
           />
           {rightY&&<YAxis
             ticks={yRightTicks}
-            interval={yinterval}
-            tickCount={yTickCount}
-            tickSize={yTickSize}
-            domain={yDomain}
-            reversed={yReversed}
+            domain={yRightDomain}
             type="number"
-            scale={yScale}
             yAxisId="right"
             orientation="right"
             dataKey={layout === "vertical" ? "name" : undefined}

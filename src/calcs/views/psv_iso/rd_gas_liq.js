@@ -5,7 +5,7 @@ import { Combox } from "../../../components/Combox";
 import { NumberInput } from "../../../components/NumberInput";
 import usePrevious from "../../../hooks/use-previous";
 import { httpPost } from "../../../http";
-import { debounce, toFixed } from "../../../utils";
+import { debounce, toFixed, toFixedTip } from "../../../utils";
 
 function calcApi({ setCalcFormData, calcFormData }) {
   httpPost({
@@ -259,7 +259,7 @@ export default function RdGasLiq() {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-              {toFixed(calcFormData.pp)}
+              {toFixedTip(calcFormData.pp)}
             </div>
           </Grid>
 
@@ -387,7 +387,7 @@ export default function RdGasLiq() {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-              {toFixed(calcFormData.frf)}
+              {toFixedTip(calcFormData.frf)}
             </div>
           </Grid>
 
@@ -401,7 +401,7 @@ export default function RdGasLiq() {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-              {toFixed(calcFormData.inf)}
+              {toFixedTip(calcFormData.inf)}
             </div>
           </Grid>
 
@@ -425,7 +425,7 @@ export default function RdGasLiq() {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-              {toFixed(calcFormData.pcs)}
+              {toFixedTip(calcFormData.pcs)}
             </div>
           </Grid>
 
@@ -443,7 +443,7 @@ export default function RdGasLiq() {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-              {toFixed(calcFormData.n_cpr)}
+              {toFixedTip(calcFormData.n_cpr)}
             </div>
           </Grid>
 
@@ -457,7 +457,7 @@ export default function RdGasLiq() {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-              {toFixed(calcFormData.n_acmf)}
+              {toFixedTip(calcFormData.n_acmf)}
             </div>
           </Grid>
 
@@ -475,7 +475,7 @@ export default function RdGasLiq() {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-              {toFixed(calcFormData.np_cfr)}
+              {toFixedTip(calcFormData.np_cfr)}
             </div>
           </Grid>
 
@@ -489,7 +489,7 @@ export default function RdGasLiq() {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-              {toFixed(calcFormData.np_cpr)}
+              {toFixedTip(calcFormData.np_cpr)}
             </div>
           </Grid>
 
@@ -503,7 +503,7 @@ export default function RdGasLiq() {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-              {toFixed(calcFormData.np_acmf)}
+              {toFixedTip(calcFormData.np_acmf)}
             </div>
           </Grid>
 
@@ -515,7 +515,7 @@ export default function RdGasLiq() {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-              {toFixed(calcFormData.np_regime)}
+              {toFixedTip(calcFormData.np_regime)}
             </div>
           </Grid>
 
@@ -527,7 +527,7 @@ export default function RdGasLiq() {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-              {toFixed(calcFormData.np_amf)}
+              {toFixedTip(calcFormData.np_amf)}
             </div>
           </Grid>
 
@@ -551,7 +551,7 @@ export default function RdGasLiq() {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-              {toFixed(calcFormData.np_mf)}
+              {toFixedTip(calcFormData.np_mf)}
             </div>
           </Grid>
         </Grid>

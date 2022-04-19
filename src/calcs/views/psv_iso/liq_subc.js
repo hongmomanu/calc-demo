@@ -7,7 +7,7 @@ import { RadioGroups } from "../../../components/RadioGroup";
 import LoadingButton from "@mui/lab/LoadingButton";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import { httpPost } from "../../../http";
-import { debounce, toFixed } from "../../../utils";
+import { debounce, toFixed, toFixedTip } from "../../../utils";
 import { Charts } from "../../../components/Charts";
 
 function makePromise(idx, calcFormData, setCalcFormData) {
@@ -303,25 +303,25 @@ export default function LiqSubc() {
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.p1)}
+          {toFixedTip(calcFormData.p1)}
         </div>
       </Grid>
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.p1$1)}
+          {toFixedTip(calcFormData.p1$1)}
         </div>
       </Grid>
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.p1$2)}
+          {toFixedTip(calcFormData.p1$2)}
         </div>
       </Grid>
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.p1$3)}
+          {toFixedTip(calcFormData.p1$3)}
         </div>
       </Grid>
 
@@ -436,22 +436,22 @@ export default function LiqSubc() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.pgratio)}
+          {toFixedTip(calcFormData.pgratio)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.pgratio$1)}
+          {toFixedTip(calcFormData.pgratio$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.pgratio$2)}
+          {toFixedTip(calcFormData.pgratio$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.pgratio$3)}
+          {toFixedTip(calcFormData.pgratio$3)}
         </div>
       </Grid>
 
@@ -1154,23 +1154,23 @@ export default function LiqSubc() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-        {toFixed(calcFormData.omega_hem)}
+        {toFixedTip(calcFormData.omega_hem)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.omega_hem$1)}
+          {toFixedTip(calcFormData.omega_hem$1)}
           
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-        {toFixed(calcFormData.omega_hem$2)}
+        {toFixedTip(calcFormData.omega_hem$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-        {toFixed(calcFormData.omega_hem$3)}
+        {toFixedTip(calcFormData.omega_hem$3)}
         </div>
       </Grid>
 
@@ -1185,22 +1185,22 @@ export default function LiqSubc() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.n_delay)}
+          {toFixedTip(calcFormData.n_delay)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.n_delay$1)}
+          {toFixedTip(calcFormData.n_delay$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.n_delay$2)}
+          {toFixedTip(calcFormData.n_delay$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.n_delay$3)}
+          {toFixedTip(calcFormData.n_delay$3)}
         </div>
       </Grid>
 
@@ -1215,22 +1215,22 @@ export default function LiqSubc() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.omega)}
+          {toFixedTip(calcFormData.omega)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.omega$1)}
+          {toFixedTip(calcFormData.omega$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.omega$2)}
+          {toFixedTip(calcFormData.omega$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.omega$3)}
+          {toFixedTip(calcFormData.omega$3)}
         </div>
       </Grid>
 
@@ -1243,22 +1243,22 @@ export default function LiqSubc() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratiost) }
+          {toFixedTip(calcFormData.pratiost) }
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratiost$1) }
+          {toFixedTip(calcFormData.pratiost$1) }
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratiost$2) }
+          {toFixedTip(calcFormData.pratiost$2) }
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratiost$3)}
+          {toFixedTip(calcFormData.pratiost$3)}
         </div>
       </Grid>
 
@@ -1270,22 +1270,22 @@ export default function LiqSubc() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratio_crit)}
+          {toFixedTip(calcFormData.pratio_crit)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratio_crit$1)}
+          {toFixedTip(calcFormData.pratio_crit$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratio_crit$2)}
+          {toFixedTip(calcFormData.pratio_crit$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pratio_crit$3)}
+          {toFixedTip(calcFormData.pratio_crit$3)}
         </div>
       </Grid>
 
@@ -1299,22 +1299,22 @@ export default function LiqSubc() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pcrit)}
+          {toFixedTip(calcFormData.pcrit)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pcrit$1)}
+          {toFixedTip(calcFormData.pcrit$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pcrit$2)}
+          {toFixedTip(calcFormData.pcrit$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.pcrit$3)}
+          {toFixedTip(calcFormData.pcrit$3)}
         </div>
       </Grid>
       
@@ -1355,22 +1355,22 @@ export default function LiqSubc() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.c) }
+          {toFixedTip(calcFormData.c) }
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.c$1)}
+          {toFixedTip(calcFormData.c$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.c$2)}
+          {toFixedTip(calcFormData.c$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.c$3)}
+          {toFixedTip(calcFormData.c$3)}
         </div>
       </Grid>
 
@@ -1395,22 +1395,22 @@ export default function LiqSubc() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.sec)}
+          {toFixedTip(calcFormData.sec)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.sec$1)}
+          {toFixedTip(calcFormData.sec$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.sec$2)}
+          {toFixedTip(calcFormData.sec$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.sec$3)}
+          {toFixedTip(calcFormData.sec$3)}
         </div>
       </Grid>
 
@@ -1453,22 +1453,22 @@ export default function LiqSubc() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel)}
+          {toFixedTip(calcFormData.secsel)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel$1)}
+          {toFixedTip(calcFormData.secsel$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel$2)}
+          {toFixedTip(calcFormData.secsel$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.secsel$3)}
+          {toFixedTip(calcFormData.secsel$3)}
         </div>
       </Grid>
       
@@ -1481,22 +1481,22 @@ export default function LiqSubc() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.npsv)}
+          {toFixedTip(calcFormData.npsv)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.npsv$1)}
+          {toFixedTip(calcFormData.npsv$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.npsv$2)}
+          {toFixedTip(calcFormData.npsv$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.npsv$3)}
+          {toFixedTip(calcFormData.npsv$3)}
         </div>
       </Grid>
 
@@ -1510,22 +1510,22 @@ export default function LiqSubc() {
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.deb_calc)}
+          {toFixedTip(calcFormData.deb_calc)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.deb_calc$1)}
+          {toFixedTip(calcFormData.deb_calc$1)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.deb_calc$2)}
+          {toFixedTip(calcFormData.deb_calc$2)}
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixed(calcFormData.deb_calc$3)}
+          {toFixedTip(calcFormData.deb_calc$3)}
         </div>
       </Grid>
 

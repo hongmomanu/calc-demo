@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Charts } from "../../../components/Charts";
 import { NumberInput } from "../../../components/NumberInput";
 import { httpPost } from "../../../http";
-import { debounce, toFixed } from "../../../utils";
+import { debounce, toFixed, toFixedTip } from "../../../utils";
 import { g_gc_xs, g_gc_ys } from "./data";
 function calcApi({ setCalcFormData, calcFormData, url }) {
   httpPost({
@@ -63,7 +63,7 @@ export default function GGcGraph() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c ">
-          {toFixed(calcFormData.cpr)}
+          {toFixedTip(calcFormData.cpr)}
         </div>
       </Grid>
 
@@ -91,7 +91,7 @@ export default function GGcGraph() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c ">
-          {toFixed(calcFormData.pppp)}
+          {toFixedTip(calcFormData.pppp)}
         </div>
       </Grid>
 
@@ -115,7 +115,7 @@ export default function GGcGraph() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c ">
-          {toFixed(calcFormData.cf)}
+          {toFixedTip(calcFormData.cf)}
         </div>
       </Grid>
 

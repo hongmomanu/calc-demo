@@ -1,3 +1,5 @@
+import { Tooltip } from "@mui/material";
+
 export function toFixed(val,size=4){
   if(val == null) return ''
   var target = `^\\D*(\\d*(?:\\.\\d{0,${size}})?).*$`;
@@ -27,4 +29,14 @@ export function debounce (func, space = 200) {
     // if(data[idx])
    
 
+  }
+
+  export function toFixedTip(val,size=4){
+    if(val){
+      return (<Tooltip arrow={true} title={val||''} placement="right">
+    <span>{toFixed(val,size)}</span>
+  </Tooltip>)
+    }else{
+      return  toFixed(val,size)
+    }
   }

@@ -121,10 +121,10 @@ function IconLabelTabs({ tabValue, handleChange, calcFormData, setCalcFormData }
       onChange={handleChange}
       aria-label="icon label tabs example"
     >
-      <Tab icon={<CalculateIcon />} label="gas-liq" />
       <Tab icon={<LocalGasStationIcon />} label="gas" />
       <Tab icon={<FireExtinguisherIcon />} label="liq" />
       <Tab icon={<AgricultureIcon />} label="steam" />
+      <Tab icon={<CalculateIcon />} label="gas-liq" />
       <Tab icon={<AnimationIcon />} label="liq_subc" />
       <Tab icon={<ArchitectureIcon />} label="direct_integr" />
       <Tab icon={<AdUnitsIcon />} label="sat_water" />
@@ -140,13 +140,13 @@ function IconLabelTabs({ tabValue, handleChange, calcFormData, setCalcFormData }
 
 function TabContent({ tabValue }) {
   switch (tabValue) {
-    case 0:
-      return <GasLiq />;
-    case 1:
-      return <Gas />;
-    case 2:
-      return <Liq />;
     case 3:
+      return <GasLiq />;
+    case 0:
+      return <Gas />;
+    case 1:
+      return <Liq />;
+    case 2:
       return <Steam />  
     case 4:
       return <LiqSubc />  

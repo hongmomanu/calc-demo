@@ -5,7 +5,7 @@ import { Combox } from "../../../components/Combox";
 import { NumberInput } from "../../../components/NumberInput";
 import usePrevious from "../../../hooks/use-previous";
 import { httpPost } from "../../../http";
-import { debounce, toFixed } from "../../../utils";
+import { debounce, toFixed, toFixedTip } from "../../../utils";
 import { PatmContext } from "../../context";
 import chatImg from "./chat2.png";
 function calcApi({ setCalcFormData, calcFormData }) {
@@ -209,7 +209,7 @@ export default function SatWater() {
 
           <Grid item xs={3}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {toFixed(calcFormData.fc)}
+              {toFixedTip(calcFormData.fc)}
             </div>
           </Grid>
 
@@ -236,7 +236,7 @@ export default function SatWater() {
 
           <Grid item xs={3}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {toFixed(calcFormData.area)}
+              {toFixedTip(calcFormData.area)}
             </div>
           </Grid>
 
@@ -295,7 +295,7 @@ export default function SatWater() {
 
           <Grid item xs={3}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {toFixed(calcFormData.fc1)}
+              {toFixedTip(calcFormData.fc1)}
             </div>
           </Grid>
 
@@ -305,13 +305,13 @@ export default function SatWater() {
 
           <Grid item xs={3}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {toFixed(calcFormData.area_unit)}
+              {toFixedTip(calcFormData.area_unit)}
             </div>
           </Grid>
 
           <Grid item xs={3}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {toFixed(calcFormData.area)}
+              {toFixedTip(calcFormData.area)}
             </div>
           </Grid>
 
@@ -370,7 +370,7 @@ export default function SatWater() {
 
           <Grid item xs={3}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {toFixed(calcFormData.fc2)}
+              {toFixedTip(calcFormData.fc2)}
             </div>
           </Grid>
 
@@ -380,13 +380,13 @@ export default function SatWater() {
 
           <Grid item xs={3}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {toFixed(calcFormData.area_unit)}
+              {toFixedTip(calcFormData.area_unit)}
             </div>
           </Grid>
 
           <Grid item xs={3}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {toFixed(calcFormData.area2)}
+              {toFixedTip(calcFormData.area2)}
             </div>
           </Grid>
         </Grid>

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Charts } from "../../../components/Charts";
 import { NumberInput } from "../../../components/NumberInput";
 import { httpPost } from "../../../http";
-import { debounce, toFixed } from "../../../utils";
+import { debounce, toFixed, toFixedTip } from "../../../utils";
 function calcApi({ setCalcFormData, calcFormData }) {
   httpPost({
     url: "/api/hybridGraph/valveflow",
@@ -108,7 +108,7 @@ export default function HybridGraph() {
       </Grid>
       <Grid item xs={4}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {toFixed(calcFormData.op)}
+          {toFixedTip(calcFormData.op)}
         </div>
       </Grid>
 
@@ -122,7 +122,7 @@ export default function HybridGraph() {
       </Grid>
       <Grid item xs={4}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {toFixed(calcFormData.cpr)}
+          {toFixedTip(calcFormData.cpr)}
         </div>
       </Grid>
 
@@ -136,7 +136,7 @@ export default function HybridGraph() {
       </Grid>
       <Grid item xs={4}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {toFixed(calcFormData.cdmf)}
+          {toFixedTip(calcFormData.cdmf)}
         </div>
       </Grid>
 
@@ -164,7 +164,7 @@ export default function HybridGraph() {
       </Grid>
       <Grid item xs={4}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {toFixed(calcFormData.regime)}
+          {toFixedTip(calcFormData.regime)}
         </div>
       </Grid>
 
@@ -178,7 +178,7 @@ export default function HybridGraph() {
       </Grid>
       <Grid item xs={4}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {toFixed(calcFormData.amf)}
+          {toFixedTip(calcFormData.amf)}
         </div>
       </Grid>
 
@@ -190,7 +190,7 @@ export default function HybridGraph() {
       </Grid>
       <Grid item xs={4}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {toFixed(calcFormData.gg)}
+          {toFixedTip(calcFormData.gg)}
         </div>
       </Grid>
 

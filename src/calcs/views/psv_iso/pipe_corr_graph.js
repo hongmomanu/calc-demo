@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Charts } from "../../../components/Charts";
 import { NumberInput } from "../../../components/NumberInput";
 import { httpPost } from "../../../http";
-import { debounce, toFixed } from "../../../utils";
+import { debounce, toFixed, toFixedTip } from "../../../utils";
 function calcApi({ setCalcFormData, calcFormData, url }) {
   httpPost({
     url,
@@ -117,7 +117,7 @@ function ViewOne() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.n_cpr)}
+          {toFixedTip(calcFormData.n_cpr)}
         </div>
       </Grid>
 
@@ -131,7 +131,7 @@ function ViewOne() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.n_acmf)}
+          {toFixedTip(calcFormData.n_acmf)}
         </div>
       </Grid>
 
@@ -149,7 +149,7 @@ function ViewOne() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.np_cfr)}
+          {toFixedTip(calcFormData.np_cfr)}
         </div>
       </Grid>
 
@@ -163,7 +163,7 @@ function ViewOne() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.np_cpr)}
+          {toFixedTip(calcFormData.np_cpr)}
         </div>
       </Grid>
 
@@ -177,7 +177,7 @@ function ViewOne() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.np_acmf)}
+          {toFixedTip(calcFormData.np_acmf)}
         </div>
       </Grid>
 
@@ -201,7 +201,7 @@ function ViewOne() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.np_amf)}
+          {toFixedTip(calcFormData.np_amf)}
         </div>
       </Grid>
 
@@ -344,7 +344,7 @@ function ViewTwo() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {toFixed(calcFormData.op)}
+          {toFixedTip(calcFormData.op)}
         </div>
       </Grid>
 
@@ -394,7 +394,7 @@ function ViewTwo() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.n_cpr)}
+          {toFixedTip(calcFormData.n_cpr)}
         </div>
       </Grid>
 
@@ -408,7 +408,7 @@ function ViewTwo() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.n_acmf)}
+          {toFixedTip(calcFormData.n_acmf)}
         </div>
       </Grid>
 
@@ -426,7 +426,7 @@ function ViewTwo() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.np_cfr)}
+          {toFixedTip(calcFormData.np_cfr)}
         </div>
       </Grid>
 
@@ -440,7 +440,7 @@ function ViewTwo() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.np_cpr)}
+          {toFixedTip(calcFormData.np_cpr)}
         </div>
       </Grid>
 
@@ -454,7 +454,7 @@ function ViewTwo() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.np_acmf)}
+          {toFixedTip(calcFormData.np_acmf)}
         </div>
       </Grid>
 
@@ -478,7 +478,7 @@ function ViewTwo() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.np_amf)}
+          {toFixedTip(calcFormData.np_amf)}
         </div>
       </Grid>
 
@@ -638,7 +638,7 @@ function ViewThree() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.n_cpr)}
+          {toFixedTip(calcFormData.n_cpr)}
         </div>
       </Grid>
 
@@ -652,7 +652,7 @@ function ViewThree() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.n_acmf)}
+          {toFixedTip(calcFormData.n_acmf)}
         </div>
       </Grid>
 
@@ -670,7 +670,7 @@ function ViewThree() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.np_cfr)}
+          {toFixedTip(calcFormData.np_cfr)}
         </div>
       </Grid>
 
@@ -684,7 +684,7 @@ function ViewThree() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.np_cpr)}
+          {toFixedTip(calcFormData.np_cpr)}
         </div>
       </Grid>
 
@@ -698,7 +698,7 @@ function ViewThree() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.np_acmf)}
+          {toFixedTip(calcFormData.np_acmf)}
         </div>
       </Grid>
 
@@ -722,7 +722,7 @@ function ViewThree() {
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
-          {toFixed(calcFormData.np_amf)}
+          {toFixedTip(calcFormData.np_amf)}
         </div>
       </Grid>
 

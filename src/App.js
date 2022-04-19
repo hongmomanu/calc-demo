@@ -24,6 +24,7 @@ import AutofpsSelect from "@mui/icons-material/AutofpsSelect";
 import AirportShuttle from "@mui/icons-material/AirportShuttle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import AddReactionIcon from "@mui/icons-material/AddReaction";
 import {
   createTheme,
   ThemeProvider,
@@ -75,6 +76,11 @@ const NavData = [
     idx: 5,
     name: "Psv_Api_New",
     icon: <AirportShuttle />,
+  },
+  {
+    idx: 6,
+    name: "liquid_spray",
+    icon: <AddReactionIcon />,
   },
 ];
 

@@ -1,5 +1,7 @@
+import { Tooltip } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { toFixed } from "../utils";
+
 export function NumberInput({
   max = Infinity,
   min = -Infinity,
@@ -15,33 +17,35 @@ export function NumberInput({
   deceil=undefined,
   paddingTop=0,
 }) {
-  return (
-    <TextField
-      onChange={(e) => {
-        if (!setFunc) return;
-        const newData = { ...data };
-         if(e.target.value === newData[name]) return 
-        // newData[name] = e.target.value===''?'':Number(e.target.value)
-        newData[name] = e.target.value===''?null:Number(e.target.value);
-        setFunc(newData);
-      }}
-      disabled={disabled}
-      type={type}
-      variant="filled"
-      size="small"
-      style={{ width: "100%"}}
-      label= {label}
-      InputProps={InputProps}
-      inputProps={{
-        style: {
-          paddingTop: `${paddingTop}px`,
-          textAlign: "center",
-        },
-        max,
-        min,
-        step,
-      }}
-      value={data == null ? undefined : formaterFunc(toFixed(data[name],deceil))}
-    />
-  );
+  const textField = () => {
+    return <Tooltip disableHoverListener={!!!data?.[name]} disableFocusListener={!!!data?.[name]}  title={data?.[name]||''} placement="right" >
+      <TextField
+    onChange={(e) => {
+      if (!setFunc) return;
+      const newData = { ...data };
+       if(e.target.value === newData[name]) return 
+      // newData[name] = e.target.value===''?'':Number(e.target.value)
+      newData[name] = e.target.value===''?null:e.target.value;
+      setFunc(newData);
+    }}
+    disabled={disabled}
+    type={type}
+    variant="filled"
+    size="small"
+    style={{ width: "100%"}}
+    label= {label}
+    InputProps={InputProps}
+    inputProps={{
+      style: {
+        paddingTop: `${paddingTop}px`,
+        textAlign: "center",
+      },
+      max,
+      min,
+      step,
+    }}
+    value={data == null ? undefined : formaterFunc(toFixed(data[name],deceil))}
+  /></Tooltip>
+  }
+  return textField()
 }
