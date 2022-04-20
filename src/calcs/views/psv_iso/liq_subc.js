@@ -89,7 +89,7 @@ export default function LiqSubc() {
     "kd2ph" : true,
     "kdl" : null,
     "kdg" : null,
-    "kd" : null,
+    "kd" : 0.6500,
     "hne" : true,
     "hem" : false,
     "debl" : 11613.1,
@@ -1236,29 +1236,29 @@ export default function LiqSubc() {
 
 
       <Grid item xs={4.5}>
-        <div className="fl f-a-c h-30 b-1-gray">Transition saturation pressure ratio</div>
+        <div className="fl f-a-c h-30 b-1-gray">saturation pressure ratio</div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">-</div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixedTip(calcFormData.pratiost) }
+          {toFixedTip(calcFormData.pratios) }
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixedTip(calcFormData.pratiost$1) }
+          {toFixedTip(calcFormData.pratios$1) }
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixedTip(calcFormData.pratiost$2) }
+          {toFixedTip(calcFormData.pratios$2) }
         </div>
       </Grid>
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30 f-j-c b-1-gray">
-          {toFixedTip(calcFormData.pratiost$3)}
+          {toFixedTip(calcFormData.pratios$3)}
         </div>
       </Grid>
 

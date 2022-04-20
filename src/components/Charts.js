@@ -37,6 +37,7 @@ export function Charts({
   yinterval = 'preserveEnd',
   xTick = {},
   xTickFormatter = null,
+  yTickFormatter = null,
   xTicks = null,
   yTicks = null,
   height = 400,
@@ -114,6 +115,7 @@ export function Charts({
             tickSize={yTickSize}
             domain={yDomain}
             reversed={yReversed}
+            tickFormatter={yTickFormatter}
             type="number"
             scale={yScale}
             dataKey={layout === "vertical" ? "name" : undefined}
@@ -164,7 +166,6 @@ export function Charts({
 // }
 
 const CustomTooltip = ({ active, payload, label }) => {
-  console.log("active, payload, label", active, payload, label)
   if (active && payload && payload.length) {
     return (
       <div className="custom-tooltip">

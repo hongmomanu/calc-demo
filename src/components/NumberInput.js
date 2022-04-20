@@ -1,6 +1,6 @@
 import { Tooltip } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { toFixed } from "../utils";
+import { toFixed, toNonExponential } from "../utils";
 
 export function NumberInput({
   max = Infinity,
@@ -18,7 +18,7 @@ export function NumberInput({
   paddingTop=0,
 }) {
   const textField = () => {
-    return <Tooltip disableHoverListener={!!!data?.[name]} disableFocusListener={!!!data?.[name]}  title={data?.[name]||''} placement="right" >
+    return <Tooltip disableHoverListener={!!!data?.[name]} disableFocusListener={!!!data?.[name]}  title={toNonExponential(data?.[name])||''} placement="right" >
       <TextField
     onChange={(e) => {
       if (!setFunc) return;

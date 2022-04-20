@@ -25,6 +25,7 @@ import AirportShuttle from "@mui/icons-material/AirportShuttle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import AddReactionIcon from "@mui/icons-material/AddReaction";
+import AppleIcon from "@mui/icons-material/Apple";
 import {
   createTheme,
   ThemeProvider,
@@ -81,6 +82,11 @@ const NavData = [
     idx: 6,
     name: "liquid_spray",
     icon: <AddReactionIcon />,
+  },
+  {
+    idx: 7,
+    name: "Leung_mass_flow",
+    icon: <AppleIcon />,
   },
 ];
 

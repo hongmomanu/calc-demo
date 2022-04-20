@@ -92,7 +92,7 @@ export default function Hybrid() {
     "temp":200.0,
     "temp_unit":"C",
     "contpr":1.0,
-    "kd2ph":false,
+    "kd2ph":true,
     "kdl":0.8,
     "kdg":0.9,
     "kd":0.95,
@@ -684,7 +684,7 @@ export default function Hybrid() {
       </Grid>
 
       <Grid item xs={4.5}>
-        <div className="fl f-a-c h-30 b-1-gray">k=Cp/Cv</div>
+        <div className="fl f-a-c h-30 b-1-gray">Gas molar fraction (yg0=Pg0/P0) </div>
       </Grid>
 
       <Grid item xs={1.5}>
@@ -695,7 +695,7 @@ export default function Hybrid() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            name="kcp"
+            name="yg0"
             setFunc={setCalcFormData}
           />
         </div>
@@ -704,7 +704,7 @@ export default function Hybrid() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            name="kcp$1"
+            name="yg0$1"
             setFunc={setCalcFormData}
           />
         </div>
@@ -713,7 +713,7 @@ export default function Hybrid() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            name="kcp$2"
+            name="yg0$2"
             setFunc={setCalcFormData}
           />
         </div>
@@ -722,7 +722,7 @@ export default function Hybrid() {
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
           <NumberInput
             data={calcFormData}
-            name="kcp$3"
+            name="yg0$3"
             setFunc={setCalcFormData}
           />
         </div>

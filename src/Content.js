@@ -7,6 +7,7 @@ const PsvScenariousSheet = React.lazy(() => import("./calcs/psv-scenarious-sheet
 const PsvIsoSheet = React.lazy(() => import("./calcs/psv-iso-sheet"))
 const PsvApiNew = React.lazy(() => import("./calcs/psv-api-new"))
 const LiquidSpraySheet = React.lazy(() => import("./calcs/liquid-spray"))
+const LeungMassFlowSheet = React.lazy(() => import("./calcs/leung_mass_flow"))
 function Content({ navIndex }) {
   switch (navIndex) {
     case 0:
@@ -49,6 +50,12 @@ function Content({ navIndex }) {
         return (
           <Suspense fallback={<CircularIndeterminate />}>
                 <LiquidSpraySheet />
+            </Suspense>
+        );               
+    case 7:
+        return (
+          <Suspense fallback={<CircularIndeterminate />}>
+                <LeungMassFlowSheet />
             </Suspense>
         );               
     default:

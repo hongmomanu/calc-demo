@@ -123,7 +123,7 @@ export default function Tank() {
         <div className="fl f-a-c h-30 b-1-gray">Pressure at hole level</div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 f-j-c  b-1-gray">kg/m3</div>
+        <div className="fl f-a-c h-30 f-j-c  b-1-gray">barg</div>
       </Grid>
 
       <Grid item xs={3}>
@@ -217,7 +217,29 @@ export default function Tank() {
       <Grid item xs={1}></Grid>
 
 
-
+      <Grid item xs={11}>
+        <Charts
+              
+              xData={[calcFormData.xs || []]}
+            //   yDomain={[0, Math.max(...calcFormData.ys||[])]}
+              yTickSize={10}
+              xTickSize={5}
+              scatters={["hole height","at h"]}
+              scatters_data={[
+                {
+                  name: calcFormData.holeh || 0,
+                  "hole height": calcFormData.dfw || 0,
+                },
+                {
+                    name: calcFormData.holehmax || 0,
+                    "at h": calcFormData.md || 0,
+                  },
+              ]}
+              yDatas={[calcFormData.ys || []]}
+              columns={["x as function h"]}
+            />
+      </Grid>
+      <Grid item xs={1}></Grid>
 
 
     </Grid>

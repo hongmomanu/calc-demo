@@ -4,10 +4,20 @@ export function toFixed(val,size=4){
   if(val == null) return ''
   var target = `^\\D*(\\d*(?:\\.\\d{0,${size}})?).*$`;
   const reg = new RegExp(target, "g");
-  const val_str = `${val}`
+  const val_str = toNonExponential(val) //`${val}`
   if(val_str.slice(val_str.length-1) === '.')return val
   if(val_str.slice(val_str.length-1) === '-')return val
-  return val?((Math.sign(val)===-1?'-':'')+ `${val}`.replace(reg, '$1')):val
+  return val?((Math.sign(val)===-1?'-':'')+ val_str.replace(reg, '$1')):val
+}
+export function toNonExponential(val) {
+  var n = Number(val)
+  var m = n.toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
+  if(Array.isArray(m)){
+    return n.toFixed(Math.max(0, (m[1] || '').length - m[2]));
+  }else{
+    return `${val}`
+  }
+  
 }
 
 export function debounce (func, space = 200) {
@@ -33,7 +43,7 @@ export function debounce (func, space = 200) {
 
   export function toFixedTip(val,size=4){
     if(val){
-      return (<Tooltip arrow={true} title={val||''} placement="right">
+      return (<Tooltip arrow={true} title={toNonExponential(val)||''} placement="right">
     <span>{toFixed(val,size)}</span>
   </Tooltip>)
     }else{

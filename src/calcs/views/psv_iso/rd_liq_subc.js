@@ -574,7 +574,7 @@ export default function RdLiqSubc() {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-              {toFixedTip(calcFormData.np_regime)}
+              {calcFormData.np_regime}
             </div>
           </Grid>
 
