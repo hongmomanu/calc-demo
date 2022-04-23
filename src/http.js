@@ -18,7 +18,7 @@ export function httpPost({ url, params,nofilter=false }) {
       const { code, data, msg } = response;
       if (code === 200) {
         return nofilter?data:filterRes(data,params);
-      } else if (code === 1) {
+      } else if (code === 1 || msg) {
         return Promise.reject(msg);
       }
     })

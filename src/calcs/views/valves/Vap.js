@@ -26,8 +26,9 @@ import {
   ComposedChart,
   ResponsiveContainer,
 } from "recharts";
-import { toFixed } from "../../../utils";
+import { toFixed, toFixedTip } from "../../../utils";
 import { NumberInput } from "../../../components/NumberInput";
+import { CheckedBox } from "../../../components/CheckedBox";
 const Valve_Flow_Coeff_Unit = {
     1: "gpm - 1 psi",
     2: "m3/h - 1 mH20",
@@ -83,12 +84,17 @@ export default function Vap() {
     y:.978,
   });
 
+  const [xflowcoef,setXflowcoef] = React.useState({})
+  const [flowcoef,setFlowcoef] = React.useState({})
+
   const [operPos, setOperPos] = React.useState(100);
   const [fccalc, setFccalc] = React.useState(0.4);
   React.useEffect(() => {
     calcSingleLine({
       valvetype: valveType,
       xset: operPos/100,
+      xflowcoef:Object.values(xflowcoef).map(it=>it/100),
+      flowcoef:Object.values(flowcoef).map(it=>it/100),
       setFccalc,
       calcFormData,
       setCalcFormData,
@@ -108,10 +114,206 @@ export default function Vap() {
       },200)
     
   }, []);
+
+  React.useEffect(()=>{
+    if(valveType===7 && Object.values(xflowcoef).length === Object.values(flowcoef).length){
+      calcSingleLine({
+        valvetype: valveType,
+        xset: operPos/100,
+        xflowcoef:Object.values(xflowcoef).map(it=>it/100),
+        flowcoef:Object.values(flowcoef).map(it=>it/100),
+        setFccalc,
+        calcFormData,
+        setCalcFormData,
+      });
+    }
+  },[xflowcoef,flowcoef])
   
   return (
     <div className="app">
       <Grid item xs={12} container direction="row">
+      <Grid item xs={12}>
+        <div className="fl b-1-gray bg-y f-a-c h-30">Control valve compressible fluid (turbulent flow)</div>    
+      </Grid>  
+      <Grid item xs={4.5}>
+        <div className="fl b-1-gray bg-y f-a-c h-30">Case study:</div>
+      </Grid>
+      <Grid item xs={7.5}>
+        <div className="fl f-a-c h-30 b-1-gray">PCV521101</div>
+      </Grid>
+
+      <Grid item xs={2}>
+        <FormControl component="fieldset">
+          <FormLabel component="legend">Calculation options</FormLabel>
+          <RadioGroup
+            aria-label="gender"
+            value={calcOptionVal}
+            onChange={(event) => setCalcOptionVal(event.target.value)}
+            name="radio-buttons-group"
+          >
+            <FormControlLabel
+              value={1}
+              control={<Radio />}
+              label="Valve coeff fixed"
+            />
+            <FormControlLabel
+              value={2}
+              control={<Radio />}
+              label="Massflow fixed"
+            />
+            <FormControlLabel
+              value={3}
+              control={<Radio />}
+              label="Volume flow fixed"
+            />
+            <FormControlLabel
+              value={4}
+              control={<Radio />}
+              label="Normal Volume flow"
+            />
+          </RadioGroup>
+        </FormControl>
+      </Grid>
+
+      <Grid item xs={4} container direction="column">
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel>Valve flow coeff unit</InputLabel>
+          <Select
+            value={valveFlowUnit}
+            onChange={(e) => setValveFlowUnit(e.target.value)}
+            label="Valve flow coeff unit"
+          >
+            <MenuItem value={1}>{Valve_Flow_Coeff_Unit[1]}</MenuItem>
+            <MenuItem value={2}>{Valve_Flow_Coeff_Unit[2]}</MenuItem>
+            <MenuItem value={3}>{Valve_Flow_Coeff_Unit[3]}</MenuItem>
+            <MenuItem value={4}>{Valve_Flow_Coeff_Unit[4]}</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel>Valve type</InputLabel>
+          <Select
+            value={valveType}
+            onChange={(e) => setValveType(e.target.value)}
+            label="Valve type"
+          >
+            <MenuItem value={1}>Linear</MenuItem>
+            <MenuItem value={2}>Parabolic</MenuItem>
+            <MenuItem value={3}>Square root</MenuItem>
+            <MenuItem value={4}>Quick Opening</MenuItem>
+            <MenuItem value={5}>Equal Percentage</MenuItem>
+            <MenuItem value={6}>Hyperbolic</MenuItem>
+            <MenuItem value={7}>User defined</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+
+      <Grid item xs={6}>
+
+      </Grid>
+
+
+      {valveType === 7?(<>
+        <Grid textAlign={'left'} item xs={2}>
+          Valve characteristics
+        </Grid>
+        <Grid item xs={2}>
+          
+        </Grid>
+        <Grid item xs={1}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">#1</div>
+        </Grid>
+        <Grid item xs={1}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">#2</div>
+        </Grid>
+        <Grid item xs={1}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">#3</div>
+        </Grid>
+        <Grid item xs={1}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">#4</div>
+        </Grid>
+        <Grid item xs={1}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">#5</div>
+        </Grid>
+        <Grid item xs={1}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">#6</div>
+        </Grid>
+        <Grid item xs={1}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">#7</div>
+        </Grid>
+        <Grid item xs={1}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">#8</div>
+        </Grid>
+
+
+        <Grid item xs={2}>
+        <div className="fl f-a-c h-30 b-1-gray"> Valve operating position</div>
+        </Grid>
+        <Grid item xs={2}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray"> % Opening</div>
+       
+        </Grid>
+        <Grid item xs={1}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">0%</div>
+        </Grid>
+        {[0,0,0,0,0,0].map((_,ix)=>(
+          <Grid key={ix} item xs={1}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">{
+             <NumberInput
+             data={xflowcoef}
+             name={ix}
+             setFunc={(data)=>{
+              if(data[ix] == null){
+                delete data[ix]
+              }
+              setXflowcoef(data)
+              
+             }}
+           />
+          }%</div>
+        </Grid>)
+        )}
+          
+        <Grid item xs={1}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">100%</div>
+        </Grid>
+
+
+        <Grid item xs={2}>
+        <div className="fl f-a-c h-30 b-1-gray"> % of flow coefficient</div>
+        </Grid>
+        <Grid item xs={2}>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray"> %</div>
+       
+        </Grid>
+        <Grid item xs={1}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">0%</div>
+        </Grid>
+        {[0,0,0,0,0,0].map((_,ix)=>(
+          <Grid key={ix} item xs={1}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">{
+             <NumberInput
+             data={flowcoef}
+             name={ix}
+             setFunc={(data)=>{
+              if(data[ix] == null){
+                delete data[ix]
+              }
+              setFlowcoef(data)
+             }}
+           />
+          }%</div>
+        </Grid>)
+        )}
+        
+        
+        <Grid item xs={1}>
+          <div className="fl f-a-c f-j-c h-30 b-1-gray">100%</div>
+        </Grid>
+
+      </>):null}
+
+
+
         <Grid item xs={6}>
           <ControlTable
             {...{
@@ -186,13 +388,15 @@ const calcFunc = ({
 function calcSingleLine({
   valvetype,
   xset,
+  xflowcoef,
+  flowcoef,
   setFccalc,
   calcFormData,
   setCalcFormData,
 }) {
   httpPost({
     url: "/api/vap/valvev_setting_change",
-    params: { valvetype, xset },
+    params: { valvetype, xset, xflowcoef, flowcoef },
   }).then((rep) => {
     setFccalc(rep.fccalc);
     setCalcFormData({ ...calcFormData, fc: rep.fccalc });
@@ -213,79 +417,7 @@ function ControlTable({
 }) {
   return (
     <Grid container>
-      <Grid item xs={12}>
-        <div className="fl b-1-gray bg-y f-a-c h-30">Control valve compressible fluid (turbulent flow)</div>    
-      </Grid>  
-      <Grid item xs={4.5}>
-        <div className="fl b-1-gray bg-y f-a-c h-30">Case study:</div>
-      </Grid>
-      <Grid item xs={7.5}>
-        <div className="fl f-a-c h-30 b-1-gray">PCV521101</div>
-      </Grid>
-
-      <Grid item xs={4}>
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Calculation options</FormLabel>
-          <RadioGroup
-            aria-label="gender"
-            value={calcOptionVal}
-            onChange={(event) => setCalcOptionVal(event.target.value)}
-            name="radio-buttons-group"
-          >
-            <FormControlLabel
-              value={1}
-              control={<Radio />}
-              label="Valve coeff fixed"
-            />
-            <FormControlLabel
-              value={2}
-              control={<Radio />}
-              label="Massflow fixed"
-            />
-            <FormControlLabel
-              value={3}
-              control={<Radio />}
-              label="Volume flow fixed"
-            />
-            <FormControlLabel
-              value={4}
-              control={<Radio />}
-              label="Normal Volume flow"
-            />
-          </RadioGroup>
-        </FormControl>
-      </Grid>
-
-      <Grid item xs={8} container direction="column">
-        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel>Valve flow coeff unit</InputLabel>
-          <Select
-            value={valveFlowUnit}
-            onChange={(e) => setValveFlowUnit(e.target.value)}
-            label="Valve flow coeff unit"
-          >
-            <MenuItem value={1}>{Valve_Flow_Coeff_Unit[1]}</MenuItem>
-            <MenuItem value={2}>{Valve_Flow_Coeff_Unit[2]}</MenuItem>
-            <MenuItem value={3}>{Valve_Flow_Coeff_Unit[3]}</MenuItem>
-            <MenuItem value={4}>{Valve_Flow_Coeff_Unit[4]}</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel>Valve type</InputLabel>
-          <Select
-            value={valveType}
-            onChange={(e) => setValveType(e.target.value)}
-            label="Valve type"
-          >
-            <MenuItem value={1}>Linear</MenuItem>
-            <MenuItem value={2}>Parabolic</MenuItem>
-            <MenuItem value={3}>Square root</MenuItem>
-            <MenuItem value={4}>Quick Opening</MenuItem>
-            <MenuItem value={5}>Equal Percentage</MenuItem>
-            <MenuItem value={6}>Hyperbolic</MenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
+      
 
       <Grid item xs={12}>
         <div className="fl f-a-c h-30">Value</div>
@@ -351,13 +483,21 @@ function ControlTable({
         <div className="fl f-a-c f-j-c h-30 b-1-gray">%</div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">{toFixed(calcFormData.fc*100)}%</div>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">{toFixedTip(calcFormData.fc*100)}%</div>
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item xs={6}>
         <div className="fl f-a-c h-30">
           Control valve with attached fittings
         </div>
+      </Grid>
+      <Grid item xs={6}>
+        <CheckedBox
+          data={calcFormData}
+          name={"geom_corr"}
+          setFunc={setCalcFormData}
+          label="Geometry correction"
+        />
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">Valve diameter</div>
@@ -386,7 +526,11 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.diam}</div>
+        <div className="fl f-a-c f-j-c h-30 b-1-gray">{calcFormData.geom_corr? <NumberInput
+            data={calcFormData}
+            name="diam"
+            setFunc={setCalcFormData}
+          />: calcFormData.diam}</div>
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">Inlet pipe diameter</div>
@@ -398,7 +542,11 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl b-1-gray f-a-c h-30 f-j-c">{calcFormData.din}</div>
+        <div className="fl b-1-gray f-a-c h-30 f-j-c">{calcFormData.geom_corr? <NumberInput
+            data={calcFormData}
+            name="din"
+            setFunc={setCalcFormData}
+          />:calcFormData.din}</div>
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">Outlet pipe diameter</div>
@@ -409,7 +557,11 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcFormData.dout}</div>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcFormData.geom_corr? <NumberInput
+            data={calcFormData}
+            name="dout"
+            setFunc={setCalcFormData}
+          />:calcFormData.dout}</div>
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">
@@ -420,7 +572,7 @@ function ControlTable({
         <div className="fl f-a-c f-j-c h-30 b-1-gray">-</div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 b-1-gray f-j-c">{calcFormData.fp}</div>
+        <div className="fl f-a-c h-30 b-1-gray f-j-c">{toFixedTip(calcFormData.fp)}</div>
       </Grid>
 
       <Grid item xs={12}>
@@ -556,7 +708,7 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            {toFixed(calcFormData.rho)}
+            {toFixedTip(calcFormData.rho)}
         </div>
       </Grid>
 
@@ -627,7 +779,7 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl b-1-gray f-a-c h-30 f-j-c">
-          {toFixed(calcFormData.y)}
+          {toFixedTip(calcFormData.y)}
         </div>
       </Grid>
 
@@ -777,7 +929,7 @@ function ControlTable({
         </div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl f-a-c h-30 f-j-c b-1-gray">{toFixed(calcFormData.dpmax)}</div>
+        <div className="fl f-a-c h-30 f-j-c b-1-gray">{toFixedTip(calcFormData.dpmax)}</div>
       </Grid>
       <Grid item xs={6}>
         <div className="fl f-a-c h-30 b-1-gray f-j-c">Outlet pressure</div>
@@ -787,7 +939,7 @@ function ControlTable({
       </Grid>
       <Grid item xs={3}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {toFixed(calcFormData.pres_out)}
+          {toFixedTip(calcFormData.pres_out)}
         </div>
       </Grid>
 
@@ -825,7 +977,7 @@ function ControlTable({
         <div className="fl b-1-gray f-j-c bg-y f-a-c h-30">-</div>
       </Grid>
       <Grid item xs={3}>
-        <div className="fl b-1-gray f-a-c h-30 f-j-c">{toFixed(calcFormData.xtp)}</div>
+        <div className="fl b-1-gray f-a-c h-30 f-j-c">{toFixedTip(calcFormData.xtp)}</div>
       </Grid>
       
     </Grid>

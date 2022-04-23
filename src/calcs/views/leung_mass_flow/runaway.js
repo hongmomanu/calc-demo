@@ -27,7 +27,7 @@ export default function RunAway() {
     "run_cpl0":1897.6,
     "run_dhv":335000,
     "rv":8.1,
-    "fixedQ":true,
+    "fixedQ":false,
     "run_trise0":0.462,
     "run_trisema":0,
     "run_ear":-10000,
@@ -283,7 +283,11 @@ export default function RunAway() {
 
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {toFixedTip(calcFormData.rv)}
+        <NumberInput
+            data={calcFormData}
+            name="rv"
+            setFunc={setCalcFormData}
+          />
         </div>
       </Grid>
       <Grid item xs={1}></Grid>
@@ -405,11 +409,7 @@ export default function RunAway() {
 
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {calcFormData.fixedQ?toFixedTip(calcFormData.run_ear):<NumberInput
-            data={calcFormData}
-            name="run_ear"
-            setFunc={setCalcFormData}
-          />}
+          {toFixedTip(calcFormData.run_ear)}
         </div>
       </Grid>
       <Grid item xs={1}></Grid>

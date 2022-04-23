@@ -150,7 +150,7 @@ export default function HybridGraph() {
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
           <NumberInput
             data={calcFormData}
-            name="gppr"
+            name="pp"
             setFunc={setCalcFormData}
           />
         </div>
@@ -235,6 +235,35 @@ export default function HybridGraph() {
           ]}
           yDatas={(calcFormData.cdmfs||[]).map((it)=>it.ys)}
           columns={(calcFormData.cdmfs||[]).map((it)=>it.yg0)}
+        />
+
+
+     </Grid>
+
+
+     <Grid item  xs={6}>
+
+     <Charts
+          xData={calcFormData.elXs || []}
+          yDatas={[calcFormData.elYs || []]}
+          yDomain={['auto', 'auto']}
+          yTickFormatter={(val, ix) => {
+            const filterArr = [1,10, 100,1000,10000];
+            if (filterArr.includes(val)) return val;
+            else return "";
+          }}
+          xTickFormatter={(val, ix) => {
+            const filterArr = [0, 0.2, 0.4,0.6, 0.8, 1];
+            if (filterArr.includes(val)) return val;
+            else return "";
+          }}
+          yTicks={[1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100,200,300,400,500,600,700,800,900,1000,2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]}
+          xTicks={[0, 0.04, 0.08, 0.12, 0.16, 0.2, 0.24, 0.28, 0.32, 0.36, 0.4, 0.44,
+            0.48, 0.52, 0.56, 0.6, 0.64, 0.68, 0.72, 0.76, 0.8, 0.84, 0.88,
+            0.92, 0.96, 1,]}
+          xDomain={['auto', 'auto']}
+          yScale={'log'}
+          columns={['Expansion law']}
         />
 
 

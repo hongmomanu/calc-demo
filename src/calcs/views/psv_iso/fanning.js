@@ -6,7 +6,7 @@ import { NumberInput } from "../../../components/NumberInput";
 import usePrevious from "../../../hooks/use-previous";
 import { httpPost } from "../../../http";
 import { debounce, toFixed, toFixedTip } from "../../../utils";
-import { faning_ys, fanning_xs } from "./data";
+import { faning_ys, fanning_xs, laminar_xs } from "./data";
 function calcApi({ setCalcFormData, calcFormData }) {
   httpPost({
     url: "/api/fanning/valveflow",
@@ -18,7 +18,7 @@ function calcApi({ setCalcFormData, calcFormData }) {
 const debCalcApi = debounce(calcApi);
 export default function Fanning() {
   const [calcFormData, setCalcFormData] = useState({
-    r: 0.001,
+    r: 0.1,
     /**
      * Rugosity ( r )
      */
@@ -207,7 +207,10 @@ export default function Fanning() {
             },
           ]}
           yDatas={faning_ys.map((it) => it.ys)}
-          columns={faning_ys.map((it) => it.name)}
+          columns={faning_ys.map((it,ix) => {
+            if(ix !==faning_ys.length-1)return it.name;
+            else return {strokeDasharray:"5 5",dataKey:it.name}
+          })}
         />
       </Grid>
     </Grid>

@@ -133,8 +133,8 @@ export default function GGcGraph() {
           scatters={["Current"]}
           scatters_data={[
             {
-              name: calcFormData.frf,
-              Current: calcFormData.np_cfr,
+              name: calcFormData.pppp,
+              Current: calcFormData.cf,
             },
           ]}
           yDatas={g_gc_ys.map((it)=>it.ys)}

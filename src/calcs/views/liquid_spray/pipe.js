@@ -132,7 +132,11 @@ export default function Pipe() {
 
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {toFixedTip(calcFormData.ja)}
+        <NumberInput
+            data={calcFormData}
+            name="ja"
+            setFunc={setCalcFormData}
+          />
         </div>
       </Grid>
       <Grid item xs={1}></Grid>

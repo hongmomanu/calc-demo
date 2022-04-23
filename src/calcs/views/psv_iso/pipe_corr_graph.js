@@ -244,7 +244,7 @@ function ViewTwo() {
     gpvf: 0.1,
     gppr: 0.4,
     frf: 10,
-    inf: 0.01,
+    inf: 0,
   });
   useEffect(() => {
     debCalcApiTwo({
@@ -517,9 +517,9 @@ function ViewTwo() {
 function ViewThree() {
   const [calcFormData, setCalcFormData] = useState({
     pp: 0.5,
-    hfo: 50,
+    hfo: 5,
     psp: 0.7,
-    frf: 50,
+    frf: 5,
     inf: 0.01,
   });
   useEffect(() => {
