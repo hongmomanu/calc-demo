@@ -18,7 +18,7 @@ export function NumberInput({
   paddingTop=0,
 }) {
   const textField = () => {
-    return <Tooltip disableHoverListener={!!!data?.[name]} disableFocusListener={!!!data?.[name]}  title={toNonExponential(data?.[name])||''} placement="right" >
+    return <Tooltip disableHoverListener={!!!data?.[name]} disableFocusListener={!!!data?.[name]}  title={data?.[name]!=null?toNonExponential(data?.[name]):''} placement="right" >
       <TextField
     onChange={(e) => {
       if (!setFunc) return;
