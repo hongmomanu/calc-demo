@@ -929,11 +929,7 @@ export default function GasLiq() {
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <NumberInput
-            data={calcFormData}
-            name="rhov"
-            setFunc={setCalcFormData}
-          />
+          {toFixedTip(calcFormData.rhov)}
         </div>
       </Grid>
 
@@ -1090,6 +1086,7 @@ export default function GasLiq() {
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30  f-j-c b-1-gray">
           <NumberInput
+            disabled={calcFormData.method == 3}
             data={calcFormData}
             name="cpl"
             setFunc={setCalcFormData}
@@ -1099,6 +1096,7 @@ export default function GasLiq() {
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30  f-j-c b-1-gray">
           <NumberInput
+           disabled={calcFormData.method$1 == 3}
             data={calcFormData}
             name="cpl$1"
             setFunc={setCalcFormData}
@@ -1108,6 +1106,7 @@ export default function GasLiq() {
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30  f-j-c b-1-gray">
           <NumberInput
+          disabled={calcFormData.method$2 == 3}
             data={calcFormData}
             name="cpl$2"
             setFunc={setCalcFormData}
@@ -1117,6 +1116,7 @@ export default function GasLiq() {
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30  f-j-c b-1-gray">
           <NumberInput
+          disabled={calcFormData.method$3 == 3}
             data={calcFormData}
             name="cpl$3"
             setFunc={setCalcFormData}
@@ -1145,6 +1145,7 @@ export default function GasLiq() {
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30  f-j-c b-1-gray">
           <NumberInput
+            disabled={calcFormData.method == 3}
             data={calcFormData}
             name="dhvap"
             setFunc={setCalcFormData}
@@ -1154,6 +1155,7 @@ export default function GasLiq() {
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30  f-j-c b-1-gray">
           <NumberInput
+            disabled={calcFormData.method$1 == 3}
             data={calcFormData}
             name="dhvap$1"
             setFunc={setCalcFormData}
@@ -1163,6 +1165,7 @@ export default function GasLiq() {
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30  f-j-c b-1-gray">
           <NumberInput
+           disabled={calcFormData.method$2 == 3}
             data={calcFormData}
             name="dhvap$2"
             setFunc={setCalcFormData}
@@ -1172,6 +1175,7 @@ export default function GasLiq() {
       <Grid item xs={1.5}>
         <div className="fl f-a-c h-30  f-j-c b-1-gray">
           <NumberInput
+            disabled={calcFormData.method$3 == 3}
             data={calcFormData}
             name="dhvap$3"
             setFunc={setCalcFormData}

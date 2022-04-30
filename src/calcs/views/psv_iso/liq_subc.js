@@ -1099,11 +1099,7 @@ export default function LiqSubc() {
 
       <Grid item xs={1.5}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          <NumberInput
-            data={calcFormData}
-            name="rhov"
-            setFunc={setCalcFormData}
-          />
+          {toFixedTip(calcFormData.rhov)}
         </div>
       </Grid>
 

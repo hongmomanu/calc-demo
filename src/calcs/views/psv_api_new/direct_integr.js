@@ -100,7 +100,7 @@ export default function DirectIntegr() {
      * Set pressure of the PSV (Pset)
      * apdi_pres
      */
-    acc: 0.0,
+    acc: 0.1,
     /**
      * Overpressure (10% by default)
      * apdi_acc，什么情况下都可传空,默认0.1

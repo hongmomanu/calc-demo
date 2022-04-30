@@ -304,11 +304,7 @@ export default function RdHybrid() {
           </Grid>
           <Grid item xs={3}>
             <div className="fl f-a-c h-30 f-j-c b-1-gray">
-              <NumberInput
-                data={calcFormData}
-                name="op"
-                setFunc={setCalcFormData}
-              />
+              {toFixedTip(calcFormData.op)}
             </div>
           </Grid>
 

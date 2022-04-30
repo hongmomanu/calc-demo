@@ -14,6 +14,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import LoadingButton from "@mui/lab/LoadingButton";
 import CalculateIcon from "@mui/icons-material/Calculate";
+import { Charts as ChartsComp } from "../../../components/Charts";
 import {
   LineChart,
   Line,
@@ -41,6 +42,7 @@ export default function Vap() {
   const [calcOptionVal, setCalcOptionVal] = React.useState(1);
   const [valveFlowUnit, setValveFlowUnit] = React.useState(3);
   const [isCalcing, setIsCalcing] = React.useState(false);
+  const [singleChartData, setSingleChartData] = React.useState([])
   
 
   const [calcFormData, setCalcFormData] = React.useState({
@@ -98,6 +100,7 @@ export default function Vap() {
       setFccalc,
       calcFormData,
       setCalcFormData,
+      setSingleChartData
     });
   }, [valveType, operPos]);
   
@@ -125,6 +128,7 @@ export default function Vap() {
         setFccalc,
         calcFormData,
         setCalcFormData,
+        setSingleChartData
       });
     }
   },[xflowcoef,flowcoef])
@@ -331,7 +335,7 @@ export default function Vap() {
           />
         </Grid>
         <Grid item xs={6}>
-          <Charts {...{ valveType, fccalc, operPos:operPos/100 }} />
+          <Charts {...{ valveType, fccalc, operPos:operPos/100, singleChartData }} />
           <Grid item xs={12}>
             <LoadingButton
               loading={isCalcing}
@@ -393,11 +397,13 @@ function calcSingleLine({
   setFccalc,
   calcFormData,
   setCalcFormData,
+  setSingleChartData
 }) {
   httpPost({
     url: "/api/vap/valvev_setting_change",
     params: { valvetype, xset, xflowcoef, flowcoef },
   }).then((rep) => {
+    setSingleChartData({x:rep.flow?.xaxisS,y:rep.flow?.yaxisS})
     setFccalc(rep.fccalc);
     setCalcFormData({ ...calcFormData, fc: rep.fccalc });
   });
@@ -984,96 +990,56 @@ function ControlTable({
   );
 }
 function strokeDasharrayWrap(val, valveType) {
-  return val === valveType ? "0 0" : "5 5";
+  return val === valveType ? null : "5 5";
 }
 //曲线
-function Charts({ valveType, fccalc, operPos }) {
+function Charts({ valveType, fccalc, operPos, singleChartData }) {
   console.log("valveType", valveType, fccalc, operPos);
-  const [chartData, setChartData] = React.useState([]);
+  const [columns, setColums] = React.useState([]);
+  const [xdata, setXdata] = React.useState([]);
+  const [ydata, setYData] = React.useState([]);
   React.useEffect(() => {
     let chartDataProm = Charts.data
       ? new Promise((r) => r(Charts.data))
       : httpPost({ url: "/api/vap/valvev_fixed_flow" });
     chartDataProm.then((rep) => {
-      Charts.data = rep;
       const data = [];
+      const colums_data = []
       const { xaxisS, yaxisDataS } = rep;
-      for (let i = 0; i < xaxisS.length; i++) {
-        const item = {
-          name: xaxisS[i],
-        };
-        yaxisDataS.forEach((it) => {
-          item[it.name] = it.yaxisS[i];
-        });
-        data.push(item);
+      setXdata(xaxisS)
+      yaxisDataS.forEach((it,ix)=>{
+        data.push(it.yaxisS)
+        colums_data.push({dataKey:it.name, strokeDasharray: strokeDasharrayWrap(ix+1, valveType)})
+      })
+      
+      if(valveType==7){
+        data.push(singleChartData.y)
+        colums_data.push({dataKey:"User defined",strokeDasharray:strokeDasharrayWrap(7, valveType)})
+      }else{
+        data.push([])
       }
-      data.push({
-        name: operPos,
-        fccalc,
-      });
-      setChartData(data);
+      setYData(data)
+      setColums(colums_data)
     });
-  }, [fccalc, operPos]);
+  }, [fccalc, operPos, singleChartData]);
 
   return (
-    <Box
-      style={{ marginTop: "30px", width: "100%", height: "400px" }}
-      sx={{ flexGrow: 1 }}
-    >
-      <ResponsiveContainer>
-        <ComposedChart
-          data={chartData}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="name"
-            type="number"
-            domain={[0, "dataMax"]}
-            tickCount={6}
-          />
-          <YAxis type="number" domain={[0, "dataMax"]} tickCount={10} />
-          {/* <Tooltip /> */}
-          <Legend />
-          <Scatter name="fccalc" dataKey="fccalc" fill="red" />
-          <Line
-            dot={false}
-            strokeDasharray={strokeDasharrayWrap(1, valveType)}
-            dataKey="Linear"
-            stroke="green"
-          />
-          <Line
-            dot={false}
-            strokeDasharray={strokeDasharrayWrap(2, valveType)}
-            dataKey="Parabolic"
-            stroke="pink"
-          />
-          <Line
-            dot={false}
-            strokeDasharray={strokeDasharrayWrap(3, valveType)}
-            dataKey="Square Root"
-            stroke="yellow"
-          />
-          <Line
-            dot={false}
-            strokeDasharray={strokeDasharrayWrap(4, valveType)}
-            dataKey="Quick Opening"
-            stroke="lightskyblue"
-          />
-          <Line
-            dot={false}
-            strokeDasharray={strokeDasharrayWrap(5, valveType)}
-            dataKey="Equal Percentage"
-            stroke="brown"
-          />
-          <Line
-            dot={false}
-            strokeDasharray={strokeDasharrayWrap(6, valveType)}
-            dataKey="Hyperbolic"
-            stroke="grey"
-          />
-        </ComposedChart>
-      </ResponsiveContainer>
-    </Box>
+    <ChartsComp 
+    xData={xdata}
+
+    xDomain={['auto', 'auto']}
+    yDomain={['auto', 'auto']}
+    yTicks = {[0,0.2,0.4,0.6,0.8,1]}
+    xTicks ={[0,0.2,0.4,0.6,0.8,1]}
+    scatters={["fccalc"]}
+    scatters_data={[
+      {
+        name: operPos,
+        fccalc,
+      },
+    ]}
+    yDatas={ydata}
+    columns={columns}/>
+    
   );
 }

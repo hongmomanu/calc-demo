@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 2@3x</title>
+    <g id="定稿" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="编组" transform="translate(1.000000, 1.000000)">
+            <path d="M24.0047303,0 L24.004,6 L5.99960327,6.00090479 L5.999,24 L-1.42108547e-14,24 L-1.42108547e-14,0 L24.0047303,0 Z" id="形状结合" fill="#147EBB"></path>
+            <path d="M24.0047303,0 L23.948,6.001 L6.00489815,6.00187259 L6.004,23.943 L-8.8817842e-15,24 L-8.8817842e-15,0 L24.0047303,0 Z" id="形状结合备份-2" fill="#51A637" transform="translate(12.002365, 12.000000) scale(-1, -1) translate(-12.002365, -12.000000) "></path>
+            <polygon id="矩形" fill="#015C1B" points="18.0036598 -2.22044605e-15 24.0047303 -2.22044605e-15 24.0047303 6.00248718 18.0036598 6.00248718"></polygon>
+            <polygon id="矩形备份-3" fill="#005196" points="0 18.0022125 6 18.0022125 6 23.9954774 0 23.9954774"></polygon>
+            <polygon id="矩形备份-5" fill="#E28B16" points="8.99662027 9 14.9966203 9 14.9966203 15 8.99662027 15"></polygon>
+        </g>
+    </g>
+</svg>

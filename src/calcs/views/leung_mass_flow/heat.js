@@ -167,7 +167,11 @@ export default function Heat() {
 
       <Grid item xs={3}>
         <div className="fl f-a-c h-30 f-j-c  b-1-gray">
-          {toFixedTip(calcFormData.fire_rhol0)}
+        <NumberInput
+            data={calcFormData}
+            name="fire_rhol0"
+            setFunc={setCalcFormData}
+          />
         </div>
       </Grid>
       <Grid item xs={1}></Grid>
