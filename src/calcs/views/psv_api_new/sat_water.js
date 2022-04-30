@@ -305,7 +305,7 @@ export default function SatWater() {
 
           <Grid item xs={3}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {toFixedTip(calcFormData.area_unit)}
+              {calcFormData.area_unit}
             </div>
           </Grid>
 
@@ -380,7 +380,7 @@ export default function SatWater() {
 
           <Grid item xs={3}>
             <div className="fl f-a-c f-j-c h-30 b-1-gray">
-              {toFixedTip(calcFormData.area_unit)}
+              {calcFormData.area_unit}
             </div>
           </Grid>
 
