@@ -12,7 +12,6 @@ import { TextField } from "@mui/material";
 import { Charts } from "../../../components/Charts";
 import { chartData } from "./data";
 
-
 function calcApi({ setCalcFormData, calcFormData, setIsCalcing }) {
   setIsCalcing(true);
   httpPost({ url: "/api/disengagment/valveflow", params: calcFormData })
@@ -47,7 +46,6 @@ export default function Disengagement() {
 
   const [isCalcing, setIsCalcing] = useState(false);
 
-  
   useEffect(() => {
     debCalcApi({ setCalcFormData, calcFormData, setIsCalcing });
   }, [
@@ -65,7 +63,7 @@ export default function Disengagement() {
     calcFormData.fr,
     calcFormData.vel_unit,
   ]);
-  
+
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -565,28 +563,45 @@ export default function Disengagement() {
       </Grid>
 
       <Grid container>
-        
         <Grid item xs={12}>
           <Charts
-            scatters={['phi_dis1','phi_dis2','phi_dis3','phi_dis4']}
-            scatters_data={[{
+            scatters={["phi_dis1", "phi_dis2", "phi_dis3", "phi_dis4"]}
+            scatters_data={[
+              {
                 name: calcFormData.phi_dis1,
-                phi_dis1:calcFormData.psif1,
-            },{
+                phi_dis1: calcFormData.psif1,
+              },
+              {
                 name: calcFormData.phi_dis2,
-                phi_dis2:calcFormData.psif1
-            },{
+                phi_dis2: calcFormData.psif1,
+              },
+              {
                 name: calcFormData.phi_dis3,
-                phi_dis3:calcFormData.psif2,
-            },{
+                phi_dis3: calcFormData.psif2,
+              },
+              {
                 name: calcFormData.phi_dis4,
-                phi_dis4:calcFormData.psif2
-            }]}
-            layout='vertical'
+                phi_dis4: calcFormData.psif2,
+              },
+            ]}
+            layout="vertical"
             yReversed={true}
-            xDomain={['dataMin', 'dataMax']}
+            xScale={"log"}
+            xTicks={[
+              0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6, 7,
+              8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+            ]}
+            xTickFormatter={(val, ix) => {
+              const filterArr = [0.1, 1, 10, 100];
+              if (filterArr.includes(val)) return val;
+              else return "";
+            }}
+            yTicks = {[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]}
+            // xDomain={['dataMin', 'dataMax']}
+            xDomain={["auto", "auto"]}
             xData={chartData[0]}
             yDatas={[chartData[1], chartData[2], chartData[3], chartData[4]]}
+            yDomain={['auto','auto']}
             columns={[
               "CT, best estimate",
               "CT, conservative",
