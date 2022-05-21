@@ -1,13 +1,20 @@
 import { Tooltip } from "@mui/material";
 
+function roundFun(value, n) {
+  return Math.round(value*Math.pow(10,n))/Math.pow(10,n);
+}
 export function toFixed(val,size=4){
   if(val == null) return ''
-  var target = `^\\D*(\\d*(?:\\.\\d{0,${size}})?).*$`;
-  const reg = new RegExp(target, "g");
-  const val_str = toNonExponential(val) //`${val}`
-  if(val_str.slice(val_str.length-1) === '.')return val
-  if(val_str.slice(val_str.length-1) === '-')return val
-  return val?((Math.sign(val)===-1?'-':'')+ val_str.replace(reg, '$1')):val
+  if(/0.0*0\b/.test(val))return val
+  // var target = `^\\D*(\\d*(?:\\.\\d{0,${size}})?).*$`;
+  // const reg = new RegExp(target, "g");
+  // const val_str = toNonExponential(val) //`${val}`
+  // if(val_str.slice(val_str.length-1) === '.')return val
+  // if(val_str.slice(val_str.length-1) === '-')return val
+  // return val?((Math.sign(val)===-1?'-':'')+ val_str.replace(reg, '$1')):val
+  
+  const val_str = toNonExponential(roundFun(val,size)) //`${val}`
+  return val_str
 }
 export function toNonExponential(val) {
   var n = Number(val)

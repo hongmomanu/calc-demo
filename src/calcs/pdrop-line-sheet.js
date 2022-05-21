@@ -8,12 +8,14 @@ import Tab from "@mui/material/Tab";
 import FireExtinguisherIcon from "@mui/icons-material/FireExtinguisher";
 import Aod from "@mui/icons-material/Aod";
 import AlignHorizontalLeft from "@mui/icons-material/AlignHorizontalLeft";
+import AirplayIcon from "@mui/icons-material/Airplay";
 
 import CircularIndeterminate from "../components/Loading";
 
 const Fittins = React.lazy(() => import("./views/Pdrop_line/Fittings"))
 const SteelPipes = React.lazy(() => import("./views/Pdrop_line/SteelPipes"))
 const ConeCoils = React.lazy(() => import("./views/Pdrop_line/ConeCoils"))
+const Line = React.lazy(()=>import("./views/Pdrop_line/Line"))
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -61,6 +63,7 @@ function IconLabelTabs({ tabValue, handleChange }) {
         <Tab icon={<FireExtinguisherIcon />} label="Steel Pipes" />
         <Tab icon={<Aod />} label="Fitting and values" />
         <Tab icon={<AlignHorizontalLeft />} label="Cone-elbow-diaphr-coils" />
+        <Tab icon={<AirplayIcon />} label="Line" />
       
       
       
@@ -75,7 +78,9 @@ function TabContent({ tabValue }) {
     case 1:
       return <Fittins />;
     case 2:
-      return <ConeCoils />;          
+      return <ConeCoils />;      
+    case 3:
+        return <Line />;          
     default:
       return "未完待续";
   }

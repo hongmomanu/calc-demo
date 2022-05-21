@@ -24,6 +24,8 @@ export function NumberInput({
       if (!setFunc) return;
       const newData = { ...data };
        if(e.target.value === newData[name]) return 
+      //  if(/0.0*0\b/.test(e.target.value))return
+      //  console.log("xxxxx")
       // newData[name] = e.target.value===''?'':Number(e.target.value)
       newData[name] = e.target.value===''?null:e.target.value;
       setFunc(newData);

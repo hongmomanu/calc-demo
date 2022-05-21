@@ -228,6 +228,7 @@ function App() {
           anchor="left"
         >
           <DrawerHeader>
+            <span style={{position:'absolute',left:'16px'}}>导航列表</span>
             <IconButton onClick={handleDrawerClose}>
               {theme.direction === "ltr" ? (
                 <ChevronLeftIcon />
