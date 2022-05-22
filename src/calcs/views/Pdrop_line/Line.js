@@ -16,6 +16,8 @@ import { NumberInput } from "../../../components/NumberInput";
 import { RadioGroups } from "../../../components/RadioGroup";
 import { httpPost } from "../../../http";
 import { debounce, toFixedTip } from "../../../utils";
+import liquid from "./liquid.png";
+import noliquid from "./noliquid.png"
 
 export default function ConeCoils() {
   const [commonFormData, setCommonFormData] = useState({
@@ -106,7 +108,7 @@ function Common({ commonFormData, setCommonFormData }) {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={6}>
         <RadioGroups
           label="Fluid state"
           row={true}
@@ -118,8 +120,9 @@ function Common({ commonFormData, setCommonFormData }) {
           ]}
           setFunc={setCommonFormData}
         />
+        <img src={commonFormData.liquid==1?liquid:noliquid} width={'100%'} />
       </Grid>
-      <Grid item xs={3}></Grid>
+     
     </Grid>
   );
 }
@@ -321,7 +324,7 @@ function Down({ commonFormData }) {
     /**
      * P downstream
      */
-    dh: null,
+    dh: 0.001,
     /**
      * Elevation (Hd-Hu)
      * liquid = true必填
@@ -731,7 +734,7 @@ function Up({ commonFormData }) {
     /**
      * P downstream
      */
-    dh: null,
+    dh: 0.001,
     /**
      * Elevation (Hd-Hu)
      * liquid = true必填

@@ -10,12 +10,14 @@ import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
 import FireExtinguisherIcon from "@mui/icons-material/FireExtinguisher";
 import Animation from "@mui/icons-material/Animation";
 import Architecture from "@mui/icons-material/Architecture";
+import AirplaneTicket from "@mui/icons-material/AirplaneTicket";
 import CircularIndeterminate from "../components/Loading";
 const Vapour = React.lazy(() => import("./views/Pdrop_pipe/Vapour"));
 const Ideal = React.lazy(() => import("./views/Pdrop_pipe/Ideal"));
 const Fittins = React.lazy(() => import("./views/Pdrop_pipe/Fittings"))
 const SteelPipes = React.lazy(() => import("./views/Pdrop_pipe/SteelPipes"))
 const ConeCoils = React.lazy(() => import("./views/Pdrop_pipe/ConeCoils"))
+const Dp = React.lazy(()=>import("./views/Pdrop_pipe/dp"))
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -65,6 +67,7 @@ function IconLabelTabs({ tabValue, handleChange }) {
       <Tab icon={<FireExtinguisherIcon />} label="Fitting and values" />
       <Tab icon={<Animation />} label="Steel Pipes" />
       <Tab icon={<Architecture />} label="Cone-elbow-diaphr-coils" />
+      <Tab icon={<AirplaneTicket />} label="Dp" />
     </Tabs>
   );
 }
@@ -80,7 +83,9 @@ function TabContent({ tabValue }) {
     case 3:
       return <SteelPipes />;
     case 4:
-      return <ConeCoils />;         
+      return <ConeCoils />; 
+    case 5:
+        return <Dp />;            
     default:
       return "未完待续";
   }
