@@ -88,3 +88,6 @@
   padding: 4px;
   border-radius: 4px;
 }
+.f-wrap{
+  flex-wrap: wrap;
+}
