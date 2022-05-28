@@ -262,7 +262,6 @@ function ShowDialog({ open, setOpen, setCalcFormData, setCidex }) {
       params: { idiam: paramForm.currentdiam, isch: paramForm.currentisch },
       nofilter: true,
     }).then((rep) => {
-      console.log("rep,rep", rep);
       setParamForm((data) => {
         return { ...data, ...rep };
       });
@@ -360,7 +359,6 @@ function ShowDialog({ open, setOpen, setCalcFormData, setCidex }) {
             setOpen(false);
             setCalcFormData((data) => {
               const result = { ...data };
-              console.log("result", result, paramForm.currentelement);
               result[`diam${paramForm.currentelement + 1}$`] =
                 paramForm.mmInternalDiameter;
               // setCidex(paramForm.currentelement + 1);
@@ -382,7 +380,6 @@ function ShowDialog({ open, setOpen, setCalcFormData, setCidex }) {
   );
 }
 function calcApi({ setCalcFormData, calcFormData, cIdx, setIsCalcing }) {
-  console.log('calcApi',cIdx)
   const params = {};
   setIsCalcing(true);
   for (let key in calcFormData) {
@@ -465,7 +462,6 @@ function Dp() {
               // size="large"
               style={{ width: "150px" }}
               onClick={() => {
-                console.log('cIdx', cIdx)
                 cIdx.forEach((it)=>{
                   calcApi({
                     calcFormData,
@@ -483,7 +479,6 @@ function Dp() {
             <Button
               variant="outlined"
               onClick={() => {
-                console.log("xxx");
                 setOpen1(true);
               }}
             >
@@ -531,7 +526,6 @@ function Dp() {
               variant="outlined"
               onClick={() => {
                 setOpen3(true);
-                console.log("xxx");
               }}
             >
               Adjust flow for DP target
