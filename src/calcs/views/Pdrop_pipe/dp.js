@@ -525,7 +525,7 @@ function Dp() {
             <Button
               variant="outlined"
               onClick={() => {
-                setOpen3(true);
+                setOpen4(true);
               }}
             >
               Adjust flow for DP target
@@ -537,7 +537,7 @@ function Dp() {
                 setCalcFormData,
                 setCidex,
                 calcFormData,
-                url:'/api/pipe/dp/dp_target_1653039392622',
+                url:'/api/pipe/dp/dp_target2',
               }}
             />
           </div>

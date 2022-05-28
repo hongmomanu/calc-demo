@@ -9,6 +9,7 @@ import {
   FormControl,
   Grid,
   InputLabel,
+  Stack,
   TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -29,19 +30,19 @@ export default function ConeCoils() {
     mug: 0.7,
     liquid: 0,
   });
-  const [count, setCount] = useState(0)
+
   return (
     <>
       <Grid item xs={12}>
         <div className="fl  f-a-c h-30">Line pressure drop</div>
       </Grid>
-      <Common {...{ commonFormData, setCommonFormData, setCount }} />
-      <Down {...{ commonFormData, count }} />
-      <Up {...{ commonFormData, count }} />
+      <Common {...{ commonFormData, setCommonFormData }} />
+      <Down {...{ commonFormData }} />
+      <Up {...{ commonFormData }} />
     </>
   );
 }
-function Common({ commonFormData, setCommonFormData, setCount }) {
+function Common({ commonFormData, setCommonFormData }) {
   const [isCalcing, setIsCalcing] = useState(false)
   return (
     <Grid container>
@@ -113,24 +114,6 @@ function Common({ commonFormData, setCommonFormData, setCount }) {
         </Grid>
       </Grid>
       <Grid item xs={6}>
-      <LoadingButton
-              loading={isCalcing}
-              loadingPosition="start"
-              startIcon={<CalculateIcon />}
-              // size="large"
-              style={{ width: "150px" }}
-              onClick={() => {
-                setIsCalcing(true)
-                setCount((c)=>c+1)
-                setTimeout(()=>{
-                  setIsCalcing(false)
-                },200)
-                
-              }}
-              variant="contained"
-            >
-              计算
-            </LoadingButton>
         <RadioGroups
           label="Fluid state"
           row={true}
@@ -317,6 +300,7 @@ function ShowDialog({ open, setOpen, setCalcFormData, calcFormData }) {
 }
 function calcApi({ setCalcFormData, calcFormData, params, url }) {
   params.liquid = !!(params.liquid == 1);
+  params.lineTables = params.lineTables.filter((it)=>it.dn)
   httpPost({
     url,
     params,
@@ -330,7 +314,7 @@ function calcApi({ setCalcFormData, calcFormData, params, url }) {
 const debCalcApi = debounce(calcApi);
 const debCalcApiUp = debounce(calcApi);
 
-function Down({ commonFormData, count }) {
+function Down({ commonFormData }) {
   const [calcFormData, setCalcFormData] = useState({
     t: 191,
     /**
@@ -404,6 +388,7 @@ function Down({ commonFormData, count }) {
     ],
   });
   const [open, setOpen] = useState(false);
+  const [count,setCount] = useState(0)
 
   useEffect(() => {
     debCalcApi({
@@ -514,7 +499,7 @@ function Down({ commonFormData, count }) {
       </Grid>
       <Grid item xs={4}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {calcFormData.usonic}
+          {toFixedTip(calcFormData.usonic)}
         </div>
       </Grid>
 
@@ -579,7 +564,8 @@ function Down({ commonFormData, count }) {
         </Grid>
       </Grid>
 
-      <Grid item xs={12} margin={"10px"} textAlign="left">
+      <Grid item xs={12} margin={"10px"} columnSpacing={2} textAlign="left">
+      <Stack direction="row" spacing={2}>
         <Button
           onClick={() => {
             setOpen(true);
@@ -588,6 +574,11 @@ function Down({ commonFormData, count }) {
         >
           Select standard diam
         </Button>
+        <Button variant="contained" onClick={()=>{
+          setCount((c)=>c+1)
+        }}  startIcon={<CalculateIcon />}>计算</Button>
+      </Stack>  
+        
         <ShowDialog {...{ open, setOpen, setCalcFormData, calcFormData }} />
       </Grid>
 
@@ -599,22 +590,7 @@ function Down({ commonFormData, count }) {
               return (
                 <Grid item xs={1.5}>
                   <div className="fl f-a-c f-j-c h-30 b-1-gray">
-                    {ix<3?<TextField
-                      fullWidth={true}
-                      style={{ textAlign: "center" }}
-                      onChange={(e) => {
-                        const val = e.target.value
-                        setCalcFormData((data)=>{
-                            const lineTables = [...data.lineTables];
-                            if(!lineTables[idx]) lineTables[idx] = {}
-                            const currentItem = lineTables[idx] 
-                            currentItem[it]=val
-                            return {...data,lineTables}
-                        })
-                      }}
-                      value={calcFormData.lineTables?.[idx]?.[it]||(ix===0?`${it}#${itp}`:'')}
-                      variant="standard"
-                    />:NumberInput({
+                    {ix<3?calcFormData.lineTables?.[idx]?.[it]||(ix===0?`${it}#${itp}`:''):NumberInput({
                       data: calcFormData.lineTables[idx],
                       name: it,
                       setFunc: (data) => {
@@ -714,11 +690,11 @@ function Down({ commonFormData, count }) {
               return (
                 <Grid item xs={ix < 8 ? 1.3 : 1.6}>
                   <div className="fl f-a-c f-j-c h-30 b-1-gray">
-                    {toFixedTip(
+                    {
                       calcFormData.lineTablesOut[idx]
-                        ? calcFormData.lineTablesOut[idx][it]
-                        : ""
-                    )}
+                        ? toFixedTip(calcFormData.lineTablesOut[idx][it])
+                        : null
+                    }
                   </div>
                 </Grid>
               );
@@ -729,7 +705,7 @@ function Down({ commonFormData, count }) {
     </Grid>
   );
 }
-function Up({ commonFormData, count }) {
+function Up({ commonFormData }) {
   const [calcFormData, setCalcFormData] = useState({
     t: 191,
     /**
@@ -804,6 +780,7 @@ function Up({ commonFormData, count }) {
   });
 
   const [open,setOpen] = useState(false)
+  const [count,setCount] = useState(0)
 
   useEffect(() => {
     debCalcApiUp({
@@ -914,7 +891,7 @@ function Up({ commonFormData, count }) {
       </Grid>
       <Grid item xs={4}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {calcFormData.usonic}
+          {toFixedTip(calcFormData.usonic)}
         </div>
       </Grid>
 
@@ -983,7 +960,8 @@ function Up({ commonFormData, count }) {
         <div className="fl f-a-c f-j-c h-30"></div>
       </Grid> */}
       <Grid item xs={12} margin={"10px"} textAlign="left">
-        <Button
+      <Stack direction="row" spacing={2}>
+      <Button
           onClick={() => {
             setOpen(true);
           }}
@@ -991,6 +969,11 @@ function Up({ commonFormData, count }) {
         >
           Select standard diam
         </Button>
+        <Button variant="contained" onClick={()=>{
+          setCount((c)=>c+1)
+        }}  startIcon={<CalculateIcon />}>计算</Button>
+      </Stack>  
+        
         <ShowDialog {...{ open, setOpen, setCalcFormData, calcFormData }} />
       </Grid>
 
@@ -1001,26 +984,11 @@ function Up({ commonFormData, count }) {
               return (
                 <Grid item xs={1.5}>
                   <div className="fl f-a-c f-j-c h-30 b-1-gray">
-                    {ix<3?<TextField
-                      fullWidth={true}
-                      style={{ textAlign: "center" }}
-                      onChange={(e) => {
-                        const val = e.target.value
-                        setCalcFormData((data)=>{
-                            const lineTables = [...data.lineTables];
-                            const currentItem = lineTables[idx]
-                            currentItem[it]=val
-                            return {...data,lineTables}
-                        })
-                      }}
-                      value={calcFormData.lineTables?.[idx]?.[it]||(ix===0?`${it}#${itp}`:'')}
-                      variant="standard"
-                    />:NumberInput({
+                    {ix<3?calcFormData.lineTables?.[idx]?.[it]||(ix===0?`${it}#${itp}`:''):NumberInput({
                       data: calcFormData.lineTables[idx],
                       name: it,
                       setFunc: (data) => {
                         const lineTables = [...calcFormData.lineTables];
-                        console.log("data", data);
                         lineTables[idx] = { ...data };
                         setCalcFormData({ ...calcFormData, lineTables });
                       },
@@ -1115,11 +1083,11 @@ function Up({ commonFormData, count }) {
               return (
                 <Grid item xs={ix < 8 ? 1.3 : 1.6}>
                   <div className="fl f-a-c f-j-c h-30 b-1-gray">
-                    {toFixedTip(
+                    {
                       calcFormData.lineTablesOut[idx]
-                        ? calcFormData.lineTablesOut[idx][it]
-                        : ""
-                    )}
+                        ? toFixedTip(calcFormData.lineTablesOut[idx][it])
+                        : null
+                    }
                   </div>
                 </Grid>
               );
