@@ -5,7 +5,7 @@ function roundFun(value, n) {
 }
 export function toFixed(val,size=4){
   if(val == null) return ''
-  if(/\d*.0*0\b/.test(val))return val
+  if(/\d*\.\d*0\b/.test(val))return val
   // var target = `^\\D*(\\d*(?:\\.\\d{0,${size}})?).*$`;
   // const reg = new RegExp(target, "g");
   // const val_str = toNonExponential(val) //`${val}`

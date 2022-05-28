@@ -1,3 +1,4 @@
+import { LoadingButton } from "@mui/lab";
 import {
   Button,
   Dialog,
@@ -18,6 +19,7 @@ import { httpPost } from "../../../http";
 import { debounce, toFixedTip } from "../../../utils";
 import liquid from "./liquid.png";
 import noliquid from "./noliquid.png"
+import CalculateIcon from "@mui/icons-material/Calculate";
 
 export default function ConeCoils() {
   const [commonFormData, setCommonFormData] = useState({
@@ -27,18 +29,20 @@ export default function ConeCoils() {
     mug: 0.7,
     liquid: 0,
   });
+  const [count, setCount] = useState(0)
   return (
     <>
       <Grid item xs={12}>
         <div className="fl  f-a-c h-30">Line pressure drop</div>
       </Grid>
-      <Common {...{ commonFormData, setCommonFormData }} />
-      <Down {...{ commonFormData }} />
-      <Up {...{ commonFormData }} />
+      <Common {...{ commonFormData, setCommonFormData, setCount }} />
+      <Down {...{ commonFormData, count }} />
+      <Up {...{ commonFormData, count }} />
     </>
   );
 }
-function Common({ commonFormData, setCommonFormData }) {
+function Common({ commonFormData, setCommonFormData, setCount }) {
+  const [isCalcing, setIsCalcing] = useState(false)
   return (
     <Grid container>
       <Grid item xs={6}>
@@ -109,6 +113,24 @@ function Common({ commonFormData, setCommonFormData }) {
         </Grid>
       </Grid>
       <Grid item xs={6}>
+      <LoadingButton
+              loading={isCalcing}
+              loadingPosition="start"
+              startIcon={<CalculateIcon />}
+              // size="large"
+              style={{ width: "150px" }}
+              onClick={() => {
+                setIsCalcing(true)
+                setCount((c)=>c+1)
+                setTimeout(()=>{
+                  setIsCalcing(false)
+                },200)
+                
+              }}
+              variant="contained"
+            >
+              计算
+            </LoadingButton>
         <RadioGroups
           label="Fluid state"
           row={true}
@@ -308,7 +330,7 @@ function calcApi({ setCalcFormData, calcFormData, params, url }) {
 const debCalcApi = debounce(calcApi);
 const debCalcApiUp = debounce(calcApi);
 
-function Down({ commonFormData }) {
+function Down({ commonFormData, count }) {
   const [calcFormData, setCalcFormData] = useState({
     t: 191,
     /**
@@ -390,19 +412,7 @@ function Down({ commonFormData }) {
       params: { ...calcFormData, ...commonFormData },
       url: "/api/line/line/calc_down",
     });
-  }, [
-    calcFormData.t,
-    calcFormData.zcompr,
-    calcFormData.pout,
-    calcFormData.dh,
-    calcFormData.rhoout,
-    calcFormData.lineTables,
-    commonFormData.massflow,
-    commonFormData.mw,
-    commonFormData.cpcv,
-    commonFormData.mug,
-    commonFormData.liquid,
-  ]);
+  }, [count]);
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -596,7 +606,8 @@ function Down({ commonFormData }) {
                         const val = e.target.value
                         setCalcFormData((data)=>{
                             const lineTables = [...data.lineTables];
-                            const currentItem = lineTables[idx]
+                            if(!lineTables[idx]) lineTables[idx] = {}
+                            const currentItem = lineTables[idx] 
                             currentItem[it]=val
                             return {...data,lineTables}
                         })
@@ -718,7 +729,7 @@ function Down({ commonFormData }) {
     </Grid>
   );
 }
-function Up({ commonFormData }) {
+function Up({ commonFormData, count }) {
   const [calcFormData, setCalcFormData] = useState({
     t: 191,
     /**
@@ -801,19 +812,7 @@ function Up({ commonFormData }) {
       params: { ...calcFormData, ...commonFormData },
       url: "/api/line/line/calc_up",
     });
-  }, [
-    calcFormData.t,
-    calcFormData.zcompr,
-    calcFormData.pout,
-    calcFormData.dh,
-    calcFormData.rhoout,
-    calcFormData.lineTables,
-    commonFormData.massflow,
-    commonFormData.mw,
-    commonFormData.cpcv,
-    commonFormData.mug,
-    commonFormData.liquid,
-  ]);
+  }, [count]);
   return (
     <Grid container>
       <Grid item xs={12}>

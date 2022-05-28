@@ -1,5 +1,15 @@
 import { LoadingButton } from "@mui/lab";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Grid, TextField } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  FormControl,
+  Grid,
+  TextField,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { Combox } from "../../../components/Combox";
 import { NumberInput } from "../../../components/NumberInput";
@@ -9,114 +19,207 @@ import CalculateIcon from "@mui/icons-material/Calculate";
 import { RadioGroups } from "../../../components/RadioGroup";
 
 const caseArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-const neededKeys = [
-  "rho",
-  "mu",
-  "massfl",
-  "gas",
-  "pres_in",
-  "diam",
-  "ltuy",
-  "rug",
-];
-function getAplWater(params){
+
+function getAplWater(params) {
   return httpPost({
-      url: "/api/pipe/dp/select_water_steam",
-      params,
-      nofilter: true,
-    })
+    url: "/api/pipe/dp/select_water_steam",
+    params,
+    nofilter: true,
+  });
 }
-function ShowDialog2({open, setOpen, setCalcFormData, setCidex, calcFormData }) {
+function ShowDialog3({
+  open,
+  setOpen,
+  setCalcFormData,
+  setCidex,
+  calcFormData,
+  url,
+}) {
+  const [paramForm, setParamForm] = useState({
+    case: 0,
+    dp: 0,
+  });
+
+  useEffect(()=>{
+    if(open){
+      setParamForm((rep)=>{
+        const data = {...rep}
+        data[`dp`] = calcFormData[`dp${paramForm.case+1}$`]
+        return data
+      })
+    }
+    
+  },[paramForm.case,open])
+
+  return (
+    <Dialog open={open} onClose={() => setOpen(false)}>
+      <DialogTitle>Target Value</DialogTitle>
+      <DialogContent>
+        <DialogContentText>Target for DP (bar)</DialogContentText>
+        {Combox({
+          size: "large",
+          options: [
+            { name: "Case 1", value: 0 },
+            { name: "Case 2", value: 1 },
+            { name: "Case 3", value: 2 },
+            { name: "Case 4", value: 3 },
+            { name: "Case 5", value: 4 },
+            { name: "Case 6", value: 5 },
+            { name: "Case 7", value: 6 },
+            { name: "Case 8", value: 7 },
+            { name: "Case 9", value: 8 },
+            { name: "Case 10", value: 9 },
+            { name: "Case 11", value: 10 },
+            { name: "Case 12", value: 11 },
+            { name: "Case 13", value: 12 },
+            { name: "Case 14", value: 13 },
+            { name: "Case 15", value: 14 },
+          ],
+          data: paramForm,
+          name: "case",
+          setFunc: setParamForm,
+        })}
+        <NumberInput
+          
+          data={paramForm}
+          label={`Target for DP (bar)?`}
+          name="dp"
+          setFunc={setParamForm}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            setOpen(false);
+            const params = {};
+            const cIdx = `${paramForm.case+1}$`;
+            for (let key in calcFormData) {
+              if (key.includes(cIdx) || !key.includes("$")) {
+                const realKey = key.replace(`${cIdx}`, "");
+                params[realKey] = calcFormData[key];
+              }
+            }
+
+            params[`gas`] =
+              (params[`gas`] || "").toLocaleLowerCase() === "v" ? true : false;
+            params.dptarg = paramForm.dp
+            return httpPost({
+              url,
+              params,
+              nofilter: true,
+            }).then((rep)=>{
+              const reps = {};
+              for (let key in rep) {
+                reps[`${key}${cIdx}`] = rep[key];
+              }
+              setCalcFormData({ ...calcFormData, ...reps });
+            });
+
+
+          }}
+        >
+          Ok
+        </Button>
+        <Button onClick={() => setOpen(false)}>Cancel</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+function ShowDialog2({
+  open,
+  setOpen,
+  setCalcFormData,
+  setCidex,
+  calcFormData,
+}) {
   const [paramForm, setParamForm] = useState({
     case: 0,
     pressure: 5,
     temp: 0,
   });
-  useEffect(()=>{
+  useEffect(() => {
     getAplWater({
-      visc_unit:calcFormData.visc_unit,
-      pres_unit:calcFormData.pres_unit,
-      rho_unit:calcFormData.rho_unit,
-      type:0
-  }).then((rep) => {
-    setParamForm({...paramForm,...rep})
-  })
-  },[])
-  return <Dialog open={open} onClose={() => setOpen(false)}>
-          <DialogTitle>Water properties</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Thermodynamic state by Case</DialogContentText>
-            {Combox({
-              size:'large',
-              options: [
-                { name: "Case 1", value: 0 },
-                { name: "Case 2", value: 1 },
-                { name: "Case 3", value: 2 },
-                { name: "Case 4", value: 3 },
-                { name: "Case 5", value: 4 },
-                { name: "Case 6", value: 5 },
-                { name: "Case 7", value: 6 },
-                { name: "Case 8", value: 7 },
-                { name: "Case 9", value: 8 },
-                { name: "Case 10", value: 9 },
-                { name: "Case 11", value: 10 },
-                { name: "Case 12", value: 11 },
-                { name: "Case 13", value: 12 },
-                { name: "Case 14", value: 13 },
-                { name: "Case 15", value: 14 },
-              ],
-              data: paramForm,
-              name: "case",
-              setFunc: setParamForm,
-            })}
-            <NumberInput
-              data={paramForm}
-              label={`Pressure (${paramForm.pressure_unit})`}
-              name="pressure"
-              setFunc={setParamForm}
-            />
-            <NumberInput
-              data={paramForm}
-              label={`Temperature (${paramForm.temperature_unit})`}
-              name="temp"
-              setFunc={setParamForm}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                setOpen(false);
-                getAplWater({
-                    p:Number(paramForm.pressure),
-                    t:Number(paramForm.temp),
-                    visc_unit:calcFormData.visc_unit,
-                    pres_unit:calcFormData.pres_unit,
-                    rho_unit:calcFormData.rho_unit,
-                    type:1
-                }).then((rep) => {
-                    
-                    const data = {}
-                    for(let key in rep){
-                        if(rep.hasOwnProperty(key)){
-                            
-                            if(key === 'lv'){
-                              data[`gas${paramForm.case+1}$`] = rep[key]
-                            }else{
-                              data[`${key}${paramForm.case+1}$`] = rep[key]
-                            }
-                        }
-                    }
-                    console.log('data',data)
-                    setCalcFormData({...calcFormData,...data})
-                    console.log('getAplWater rep',rep)
-                  })
-              }}
-            >
-              Ok
-            </Button>
-            <Button onClick={() => setOpen(false)}>Cancel</Button>
-          </DialogActions>
-        </Dialog>
+      visc_unit: calcFormData.visc_unit,
+      pres_unit: calcFormData.pres_unit,
+      rho_unit: calcFormData.rho_unit,
+      type: 0,
+    }).then((rep) => {
+      setParamForm({ ...paramForm, ...rep });
+    });
+  }, []);
+  return (
+    <Dialog open={open} onClose={() => setOpen(false)}>
+      <DialogTitle>Water properties</DialogTitle>
+      <DialogContent>
+        <DialogContentText>Thermodynamic state by Case</DialogContentText>
+        {Combox({
+          size: "large",
+          options: [
+            { name: "Case 1", value: 0 },
+            { name: "Case 2", value: 1 },
+            { name: "Case 3", value: 2 },
+            { name: "Case 4", value: 3 },
+            { name: "Case 5", value: 4 },
+            { name: "Case 6", value: 5 },
+            { name: "Case 7", value: 6 },
+            { name: "Case 8", value: 7 },
+            { name: "Case 9", value: 8 },
+            { name: "Case 10", value: 9 },
+            { name: "Case 11", value: 10 },
+            { name: "Case 12", value: 11 },
+            { name: "Case 13", value: 12 },
+            { name: "Case 14", value: 13 },
+            { name: "Case 15", value: 14 },
+          ],
+          data: paramForm,
+          name: "case",
+          setFunc: setParamForm,
+        })}
+        <NumberInput
+          data={paramForm}
+          label={`Pressure (${paramForm.pressure_unit})`}
+          name="pressure"
+          setFunc={setParamForm}
+        />
+        <NumberInput
+          data={paramForm}
+          label={`Temperature (${paramForm.temperature_unit})`}
+          name="temp"
+          setFunc={setParamForm}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            setOpen(false);
+            getAplWater({
+              p: Number(paramForm.pressure),
+              t: Number(paramForm.temp),
+              visc_unit: calcFormData.visc_unit,
+              pres_unit: calcFormData.pres_unit,
+              rho_unit: calcFormData.rho_unit,
+              type: 1,
+            }).then((rep) => {
+              const data = {};
+              for (let key in rep) {
+                if (rep.hasOwnProperty(key)) {
+                  if (key === "lv") {
+                    data[`gas${paramForm.case + 1}$`] = rep[key];
+                  } else {
+                    data[`${key}${paramForm.case + 1}$`] = rep[key];
+                  }
+                }
+              }
+              setCalcFormData({ ...calcFormData, ...data });
+            });
+          }}
+        >
+          Ok
+        </Button>
+        <Button onClick={() => setOpen(false)}>Cancel</Button>
+      </DialogActions>
+    </Dialog>
+  );
 }
 function ShowDialog({ open, setOpen, setCalcFormData, setCidex }) {
   const [paramForm, setParamForm] = useState({
@@ -148,24 +251,23 @@ function ShowDialog({ open, setOpen, setCalcFormData, setCidex }) {
       params: {},
       nofilter: true,
     }).then((rep) => {
-      setParamForm((data)=>{
-        return { ...data, ...rep }
-        });
-
+      setParamForm((data) => {
+        return { ...data, ...rep };
+      });
     });
   }, []);
-  useEffect(()=>{
+  useEffect(() => {
     httpPost({
-        url: "/api/pipe/dp/select_pipe",
-        params: {idiam:paramForm.currentdiam,isch:paramForm.currentisch},
-        nofilter: true,
-      }).then((rep) => {
-        console.log('rep,rep',rep)
-        setParamForm((data)=>{
-            return {...data,...rep}
-        });
+      url: "/api/pipe/dp/select_pipe",
+      params: { idiam: paramForm.currentdiam, isch: paramForm.currentisch },
+      nofilter: true,
+    }).then((rep) => {
+      console.log("rep,rep", rep);
+      setParamForm((data) => {
+        return { ...data, ...rep };
       });
-  },[paramForm.currentdiam,paramForm.currentisch])
+    });
+  }, [paramForm.currentdiam, paramForm.currentisch]);
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
       <DialogTitle>Standard diameter selection for Element</DialogTitle>
@@ -251,48 +353,47 @@ function ShowDialog({ open, setOpen, setCalcFormData, setCidex }) {
             {toFixedTip(paramForm.mmInternalDiameter)}
           </Grid>
         </Grid>
-
-    
-
-        
       </DialogContent>
       <DialogActions>
         <Button
           onClick={() => {
             setOpen(false);
-            setCalcFormData((data)=>{
-                const result = {...data}
-                console.log('result',result,paramForm.currentelement)
-                result[`diam${paramForm.currentelement+1}$`] = paramForm.mmInternalDiameter
-                setCidex(paramForm.currentelement+1);
-                return {...result}
-            })
+            setCalcFormData((data) => {
+              const result = { ...data };
+              console.log("result", result, paramForm.currentelement);
+              result[`diam${paramForm.currentelement + 1}$`] =
+                paramForm.mmInternalDiameter;
+              // setCidex(paramForm.currentelement + 1);
+              return { ...result };
+            });
           }}
         >
           Ok
         </Button>
-        <Button onClick={() => {
-            setOpen(false)
-            
-
-        }}>Cancel</Button>
+        <Button
+          onClick={() => {
+            setOpen(false);
+          }}
+        >
+          Cancel
+        </Button>
       </DialogActions>
     </Dialog>
   );
 }
 function calcApi({ setCalcFormData, calcFormData, cIdx, setIsCalcing }) {
+  console.log('calcApi',cIdx)
   const params = {};
   setIsCalcing(true);
   for (let key in calcFormData) {
     if (key.includes(cIdx) || !key.includes("$")) {
       const realKey = key.replace(`${cIdx}`, "");
-      const realVal = calcFormData[key];
-      if (neededKeys.includes(realKey) && realVal == null) return;
       params[realKey] = calcFormData[key];
     }
   }
 
-  params[`gas`] = (params[`gas`]||'').toLocaleLowerCase() === "v" ? true : false;
+  params[`gas`] =
+    (params[`gas`] || "").toLocaleLowerCase() === "v" ? true : false;
   httpPost({
     url: "/api/pipe/dp/dp_calc",
     params,
@@ -303,7 +404,9 @@ function calcApi({ setCalcFormData, calcFormData, cIdx, setIsCalcing }) {
       for (let key in rep) {
         reps[`${key}${cIdx}`] = rep[key];
       }
-      setCalcFormData({ ...calcFormData, ...reps });
+      setCalcFormData((data=>{
+        return { ...data, ...reps }
+      }));
     })
     .finally(() => {
       setIsCalcing(false);
@@ -335,18 +438,18 @@ function Dp() {
     ltuy1$: 100,
     rug1$: 0.05,
   });
-  const [cIdx, setCidex] = useState(1);
-  const [open1, setOpen1] = useState(false)
-  const [open2, setOpen2] = useState(false)
+  const [cIdx, setCidex] = useState([1]);
+  const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
+  const [open4, setOpen4] = useState(false);
   useEffect(() => {
-    calcApi({ calcFormData, setCalcFormData, cIdx: `${cIdx}$`, setIsCalcing });
+    cIdx.forEach((it)=>{
+      calcApi({ calcFormData, setCalcFormData, cIdx: `${it}$`, setIsCalcing });
+    })
+    
   }, []);
-  //   useEffect(()=>{
-  //     debCalcApi({calcFormData,setCalcFormData,cIdx:`${cIdx}$`})
-  //   },[cIdx, calcFormData.rho_unit, calcFormData.visc_unit,
-  //      calcFormData.massfl_unit,calcFormData.volfl_unit, calcFormData.pres_unit,
-  //     calcFormData.d_unit, calcFormData.l_unit,calcFormData.rug_unit,calcFormData.vel_unit,
-  // calcFormData.dpu_unit,calcFormData.power_unit,calcFormData.dp_unit])
+ 
   return (
     <div style={{ overflow: "auto" }}>
       <Grid container width={"130%"}>
@@ -360,14 +463,18 @@ function Dp() {
               loadingPosition="start"
               startIcon={<CalculateIcon />}
               // size="large"
-              style={{ width: "150px"}}
+              style={{ width: "150px" }}
               onClick={() => {
-                calcApi({
-                  calcFormData,
-                  setCalcFormData,
-                  cIdx: `${cIdx}$`,
-                  setIsCalcing,
-                });
+                console.log('cIdx', cIdx)
+                cIdx.forEach((it)=>{
+                  calcApi({
+                    calcFormData,
+                    setCalcFormData,
+                    cIdx: `${it}$`,
+                    setIsCalcing,
+                  });
+                })
+                
               }}
               variant="contained"
             >
@@ -377,37 +484,68 @@ function Dp() {
               variant="outlined"
               onClick={() => {
                 console.log("xxx");
-                setOpen1(true)
+                setOpen1(true);
               }}
             >
               Select standard diam
             </Button>
-            <ShowDialog {...{ open:open1, setOpen:setOpen1, setCalcFormData, setCidex }} />
+            <ShowDialog
+              {...{ open: open1, setOpen: setOpen1, setCalcFormData, setCidex }}
+            />
             <Button
               variant="outlined"
               onClick={() => {
-                setOpen2(true)
+                setOpen2(true);
               }}
             >
               Water/Steam properties
             </Button>
-            <ShowDialog2 {...{ open:open2, setOpen:setOpen2, setCalcFormData, setCidex, calcFormData }} />
+            <ShowDialog2
+              {...{
+                open: open2,
+                setOpen: setOpen2,
+                setCalcFormData,
+                setCidex,
+                calcFormData,
+              }}
+            />
             <Button
               variant="outlined"
               onClick={() => {
-                console.log("xxx");
+                setOpen3(true);
               }}
             >
               Adjust diameter for DP target
             </Button>
+            <ShowDialog3
+              {...{
+                open: open3,
+                setOpen: setOpen3,
+                setCalcFormData,
+                setCidex,
+                calcFormData,
+                url:'/api/pipe/dp/dp_target'
+              }}
+            />
             <Button
               variant="outlined"
               onClick={() => {
+                setOpen3(true);
                 console.log("xxx");
               }}
             >
               Adjust flow for DP target
             </Button>
+            <ShowDialog3
+              {...{
+                open: open4,
+                setOpen: setOpen4,
+                setCalcFormData,
+                setCidex,
+                calcFormData,
+                url:'/api/pipe/dp/dp_target_1653039392622',
+              }}
+            />
           </div>
         </Grid>
         <Grid item xs={4}></Grid>
@@ -449,7 +587,10 @@ function Dp() {
                   name: `rho${it}$`,
                   setFunc: (data) => {
                     setCalcFormData(data);
-                    setCidex(it);
+                    setCidex((rep)=>{
+                      if(rep.includes(it))return rep
+                      else return rep.concat([it])
+                    });
                   },
                 })}
               </div>
@@ -485,7 +626,10 @@ function Dp() {
                   name: `mu${it}$`,
                   setFunc: (data) => {
                     setCalcFormData(data);
-                    setCidex(it);
+                    setCidex((rep)=>{
+                      if(rep.includes(it))return rep
+                      else return rep.concat([it])
+                    });
                   },
                 })}
               </div>
@@ -521,7 +665,10 @@ function Dp() {
                   name: `massfl${it}$`,
                   setFunc: (data) => {
                     setCalcFormData(data);
-                    setCidex(it);
+                    setCidex((rep)=>{
+                      if(rep.includes(it))return rep
+                      else return rep.concat([it])
+                    });
                   },
                 })}
               </div>
@@ -557,7 +704,10 @@ function Dp() {
                   name: `volfl${it}$`,
                   setFunc: (data) => {
                     setCalcFormData(data);
-                    setCidex(it);
+                    setCidex((rep)=>{
+                      if(rep.includes(it))return rep
+                      else return rep.concat([it])
+                    });
                   },
                 })}
               </div>
@@ -632,7 +782,10 @@ function Dp() {
                   name: `pres_in${it}$`,
                   setFunc: (data) => {
                     setCalcFormData(data);
-                    setCidex(it);
+                    setCidex((rep)=>{
+                      if(rep.includes(it))return rep
+                      else return rep.concat([it])
+                    });
                   },
                 })}
               </div>
@@ -674,7 +827,10 @@ function Dp() {
                   name: `diam${it}$`,
                   setFunc: (data) => {
                     setCalcFormData(data);
-                    setCidex(it);
+                    setCidex((rep)=>{
+                      if(rep.includes(it))return rep
+                      else return rep.concat([it])
+                    });
                   },
                 })}
               </div>
@@ -710,7 +866,10 @@ function Dp() {
                   name: `ltuy${it}$`,
                   setFunc: (data) => {
                     setCalcFormData(data);
-                    setCidex(it);
+                    setCidex((rep)=>{
+                      if(rep.includes(it))return rep
+                      else return rep.concat([it])
+                    });
                   },
                 })}
               </div>
@@ -746,7 +905,10 @@ function Dp() {
                   name: `rug${it}$`,
                   setFunc: (data) => {
                     setCalcFormData(data);
-                    setCidex(it);
+                    setCidex((rep)=>{
+                      if(rep.includes(it))return rep
+                      else return rep.concat([it])
+                    });
                   },
                 })}
               </div>
@@ -772,7 +934,10 @@ function Dp() {
                   name: `lequ${it}$`,
                   setFunc: (data) => {
                     setCalcFormData(data);
-                    setCidex(it);
+                    setCidex((rep)=>{
+                      if(rep.includes(it))return rep
+                      else return rep.concat([it])
+                    });
                   },
                 })}
               </div>
@@ -798,7 +963,10 @@ function Dp() {
                   name: `k${it}$`,
                   setFunc: (data) => {
                     setCalcFormData(data);
-                    setCidex(it);
+                    setCidex((rep)=>{
+                      if(rep.includes(it))return rep
+                      else return rep.concat([it])
+                    });
                   },
                 })}
               </div>
@@ -824,7 +992,10 @@ function Dp() {
                   name: `relam${it}$`,
                   setFunc: (data) => {
                     setCalcFormData(data);
-                    setCidex(it);
+                    setCidex((rep)=>{
+                      if(rep.includes(it))return rep
+                      else return rep.concat([it])
+                    });
                   },
                 })}
               </div>
