@@ -481,7 +481,7 @@ function Down({ commonFormData }) {
       </Grid>
       <Grid item xs={4}>
         <div className="fl f-a-c f-j-c h-30 b-1-gray">
-          {commonFormData.liquid == 1
+          {commonFormData.liquid != 1
             ? toFixedTip(calcFormData.rhoout)
             : NumberInput({
                 data: calcFormData,
@@ -515,54 +515,6 @@ function Down({ commonFormData }) {
         </div>
       </Grid>
 
-      <Grid container>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">Name</div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            DN
-            <br />-
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            Schedule
-            <br />-
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            D int
-            <br />
-            mm
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            Length
-            <br />m
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            Fittings L/D
-            <br />m
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            K<br />m
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            Rugosity
-            <br />
-            mm
-          </div>
-        </Grid>
-      </Grid>
 
       <Grid item xs={12} margin={"10px"} columnSpacing={2} textAlign="left">
       <Stack direction="row" spacing={2}>
@@ -581,6 +533,57 @@ function Down({ commonFormData }) {
         
         <ShowDialog {...{ open, setOpen, setCalcFormData, calcFormData }} />
       </Grid>
+
+      <Grid container>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">Name</div>
+        </Grid>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
+            DN
+            <br />-
+          </div>
+        </Grid>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
+            Schedule
+            <br />-
+          </div>
+        </Grid>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
+            D int
+            <br />
+            mm
+          </div>
+        </Grid>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
+            Length
+            <br />m
+          </div>
+        </Grid>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
+            Fittings L/D
+            <br />m
+          </div>
+        </Grid>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
+            K<br />m
+          </div>
+        </Grid>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
+            Rugosity
+            <br />
+            mm
+          </div>
+        </Grid>
+      </Grid>
+
+      
 
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((itp, idx) => {
         return (
@@ -614,58 +617,58 @@ function Down({ commonFormData }) {
 
       <Grid container>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             u in
             <br />
             m/s
           </div>
         </Grid>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             u out
             <br />
             m/s
           </div>
         </Grid>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             Mach #<br />-
           </div>
         </Grid>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             Re
             <br />-
           </div>
         </Grid>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             Frict fact
             <br />-
           </div>
         </Grid>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             Ltot
             <br />-
           </div>
         </Grid>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             Pin
             <br />
             barg
           </div>
         </Grid>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             Pout
             <br />
             barg
           </div>
         </Grid>
         <Grid item xs={1.6}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             DP
             <br />
             bar
@@ -776,6 +779,15 @@ function Up({ commonFormData }) {
         dn:'NPS 3 - DN 80',
         schedule:'STD',
       },
+      {
+        dint: 202.7174,
+        l: 30,
+        ld: null,
+        k: 0.52,
+        rug: 0.015,
+        dn:'NPS 8 - DN 200',
+        schedule:'STD'
+      }
     ],
   });
 
@@ -907,58 +919,9 @@ function Up({ commonFormData }) {
         </div>
       </Grid>
 
-      <Grid container>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">Name</div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            DN
-            <br />-
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            Schedule
-            <br />-
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            D int
-            <br />
-            mm
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            Length
-            <br />m
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            Fittings L/D
-            <br />m
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            K<br />m
-          </div>
-        </Grid>
-        <Grid item xs={1.5}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
-            Rugosity
-            <br />
-            mm
-          </div>
-        </Grid>
-      </Grid>
+      
 
-      {/* <Grid item xs={12}>
-        <div className="fl f-a-c f-j-c h-30"></div>
-      </Grid> */}
+   
       <Grid item xs={12} margin={"10px"} textAlign="left">
       <Stack direction="row" spacing={2}>
       <Button
@@ -975,6 +938,55 @@ function Up({ commonFormData }) {
       </Stack>  
         
         <ShowDialog {...{ open, setOpen, setCalcFormData, calcFormData }} />
+      </Grid>
+
+      <Grid container>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">Name</div>
+        </Grid>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
+            DN
+            <br />-
+          </div>
+        </Grid>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
+            Schedule
+            <br />-
+          </div>
+        </Grid>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
+            D int
+            <br />
+            mm
+          </div>
+        </Grid>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
+            Length
+            <br />m
+          </div>
+        </Grid>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
+            Fittings L/D
+            <br />m
+          </div>
+        </Grid>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
+            K<br />m
+          </div>
+        </Grid>
+        <Grid item xs={1.5}>
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
+            Rugosity
+            <br />
+            mm
+          </div>
+        </Grid>
       </Grid>
 
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((itp, idx) => {
@@ -1007,58 +1019,58 @@ function Up({ commonFormData }) {
 
       <Grid container>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             u in
             <br />
             m/s
           </div>
         </Grid>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             u out
             <br />
             m/s
           </div>
         </Grid>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             Mach #<br />-
           </div>
         </Grid>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             Re
             <br />-
           </div>
         </Grid>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             Frict fact
             <br />-
           </div>
         </Grid>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             Ltot
             <br />-
           </div>
         </Grid>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             Pin
             <br />
             barg
           </div>
         </Grid>
         <Grid item xs={1.3}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             Pout
             <br />
             barg
           </div>
         </Grid>
         <Grid item xs={1.6}>
-          <div className="fl f-a-c f-j-c h-30 b-1-gray">
+          <div className="fl f-a-c f-j-c h-60 b-1-gray">
             DP
             <br />
             bar
