@@ -210,7 +210,7 @@ function ShowDialog({ open, setOpen, setCalcFormData, calcFormData }) {
               <DialogContentText>Pipe Schedule </DialogContentText>
               <Combox
                 options={paramForm.diameters
-                  .find((it) => it.idiam)
+                  .find((it) => it.idiam == paramForm.currentdiam)
                   ?.schedules?.map((it) => {
                     return { name: it.ischName, value: it.isch };
                   })}
@@ -283,6 +283,7 @@ function ShowDialog({ open, setOpen, setCalcFormData, calcFormData }) {
                 }
                 lineTables[paramForm.currentelement]['dint'] = paramForm.mmInternalDiameter
                 lineTables[paramForm.currentelement]['dn'] = paramForm.diameters.find((it)=>it.idiam==paramForm.currentdiam)?.idiamName
+                lineTables[paramForm.currentelement]['schedule'] = paramForm.diameters.find((it)=>it.idiam==paramForm.currentdiam)?.schedules?.find((it)=>it.isch == paramForm.currentisch)?.ischName
                 return {...data,lineTables}
             })
           }}

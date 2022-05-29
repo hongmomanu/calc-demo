@@ -301,7 +301,7 @@ function ShowDialog({ open, setOpen, setCalcFormData, setCidex }) {
               <DialogContentText>Pipe Schedule </DialogContentText>
               <Combox
                 options={paramForm.diameters
-                  .find((it) => it.idiam)
+                  .find((it) => it.idiam == paramForm.currentdiam)
                   ?.schedules?.map((it) => {
                     return { name: it.ischName, value: it.isch };
                   })}

@@ -24,6 +24,7 @@
 }
 .h-30 {
   height: 30px;
+  word-break: break-all;
 }
 .h-60 {
   height: 60px;
